@@ -2,6 +2,7 @@ package com.example.brunoalmeida.frc2016scouting;
 
 //import android.app.ActionBar;             // modern action bar
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -51,6 +52,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     private void newProfile() {
         Log.v(LOG_TAG, "in newProfile()");
+
+        Intent intent = new Intent(getActivity(), NewProfileActivity.class);
+        startActivity(intent);
 
         // Test - Replace one fragment with another
         /*getFragmentManager()
