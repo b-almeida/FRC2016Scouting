@@ -9,5 +9,4 @@
     tools:context="com.example.brunoalmeida.frc2016scouting.ProfileActivityFragment"
     tools:showIn="@layout/activity_profile">
 
-
 </RelativeLayout>

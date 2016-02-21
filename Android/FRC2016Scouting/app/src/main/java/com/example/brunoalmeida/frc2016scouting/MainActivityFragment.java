@@ -25,6 +25,7 @@ public class MainActivityFragment extends Fragment {
 
     private static final String LOG_TAG = "MainActivityFragment";
 
+
     public MainActivityFragment() {
     }
 
