@@ -11,4 +11,5 @@
 
     <string name="data_team_number">Team Number</string>
     <string name="data_robot_type">Robot Type</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>
