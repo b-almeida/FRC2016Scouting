@@ -32,10 +32,9 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        Button newProfile = (Button) view.findViewById(R.id.new_profile);
+        Button newProfile = (Button) rootView.findViewById(R.id.new_profile);
         newProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +42,7 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
-        return view;
+        return rootView;
     }
 
     private void newProfile() {

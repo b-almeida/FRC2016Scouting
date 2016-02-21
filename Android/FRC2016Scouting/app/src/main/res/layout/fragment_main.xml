@@ -12,7 +12,7 @@
 
     <Button
         android:id="@+id/new_profile"
-        android:text="New Profile"
+        android:text="@string/button_new_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
