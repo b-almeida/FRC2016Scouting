@@ -14,12 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements View.OnClickListener {
+public class MainActivityFragment extends Fragment {
 
     private static final String LOG_TAG = "MainActivityFragment";
 
@@ -34,27 +36,24 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         Button newProfile = (Button) view.findViewById(R.id.new_profile);
-        newProfile.setOnClickListener(this);
+        newProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newProfile();
+            }
+        });
 
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.new_profile:
-                newProfile();
-                break;
-            default:
-                Log.w(LOG_TAG, "onClick not handled");
-        }
-    }
-
     private void newProfile() {
-        Log.v(LOG_TAG, "in newProfile()");
+        Log.v(LOG_TAG, "In newProfile(): new_profile button tapped");
 
+        // Switch to NewProfileActivity
         Intent intent = new Intent(getActivity(), NewProfileActivity.class);
         startActivity(intent);
+
+        Log.v(LOG_TAG, "Switching to NewProfileActivity");
 
         // Test - Replace one fragment with another
         /*getFragmentManager()
