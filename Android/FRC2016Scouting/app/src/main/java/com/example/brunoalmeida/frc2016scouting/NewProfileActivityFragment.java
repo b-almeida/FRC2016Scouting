@@ -33,12 +33,12 @@ public class NewProfileActivityFragment extends Fragment {
         final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.layout);
         final EditText teamNumber = (EditText) rootView.findViewById(R.id.team_number);
 
+        // Hide the keyboard when the layout is touched
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Log.v(LOG_TAG, "layout onTouch");
 
-                // Hide the keyboard
                 InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(teamNumber.getWindowToken(), 0);
 

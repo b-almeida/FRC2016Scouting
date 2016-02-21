@@ -1,6 +1,7 @@
 package com.example.brunoalmeida.frc2016scouting;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void newProfileOnClick(View view) {
+        Log.v(LOG_TAG, "In newProfileOnClick()");
+
+        // Switch to NewProfileActivity
+        Intent intent = new Intent(this, NewProfileActivity.class);
+        startActivity(intent);
+
+        Log.v(LOG_TAG, "Starting NewProfileActivity");
     }
 
 }
