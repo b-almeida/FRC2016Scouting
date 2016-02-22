@@ -1,5 +1,6 @@
 package com.example.brunoalmeida.frc2016scouting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.view.View;
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ProfileActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,13 @@ public class ProfileActivity extends AppCompatActivity {
         });*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void newMatchOnClick(View view) {
+        // Switch to NewMatchActivity
+        Intent intent = new Intent(this, NewMatchActivity.class);
+        startActivity(intent);
+        Log.v(LOG_TAG, "Starting NewMatchActivity");
     }
 
 }
