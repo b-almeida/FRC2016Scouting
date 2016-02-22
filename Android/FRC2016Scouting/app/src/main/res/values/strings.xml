@@ -7,6 +7,7 @@
     <string name="title_activity_new_profile">New Profile</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_new_match">New Match</string>
+    <string name="title_activity_match">Match</string>
 
     <string name="button_new_profile">New Profile</string>
     <string name="button_create_profile">Create</string>
@@ -17,5 +18,7 @@
 
     <string name="label_alliance_1">Alliance 1</string>
     <string name="label_alliance_2">Alliance 2</string>
-    <string name="title_activity_match">MatchActivity</string>
+
+    <string name="action_undo">Undo</string>
+    <string name="action_save">Save</string>
 </resources>
