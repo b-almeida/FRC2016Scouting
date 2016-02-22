@@ -19,4 +19,5 @@ public class NewMatchActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_new_match, container, false);
     }
+
 }
