@@ -20,8 +20,8 @@ public class NewProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "NewProfileActivity";
 
-    private static final String INTENT_TEAM_NUMBER = "teamNumber";
-    private static final String INTENT_ROBOT_TYPE = "robotType";
+    public static final String INTENT_TEAM_NUMBER = "teamNumber";
+    public static final String INTENT_ROBOT_TYPE = "robotType";
 
 
     @Override
@@ -57,6 +57,7 @@ public class NewProfileActivity extends AppCompatActivity {
         intent.putExtra(INTENT_TEAM_NUMBER, teamNumber);
         intent.putExtra(INTENT_ROBOT_TYPE, robotType);
         startActivity(intent);
+        Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 
 }
