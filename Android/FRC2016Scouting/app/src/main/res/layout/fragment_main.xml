@@ -10,13 +10,13 @@
     tools:context="com.example.brunoalmeida.frc2016scouting.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
-<!--    <Button
+    <Button
         android:id="@+id/new_profile"
         android:text="@string/button_new_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:onClick="newProfileOnClick" />-->
+        android:onClick="newProfileOnClick" />
 
 <!--    <TextView
         android:layout_width="wrap_content"
