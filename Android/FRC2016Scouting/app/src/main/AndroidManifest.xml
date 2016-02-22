@@ -45,6 +45,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.brunoalmeida.frc2016scouting.ProfileActivity" />
         </activity>
+        <activity
+            android:name=".MatchActivity"
+            android:label="@string/title_activity_match"
+            android:parentActivityName=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.brunoalmeida.frc2016scouting.ProfileActivity" />
+        </activity>
     </application>
 
 </manifest>
