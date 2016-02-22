@@ -1,5 +1,6 @@
 package com.example.brunoalmeida.frc2016scouting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -33,6 +34,11 @@ public class NewMatchActivity extends AppCompatActivity {
 
     public void createMatchOnClick(View view) {
         Log.v(LOG_TAG, "in createMatchOnClick()");
+
+        // Switch to MatchActivity
+        Intent intent = new Intent(this, MatchActivity.class);
+        startActivity(intent);
+        Log.v(LOG_TAG, "Starting MatchActivity");
     }
 
 }
