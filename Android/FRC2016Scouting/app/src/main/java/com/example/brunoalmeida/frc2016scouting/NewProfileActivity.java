@@ -1,6 +1,7 @@
 package com.example.brunoalmeida.frc2016scouting;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,10 +14,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 public class NewProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "NewProfileActivity";
+
+    private static final String INTENT_TEAM_NUMBER = "teamNumber";
+    private static final String INTENT_ROBOT_TYPE = "robotType";
 
 
     @Override
@@ -37,6 +42,21 @@ public class NewProfileActivity extends AppCompatActivity {
         });*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void createProfileOnClick(View view) {
+        String teamNumberString = ( (EditText) findViewById(R.id.team_number) )
+                .getText().toString();
+        int teamNumber = Integer.parseInt(teamNumberString);
+
+        String robotType = ( (Spinner) findViewById(R.id.robot_type) )
+                .getSelectedItem().toString();
+
+        // Switch to NewProfileActivity
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(INTENT_TEAM_NUMBER, teamNumber);
+        intent.putExtra(INTENT_ROBOT_TYPE, robotType);
+        startActivity(intent);
     }
 
 }
