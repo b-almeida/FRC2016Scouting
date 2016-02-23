@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ProfileEntry;
+import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.MatchEntry;
+
 import com.example.brunoalmeida.frc2016scouting.Profile;
 
 /**
@@ -13,6 +16,20 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "Profiles.db";
     private static final int DATABASE_VERSION = 1;
+
+
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String COMMA_SEP = ",";
+    private static final String SQL_CREATE_PROFILE_TABLE =
+            "CREATE TABLE " + ProfileEntry.TABLE_NAME +
+                    " (" +
+                    ProfileEntry._ID                + " INTEGER PRIMARY KEY," +
+                    ProfileEntry.COLUMN_TEAM_NUMBER + " TEXT," +
+                    ProfileEntry.COLUMN_ROBOT_TYPE  + " TEXT," +
+                    " )";
+
+    private static final String SQL_DELETE_PROFILE_TABLE =
+            "DROP TABLE IF EXISTS " + ProfileEntry.TABLE_NAME;
 
 
     public ProfileDBHelper(Context context) {
