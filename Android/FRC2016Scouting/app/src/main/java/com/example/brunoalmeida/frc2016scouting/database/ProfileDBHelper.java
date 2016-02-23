@@ -24,8 +24,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                     " (" +
                     ProfileEntry._ID                + " INTEGER PRIMARY KEY," +
                     ProfileEntry.COLUMN_TEAM_NUMBER + " INTEGER," +
-                    ProfileEntry.COLUMN_ROBOT_TYPE  + " TEXT," +
-                    " )";
+                    ProfileEntry.COLUMN_ROBOT_TYPE  + " TEXT" +
+                    ")";
 
     private static final String SQL_DROP_PROFILE_TABLE =
             "DROP TABLE IF EXISTS " + ProfileEntry.TABLE_NAME;
