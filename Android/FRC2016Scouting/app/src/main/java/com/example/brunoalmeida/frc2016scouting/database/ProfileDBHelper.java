@@ -18,13 +18,12 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
 
-    private static final String TEXT_TYPE = " TEXT";
-    private static final String COMMA_SEP = ",";
+    // SQL operations
     private static final String SQL_CREATE_PROFILE_TABLE =
             "CREATE TABLE " + ProfileEntry.TABLE_NAME +
                     " (" +
                     ProfileEntry._ID                + " INTEGER PRIMARY KEY," +
-                    ProfileEntry.COLUMN_TEAM_NUMBER + " TEXT," +
+                    ProfileEntry.COLUMN_TEAM_NUMBER + " INTEGER," +
                     ProfileEntry.COLUMN_ROBOT_TYPE  + " TEXT," +
                     " )";
 
