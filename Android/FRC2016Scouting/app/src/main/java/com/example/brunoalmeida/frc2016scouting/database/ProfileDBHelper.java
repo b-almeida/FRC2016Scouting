@@ -28,7 +28,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                     ProfileEntry.COLUMN_ROBOT_TYPE  + " TEXT," +
                     " )";
 
-    private static final String SQL_DELETE_PROFILE_TABLE =
+    private static final String SQL_DROP_PROFILE_TABLE =
             "DROP TABLE IF EXISTS " + ProfileEntry.TABLE_NAME;
 
 
@@ -38,11 +38,13 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_PROFILE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DROP_PROFILE_TABLE);
+        onCreate(db);
     }
 
 }
