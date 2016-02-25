@@ -27,9 +27,6 @@ public class NewProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "NewProfileActivity";
 
-    public static final String INTENT_TEAM_NUMBER = "teamNumber";
-    public static final String INTENT_ROBOT_TYPE = "robotType";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +68,7 @@ public class NewProfileActivity extends AppCompatActivity {
 
         // Switch to NewProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(INTENT_TEAM_NUMBER, teamNumber);
+        intent.putExtra(ProfileActivity.INTENT_TEAM_NUMBER, teamNumber);
         //intent.putExtra(INTENT_ROBOT_TYPE, robotType);
         startActivity(intent);
 

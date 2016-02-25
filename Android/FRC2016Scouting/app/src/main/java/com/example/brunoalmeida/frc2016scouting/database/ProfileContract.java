@@ -17,17 +17,17 @@ public abstract class ProfileContract {
     public static abstract class MatchEntry implements BaseColumns {
         public static final String TABLE_NAME = "matches";
 
-        public static final String COLUMN_TEAM_NUMBER = "teamNumber";
-        public static final String COLUMN_ALLY_1_NUMBER = "ally1Number";
-        public static final String COLUMN_ALLY_2_NUMBER = "ally2Number";
+        public static final String COLUMN_TEAM_NUMBER       = "teamNumber";
+        public static final String COLUMN_ALLY_1_NUMBER     = "ally1Number";
+        public static final String COLUMN_ALLY_2_NUMBER     = "ally2Number";
         public static final String COLUMN_OPPONENT_1_NUMBER = "opponent1Number";
         public static final String COLUMN_OPPONENT_2_NUMBER = "opponent2Number";
         public static final String COLUMN_OPPONENT_3_NUMBER = "opponent3Number";
 
-        public static final String COLUMN_LOW_SHOOTING_SUCCESSES = "lowShootingSuccesses";
-        public static final String COLUMN_LOW_SHOOTING_ATTEMPTS = "lowShootingAttempts";
-        public static final String COLUMN_HIGH_SHOOTING_SUCCESSES = "highShootingSuccesses";
-        public static final String COLUMN_HIGH_SHOOTING_ATTEMPTS = "highShootingAttempts";
+        public static final String COLUMN_LOW_SHOOTING_SUCCESSES    = "lowShootingSuccesses";
+        public static final String COLUMN_LOW_SHOOTING_ATTEMPTS     = "lowShootingAttempts";
+        public static final String COLUMN_HIGH_SHOOTING_SUCCESSES   = "highShootingSuccesses";
+        public static final String COLUMN_HIGH_SHOOTING_ATTEMPTS    = "highShootingAttempts";
 
         public static final String COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES      = "defenseLowBarBreachSuccesses";
         public static final String COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS       = "defenseLowBarBreachAttempts";

@@ -22,6 +22,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ProfileActivity";
 
+    public static final String INTENT_TEAM_NUMBER = "teamNumber";
+    public static final String INTENT_ROBOT_TYPE = "robotType";
+
     private int teamNumber = 0;
     private String robotType = "";
 
@@ -35,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get the team number from the intent
-        teamNumber = getIntent().getIntExtra(NewProfileActivity.INTENT_TEAM_NUMBER, 0);
+        teamNumber = getIntent().getIntExtra(INTENT_TEAM_NUMBER, 0);
         Log.v(LOG_TAG, "teamNumber received from intent: " + teamNumber);
 
         // Read the robot type from the database
