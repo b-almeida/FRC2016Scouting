@@ -2,6 +2,8 @@ package com.example.brunoalmeida.frc2016scouting;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.brunoalmeida.frc2016scouting.database.ProfileContract;
+import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
+        ArrayList<Profile> profiles = readProfilesFromDB();
+
+        String log = "onCreate(): Profiles read from database:\n";
+        for (Profile profile : profiles) {
+            log += "teamNumber = " + profile.getTeamNumber() +
+                    ", robotFunction = " + profile.getRobotFunction() + "\n";
+
+        }
+        Log.v(LOG_TAG, log);
     }
 
     @Override
@@ -65,6 +83,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting NewProfileActivity");
+    }
+
+    private ArrayList<Profile> readProfilesFromDB() {
+        ArrayList<Profile> profiles = new ArrayList<>();
+
+        ProfileDBHelper profileDBHelper = new ProfileDBHelper(this);
+        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ProfileContract.ProfileEntry.TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            while (! cursor.isAfterLast()) {
+                int teamNumber = cursor.getInt(
+                        cursor.getColumnIndex(ProfileContract.ProfileEntry.COLUMN_TEAM_NUMBER));
+                String robotType = cursor.getString(
+                        cursor.getColumnIndex(ProfileContract.ProfileEntry.COLUMN_ROBOT_TYPE));
+
+                Log.v(LOG_TAG, "readProfilesFromDB(): teamNumber = " + teamNumber +
+                        ", robotFunction = " + robotType);
+
+                profiles.add(new Profile(teamNumber, robotType));
+                cursor.moveToNext();
+            }
+        }
+
+        return profiles;
+    }
+
+    private void displayProfileList(ArrayList<Profile> profiles) {
+
     }
 
 }
