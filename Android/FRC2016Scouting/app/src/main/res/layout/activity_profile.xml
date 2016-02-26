@@ -30,6 +30,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_input_add"
-        android:onClick="newMatchOnClick" />
+        android:onClick="newMatchOnClick"
+        android:tint="@color/colorFloatingActionButtonTint"
+        app:backgroundTint="@color/colorFloatingActionButtonBackgroundTint" />
 
 </android.support.design.widget.CoordinatorLayout>
