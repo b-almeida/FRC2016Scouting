@@ -29,19 +29,19 @@
                 android:text="@string/label_alliance_1" />
 
             <EditText
-                android:id="@+id/alliance_1_team_1"
+                android:id="@+id/team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/alliance_1_team_2"
+                android:id="@+id/ally_1_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/alliance_1_team_3"
+                android:id="@+id/ally_2_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -61,25 +61,24 @@
                 android:text="@string/label_alliance_2" />
 
             <EditText
-                android:id="@+id/alliance_2_team_1"
+                android:id="@+id/opponent_1_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/alliance_2_team_2"
+                android:id="@+id/opponent_2_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/alliance_2_team_3"
+                android:id="@+id/opponent_3_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 
