@@ -11,6 +11,10 @@ public class Fraction {
     private int numerator;
     private int denominator;
 
+    public Fraction() {
+        this(0, 0);
+    }
+
     public Fraction(int numerator, int denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
@@ -25,7 +29,11 @@ public class Fraction {
     }
 
     public int getPercent() {
-        return (numerator * 100) / denominator;
+        if (denominator == 0) {
+            return 0;
+        } else {
+            return (numerator * 100) / denominator;
+        }
     }
 
     @Override
