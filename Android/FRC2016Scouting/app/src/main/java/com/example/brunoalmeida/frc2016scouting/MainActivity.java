@@ -3,6 +3,7 @@ package com.example.brunoalmeida.frc2016scouting;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
@@ -48,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
         for (Profile profile : profiles) {
             log += "teamNumber = " + profile.getTeamNumber() +
                     ", robotFunction = " + profile.getRobotFunction() + "\n";
-
         }
         Log.v(LOG_TAG, log);
+
+        displayProfileList(profiles);
     }
 
     @Override
@@ -110,8 +117,36 @@ public class MainActivity extends AppCompatActivity {
         return profiles;
     }
 
-    private void displayProfileList(ArrayList<Profile> profiles) {
+    private void displayProfileList(final ArrayList<Profile> profiles) {
+        // Create a string for each profile
+        ArrayList<String> profileStrings = new ArrayList<>();
+        for (Profile profile : profiles) {
+            profileStrings.add(String.valueOf(profile.getTeamNumber()));
+        }
 
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,                                   // The current context (this activity)
+                android.R.layout.simple_list_item_1,    // The layout to populate.
+                profileStrings);
+
+        ListView profileList = (ListView) findViewById(R.id.profile_list);
+        profileList.setAdapter(arrayAdapter);
+        profileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(LOG_TAG, "profile_list: In onItemClick()");
+                Log.v(LOG_TAG, "view = " + view + ", position = " + position + ", id = " + id);
+                startProfileActivity(profiles.get(position).getTeamNumber());
+            }
+        });
+    }
+
+    private void startProfileActivity(int teamNumber) {
+        // Switch to ProfileActivity
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.INTENT_TEAM_NUMBER, teamNumber);
+        //intent.putExtra(INTENT_ROBOT_TYPE, robotType);
+        startActivity(intent);
     }
 
 }
