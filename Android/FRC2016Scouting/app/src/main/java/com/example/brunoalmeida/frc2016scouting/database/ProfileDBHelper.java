@@ -14,7 +14,7 @@ import com.example.brunoalmeida.frc2016scouting.Profile;
  */
 public class ProfileDBHelper extends SQLiteOpenHelper {
 
-    static final String DATABASE_NAME = "Profiles.db";
+    public static final String DATABASE_NAME = "Profiles.db";
     private static final int DATABASE_VERSION = 1;
 
 
@@ -74,11 +74,13 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PROFILE_TABLE);
+        db.execSQL(SQL_CREATE_MATCH_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DROP_PROFILE_TABLE);
+        db.execSQL(SQL_DROP_MATCH_TABLE);
         onCreate(db);
     }
 

@@ -78,7 +78,6 @@ public class NewMatchActivity extends AppCompatActivity {
         // Write the data to the database
         writeMatchToDB(match);
 
-
         // Switch to MatchActivity
         Intent intent = new Intent(this, MatchActivity.class);
         startActivity(intent);
@@ -122,7 +121,7 @@ public class NewMatchActivity extends AppCompatActivity {
                 null,
                 values);
 
-        Log.v(LOG_TAG, "writeProfileToDB(): newRowID = " + newRowID);
+        Log.v(LOG_TAG, "writeMatchToDB(): newRowID = " + newRowID);
     }
 
 }

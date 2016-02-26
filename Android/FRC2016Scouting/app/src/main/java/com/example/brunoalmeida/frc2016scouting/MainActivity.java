@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
+        Log.v(LOG_TAG, "onCreate(): Database deleted");
+
         ArrayList<Profile> profiles = readProfilesFromDB();
 
         String log = "onCreate(): Profiles read from database:\n";
