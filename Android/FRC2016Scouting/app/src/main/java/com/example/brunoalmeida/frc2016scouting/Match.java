@@ -24,4 +24,27 @@ public class Match {
     private Fraction defenseCategoryCBreachSuccess;
     private Fraction defenseCategoryDBreachSuccess;
 
+    public Match(int teamNumber,
+                 int ally1TeamNumber,
+                 int ally2TeamNumber,
+                 int opponent1TeamNumber,
+                 int opponent2TeamNumber,
+                 int opponent3TeamNumber) {
+        this.teamNumber = teamNumber;
+        this.ally1TeamNumber = ally1TeamNumber;
+        this.ally2TeamNumber = ally2TeamNumber;
+        this.opponent1TeamNumber = opponent1TeamNumber;
+        this.opponent2TeamNumber = opponent2TeamNumber;
+        this.opponent3TeamNumber = opponent3TeamNumber;
+
+        this.lowShootingSuccess = new Fraction();
+        this.highShootingSuccess = new Fraction();
+
+        this.defenseLowBarBreachSuccess = new Fraction();
+        this.defenseCategoryABreachSuccess = new Fraction();
+        this.defenseCategoryBBreachSuccess = new Fraction();
+        this.defenseCategoryCBreachSuccess = new Fraction();
+        this.defenseCategoryDBreachSuccess = new Fraction();
+    }
+
 }
