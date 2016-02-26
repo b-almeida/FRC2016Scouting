@@ -24,6 +24,7 @@ public class Match {
     private Fraction defenseCategoryCBreachSuccess;
     private Fraction defenseCategoryDBreachSuccess;
 
+
     public Match(int teamNumber,
                  int ally1TeamNumber,
                  int ally2TeamNumber,
@@ -45,6 +46,58 @@ public class Match {
         this.defenseCategoryBBreachSuccess = new Fraction();
         this.defenseCategoryCBreachSuccess = new Fraction();
         this.defenseCategoryDBreachSuccess = new Fraction();
+    }
+
+    public int getTeamNumber() {
+        return teamNumber;
+    }
+
+    public int getAlly1TeamNumber() {
+        return ally1TeamNumber;
+    }
+
+    public int getAlly2TeamNumber() {
+        return ally2TeamNumber;
+    }
+
+    public int getOpponent1TeamNumber() {
+        return opponent1TeamNumber;
+    }
+
+    public int getOpponent2TeamNumber() {
+        return opponent2TeamNumber;
+    }
+
+    public int getOpponent3TeamNumber() {
+        return opponent3TeamNumber;
+    }
+
+    public Fraction getLowShootingSuccess() {
+        return lowShootingSuccess;
+    }
+
+    public Fraction getHighShootingSuccess() {
+        return highShootingSuccess;
+    }
+
+    public Fraction getDefenseLowBarBreachSuccess() {
+        return defenseLowBarBreachSuccess;
+    }
+
+    public Fraction getDefenseCategoryABreachSuccess() {
+        return defenseCategoryABreachSuccess;
+    }
+
+    public Fraction getDefenseCategoryBBreachSuccess() {
+        return defenseCategoryBBreachSuccess;
+    }
+
+    public Fraction getDefenseCategoryCBreachSuccess() {
+        return defenseCategoryCBreachSuccess;
+    }
+
+    public Fraction getDefenseCategoryDBreachSuccess() {
+        return defenseCategoryDBreachSuccess;
     }
 
 }
