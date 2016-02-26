@@ -17,12 +17,12 @@ public abstract class ProfileContract {
     public static abstract class MatchEntry implements BaseColumns {
         public static final String TABLE_NAME = "matches";
 
-        public static final String COLUMN_TEAM_NUMBER       = "teamNumber";
-        public static final String COLUMN_ALLY_1_NUMBER     = "ally1Number";
-        public static final String COLUMN_ALLY_2_NUMBER     = "ally2Number";
-        public static final String COLUMN_OPPONENT_1_NUMBER = "opponent1Number";
-        public static final String COLUMN_OPPONENT_2_NUMBER = "opponent2Number";
-        public static final String COLUMN_OPPONENT_3_NUMBER = "opponent3Number";
+        public static final String COLUMN_TEAM_NUMBER               = "teamNumber";
+        public static final String COLUMN_ALLY_1_TEAM_NUMBER        = "ally1TeamNumber";
+        public static final String COLUMN_ALLY_2_TEAM_NUMBER        = "ally2TeamNumber";
+        public static final String COLUMN_OPPONENT_1_TEAM_NUMBER    = "opponent1TeamNumber";
+        public static final String COLUMN_OPPONENT_2_TEAM_NUMBER    = "opponent2TeamNumber";
+        public static final String COLUMN_OPPONENT_3_TEAM_NUMBER    = "opponent3TeamNumber";
 
         public static final String COLUMN_LOW_SHOOTING_SUCCESSES    = "lowShootingSuccesses";
         public static final String COLUMN_LOW_SHOOTING_ATTEMPTS     = "lowShootingAttempts";
