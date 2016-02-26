@@ -14,7 +14,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract;
+import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ProfileEntry;
+import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.MatchEntry;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
+
+import java.util.regex.Matcher;
 
 public class NewMatchActivity extends AppCompatActivity {
 
@@ -89,8 +93,28 @@ public class NewMatchActivity extends AppCompatActivity {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        //values.put(ProfileContract.ProfileEntry.COLUMN_TEAM_NUMBER, teamNumber);
-        //values.put(ProfileContract.ProfileEntry.COLUMN_ROBOT_TYPE, robotType);
+        values.put(MatchEntry.COLUMN_TEAM_NUMBER, match.getTeamNumber());
+        values.put(MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER, match.getAlly1TeamNumber());
+        values.put(MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER, match.getAlly2TeamNumber());
+        values.put(MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER, match.getOpponent1TeamNumber());
+        values.put(MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER, match.getOpponent2TeamNumber());
+        values.put(MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER, match.getOpponent3TeamNumber());
+
+        values.put(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES, match.getLowShootingSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS, match.getLowShootingSuccess().getDenominator());
+        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES, match.getHighShootingSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS, match.getHighShootingSuccess().getDenominator());
+
+        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES, match.getDefenseLowBarBreachSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS, match.getDefenseLowBarBreachSuccess().getDenominator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES, match.getDefenseCategoryABreachSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS, match.getDefenseCategoryABreachSuccess().getDenominator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES, match.getDefenseCategoryBBreachSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS, match.getDefenseCategoryBBreachSuccess().getDenominator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES, match.getDefenseCategoryCBreachSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS, match.getDefenseCategoryCBreachSuccess().getDenominator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES, match.getDefenseCategoryDBreachSuccess().getNumerator());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS, match.getDefenseCategoryDBreachSuccess().getDenominator());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowID = database.insert(
