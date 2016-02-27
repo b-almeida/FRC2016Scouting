@@ -16,12 +16,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String LOG_TAG = "ProfileActivity";
 
     public static final String INTENT_PROFILE_ID = "profileID";
-    public static final String INTENT_TEAM_NUMBER = "teamNumber";
-    public static final String INTENT_ROBOT_TYPE = "robotType";
 
     private Profile profile;
-    private int teamNumber = 0;
-    private String robotType = "";
 
 
     @Override
@@ -45,6 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,8 +51,6 @@ public class ProfileActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void newMatchOnClick(View view) {

@@ -25,18 +25,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-/*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
         Log.v(LOG_TAG, "onCreate(): Database deleted");
@@ -51,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
         Log.v(LOG_TAG, log);
 
         displayProfileList(profiles);
+
+        /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });*/
     }
 
     @Override
@@ -113,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         // Switch to ProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
-        //intent.putExtra(INTENT_ROBOT_TYPE, robotType);
         startActivity(intent);
     }
 

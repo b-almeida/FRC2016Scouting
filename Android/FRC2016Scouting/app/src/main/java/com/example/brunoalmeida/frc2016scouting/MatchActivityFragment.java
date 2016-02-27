@@ -19,4 +19,5 @@ public class MatchActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_match, container, false);
     }
+
 }

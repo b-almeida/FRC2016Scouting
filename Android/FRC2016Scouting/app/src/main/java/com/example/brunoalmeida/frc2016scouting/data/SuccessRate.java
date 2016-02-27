@@ -11,6 +11,7 @@ public class SuccessRate {
     private int successes;
     private int attempts;
 
+
     public SuccessRate() {
         this(0, 0);
     }

@@ -18,6 +18,7 @@ public class NewMatchActivityFragment extends Fragment {
 
     private static final String LOG_TAG = "NewMatchAFragment";
 
+
     public NewMatchActivityFragment() {
     }
 

@@ -12,6 +12,7 @@ public class MatchActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MatchActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +20,8 @@ public class MatchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_match);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -28,8 +31,6 @@ public class MatchActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

@@ -25,6 +25,8 @@ public class NewProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,8 +35,6 @@ public class NewProfileActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void createProfileOnClick(View view) {
@@ -58,7 +58,6 @@ public class NewProfileActivity extends AppCompatActivity {
         // Switch to NewProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
-        //intent.putExtra(INTENT_ROBOT_TYPE, robotType);
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting ProfileActivity");
