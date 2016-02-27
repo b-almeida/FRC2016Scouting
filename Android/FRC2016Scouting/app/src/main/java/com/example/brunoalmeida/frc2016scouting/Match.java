@@ -15,14 +15,14 @@ public class Match {
     private int opponent2TeamNumber;
     private int opponent3TeamNumber;
 
-    private Fraction lowShootingSuccess;
-    private Fraction highShootingSuccess;
+    private SuccessRate lowShootingSuccess;
+    private SuccessRate highShootingSuccess;
 
-    private Fraction defenseLowBarBreachSuccess;
-    private Fraction defenseCategoryABreachSuccess;
-    private Fraction defenseCategoryBBreachSuccess;
-    private Fraction defenseCategoryCBreachSuccess;
-    private Fraction defenseCategoryDBreachSuccess;
+    private SuccessRate defenseLowBarBreachSuccess;
+    private SuccessRate defenseCategoryABreachSuccess;
+    private SuccessRate defenseCategoryBBreachSuccess;
+    private SuccessRate defenseCategoryCBreachSuccess;
+    private SuccessRate defenseCategoryDBreachSuccess;
 
 
     public Match(int teamNumber,
@@ -38,14 +38,14 @@ public class Match {
         this.opponent2TeamNumber = opponent2TeamNumber;
         this.opponent3TeamNumber = opponent3TeamNumber;
 
-        this.lowShootingSuccess = new Fraction();
-        this.highShootingSuccess = new Fraction();
+        this.lowShootingSuccess = new SuccessRate();
+        this.highShootingSuccess = new SuccessRate();
 
-        this.defenseLowBarBreachSuccess = new Fraction();
-        this.defenseCategoryABreachSuccess = new Fraction();
-        this.defenseCategoryBBreachSuccess = new Fraction();
-        this.defenseCategoryCBreachSuccess = new Fraction();
-        this.defenseCategoryDBreachSuccess = new Fraction();
+        this.defenseLowBarBreachSuccess = new SuccessRate();
+        this.defenseCategoryABreachSuccess = new SuccessRate();
+        this.defenseCategoryBBreachSuccess = new SuccessRate();
+        this.defenseCategoryCBreachSuccess = new SuccessRate();
+        this.defenseCategoryDBreachSuccess = new SuccessRate();
     }
 
     public int getTeamNumber() {
@@ -72,31 +72,31 @@ public class Match {
         return opponent3TeamNumber;
     }
 
-    public Fraction getLowShootingSuccess() {
+    public SuccessRate getLowShootingSuccess() {
         return lowShootingSuccess;
     }
 
-    public Fraction getHighShootingSuccess() {
+    public SuccessRate getHighShootingSuccess() {
         return highShootingSuccess;
     }
 
-    public Fraction getDefenseLowBarBreachSuccess() {
+    public SuccessRate getDefenseLowBarBreachSuccess() {
         return defenseLowBarBreachSuccess;
     }
 
-    public Fraction getDefenseCategoryABreachSuccess() {
+    public SuccessRate getDefenseCategoryABreachSuccess() {
         return defenseCategoryABreachSuccess;
     }
 
-    public Fraction getDefenseCategoryBBreachSuccess() {
+    public SuccessRate getDefenseCategoryBBreachSuccess() {
         return defenseCategoryBBreachSuccess;
     }
 
-    public Fraction getDefenseCategoryCBreachSuccess() {
+    public SuccessRate getDefenseCategoryCBreachSuccess() {
         return defenseCategoryCBreachSuccess;
     }
 
-    public Fraction getDefenseCategoryDBreachSuccess() {
+    public SuccessRate getDefenseCategoryDBreachSuccess() {
         return defenseCategoryDBreachSuccess;
     }
 

@@ -6,16 +6,16 @@ package com.example.brunoalmeida.frc2016scouting;
  *
  * Created by Bruno on 2016-02-25.
  */
-public class Fraction {
+public class SuccessRate {
 
     private int numerator;
     private int denominator;
 
-    public Fraction() {
+    public SuccessRate() {
         this(0, 0);
     }
 
-    public Fraction(int numerator, int denominator) {
+    public SuccessRate(int numerator, int denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
     }
