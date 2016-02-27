@@ -67,13 +67,14 @@ public class NewMatchActivity extends AppCompatActivity {
                 opponent2TeamNumber,
                 opponent3TeamNumber);
 
-        ProfileDBHelper.writeMatch(this, match);
+        long matchID = ProfileDBHelper.writeMatch(this, match);
 
-        startMatchActivity();
+        startMatchActivity(matchID);
     }
 
-    private void startMatchActivity() {
+    private void startMatchActivity(long matchID) {
         Intent intent = new Intent(this, MatchActivity.class);
+        intent.putExtra(MatchActivity.INTENT_MATCH_ID, matchID);
         startActivity(intent);
         Log.v(LOG_TAG, "Starting MatchActivity");
     }

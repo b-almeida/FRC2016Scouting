@@ -30,18 +30,19 @@ public class MatchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-/*        // Get the match ID  from the intent
+        // Get the match ID  from the intent
         long matchID = getIntent().getLongExtra(INTENT_MATCH_ID, -1);
         Log.v(LOG_TAG, "matchID received from intent: " + matchID);
 
         // Read the robot type from the database
         match = ProfileDBHelper.readMatch(this, matchID);
+        Log.v(LOG_TAG, "match received from intent:\n" + match);
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Team " + profile.getTeamNumber());
+        actionBar.setTitle("Match - Team " + match.getTeamNumber());
         actionBar.setDisplayShowTitleEnabled(true);
-        Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());*/
+        Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
