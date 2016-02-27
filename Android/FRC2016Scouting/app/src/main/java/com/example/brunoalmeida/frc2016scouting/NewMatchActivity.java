@@ -1,24 +1,14 @@
 package com.example.brunoalmeida.frc2016scouting;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
 
-import com.example.brunoalmeida.frc2016scouting.database.ProfileContract;
-import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ProfileEntry;
-import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.MatchEntry;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
-
-import java.util.regex.Matcher;
 
 public class NewMatchActivity extends AppCompatActivity {
 
