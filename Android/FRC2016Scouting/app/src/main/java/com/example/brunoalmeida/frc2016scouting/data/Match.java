@@ -8,6 +8,8 @@ package com.example.brunoalmeida.frc2016scouting.data;
  */
 public class Match {
 
+    private long id;
+
     private int teamNumber;
     private int ally1TeamNumber;
     private int ally2TeamNumber;
@@ -25,12 +27,14 @@ public class Match {
     private SuccessRate defenseCategoryDBreachSuccess;
 
 
-    public Match(int teamNumber,
+    public Match(long id,
+                 int teamNumber,
                  int ally1TeamNumber,
                  int ally2TeamNumber,
                  int opponent1TeamNumber,
                  int opponent2TeamNumber,
                  int opponent3TeamNumber) {
+        this.id = id;
         this.teamNumber = teamNumber;
         this.ally1TeamNumber = ally1TeamNumber;
         this.ally2TeamNumber = ally2TeamNumber;
@@ -46,6 +50,26 @@ public class Match {
         this.defenseCategoryBBreachSuccess = new SuccessRate();
         this.defenseCategoryCBreachSuccess = new SuccessRate();
         this.defenseCategoryDBreachSuccess = new SuccessRate();
+    }
+
+    public Match(int teamNumber,
+                 int ally1TeamNumber,
+                 int ally2TeamNumber,
+                 int opponent1TeamNumber,
+                 int opponent2TeamNumber,
+                 int opponent3TeamNumber) {
+        this(
+                -1,
+                teamNumber,
+                ally1TeamNumber,
+                ally2TeamNumber,
+                opponent1TeamNumber,
+                opponent2TeamNumber,
+                opponent3TeamNumber);
+    }
+
+    public long getId() {
+        return id;
     }
 
     public int getTeamNumber() {

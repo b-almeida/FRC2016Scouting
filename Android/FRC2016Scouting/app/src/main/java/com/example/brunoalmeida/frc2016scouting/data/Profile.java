@@ -7,13 +7,24 @@ package com.example.brunoalmeida.frc2016scouting.data;
  */
 public class Profile {
 
+    private long id;
+
     private int teamNumber;
     private String robotFunction;
 
 
-    public Profile(int teamNumber, String robotFunction) {
+    public Profile(long id, int teamNumber, String robotFunction) {
+        this.id = id;
         this.teamNumber = teamNumber;
         this.robotFunction = robotFunction;
+    }
+
+    public Profile(int teamNumber, String robotFunction) {
+        this(-1, teamNumber, robotFunction);
+    }
+
+    public long getId() {
+        return id;
     }
 
     public int getTeamNumber() {
