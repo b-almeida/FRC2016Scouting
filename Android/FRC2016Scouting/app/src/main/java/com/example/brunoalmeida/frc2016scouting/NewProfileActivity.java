@@ -52,11 +52,11 @@ public class NewProfileActivity extends AppCompatActivity {
                 .getSelectedItem().toString();
 
         // Write the data to the database
-        ProfileDBHelper.writeProfileToDB(this, teamNumber, robotType);
+        long profileID = ProfileDBHelper.writeProfileToDB(this, teamNumber, robotType);
 
         // Switch to NewProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(ProfileActivity.INTENT_TEAM_NUMBER, teamNumber);
+        intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
         //intent.putExtra(INTENT_ROBOT_TYPE, robotType);
         startActivity(intent);
 

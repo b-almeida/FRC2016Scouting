@@ -8,15 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ProfileActivity";
 
+    public static final String INTENT_PROFILE_ID = "profileID";
     public static final String INTENT_TEAM_NUMBER = "teamNumber";
     public static final String INTENT_ROBOT_TYPE = "robotType";
 
+    private Profile profile;
     private int teamNumber = 0;
     private String robotType = "";
 
@@ -30,17 +33,17 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get the team number from the intent
-        teamNumber = getIntent().getIntExtra(INTENT_TEAM_NUMBER, 0);
-        Log.v(LOG_TAG, "teamNumber received from intent: " + teamNumber);
+        long profileID = getIntent().getLongExtra(INTENT_PROFILE_ID, -1);
+        Log.v(LOG_TAG, "profileID received from intent: " + profileID);
 
         // Read the robot type from the database
-        robotType = ProfileDBHelper.readRobotTypeFromDB(this, teamNumber);
+        profile = ProfileDBHelper.readProfileFromDB(this, profileID);
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Team " + teamNumber);
+        actionBar.setTitle("Team " + profile.getTeamNumber());
         actionBar.setDisplayShowTitleEnabled(true);
-        Log.v(LOG_TAG, toolbar.getTitle().toString());
+        Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

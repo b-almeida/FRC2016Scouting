@@ -104,15 +104,15 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v(LOG_TAG, "profile_list: In onItemClick()");
                 Log.v(LOG_TAG, "view = " + view + ", position = " + position + ", id = " + id);
-                startProfileActivity(profiles.get(position).getTeamNumber());
+                startProfileActivity(profiles.get(position).getId());
             }
         });
     }
 
-    private void startProfileActivity(int teamNumber) {
+    private void startProfileActivity(long profileID) {
         // Switch to ProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(ProfileActivity.INTENT_TEAM_NUMBER, teamNumber);
+        intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
         //intent.putExtra(INTENT_ROBOT_TYPE, robotType);
         startActivity(intent);
     }
