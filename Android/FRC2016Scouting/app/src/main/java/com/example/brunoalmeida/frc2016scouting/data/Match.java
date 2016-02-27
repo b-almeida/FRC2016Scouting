@@ -33,7 +33,16 @@ public class Match {
                  int ally2TeamNumber,
                  int opponent1TeamNumber,
                  int opponent2TeamNumber,
-                 int opponent3TeamNumber) {
+                 int opponent3TeamNumber,
+
+                 SuccessRate lowShootingSuccessRate,
+                 SuccessRate highShootingSuccessRate,
+
+                 SuccessRate defenseLowBarBreachSuccessRate,
+                 SuccessRate defenseCategoryABreachSuccessRate,
+                 SuccessRate defenseCategoryBBreachSuccessRate,
+                 SuccessRate defenseCategoryCBreachSuccessRate,
+                 SuccessRate defenseCategoryDBreachSuccessRate) {
         this.id = id;
         this.teamNumber = teamNumber;
         this.ally1TeamNumber = ally1TeamNumber;
@@ -42,14 +51,41 @@ public class Match {
         this.opponent2TeamNumber = opponent2TeamNumber;
         this.opponent3TeamNumber = opponent3TeamNumber;
 
-        this.lowShootingSuccessRate = new SuccessRate();
-        this.highShootingSuccessRate = new SuccessRate();
+        this.lowShootingSuccessRate = lowShootingSuccessRate;
+        this.highShootingSuccessRate = highShootingSuccessRate;
 
-        this.defenseLowBarBreachSuccessRate = new SuccessRate();
-        this.defenseCategoryABreachSuccessRate = new SuccessRate();
-        this.defenseCategoryBBreachSuccessRate = new SuccessRate();
-        this.defenseCategoryCBreachSuccessRate = new SuccessRate();
-        this.defenseCategoryDBreachSuccessRate = new SuccessRate();
+        this.defenseLowBarBreachSuccessRate = defenseLowBarBreachSuccessRate;
+        this.defenseCategoryABreachSuccessRate = defenseCategoryABreachSuccessRate;
+        this.defenseCategoryBBreachSuccessRate = defenseCategoryBBreachSuccessRate;
+        this.defenseCategoryCBreachSuccessRate = defenseCategoryCBreachSuccessRate;
+        this.defenseCategoryDBreachSuccessRate = defenseCategoryDBreachSuccessRate;
+    }
+
+    public Match(long id,
+                 int teamNumber,
+                 int ally1TeamNumber,
+                 int ally2TeamNumber,
+                 int opponent1TeamNumber,
+                 int opponent2TeamNumber,
+                 int opponent3TeamNumber) {
+        this(
+                id,
+                teamNumber,
+                ally1TeamNumber,
+                ally2TeamNumber,
+                opponent1TeamNumber,
+                opponent2TeamNumber,
+                opponent3TeamNumber,
+
+                new SuccessRate(),
+                new SuccessRate(),
+
+                new SuccessRate(),
+                new SuccessRate(),
+                new SuccessRate(),
+                new SuccessRate(),
+                new SuccessRate()
+        );
     }
 
     public Match(int teamNumber,
