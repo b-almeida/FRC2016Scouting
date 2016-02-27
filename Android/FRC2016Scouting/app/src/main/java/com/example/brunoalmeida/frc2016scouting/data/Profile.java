@@ -23,6 +23,18 @@ public class Profile {
         this(-1, teamNumber, robotFunction);
     }
 
+    @Override
+    public String toString() {
+        String str = "";
+
+        str += "id = " + id;
+
+        str += "\n" + "teamNumber = " + teamNumber;
+        str += "\n" + "robotFunction = " + robotFunction;
+
+        return str;
+    }
+
     public long getId() {
         return id;
     }

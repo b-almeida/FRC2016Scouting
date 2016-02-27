@@ -42,7 +42,7 @@ public class SuccessRate {
         return successes + "/" + attempts;
     }
 
-    public String toPercentRate() {
+    public String toPercentRateString() {
         return getPercentRate() + "%";
     }
 

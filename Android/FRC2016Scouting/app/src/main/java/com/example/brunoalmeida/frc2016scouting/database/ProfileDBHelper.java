@@ -115,12 +115,11 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 String robotFunction = cursor.getString(
                         cursor.getColumnIndex(ProfileEntry.COLUMN_ROBOT_FUNCTION));
 
-                Log.v(LOG_TAG, "readProfilesFromDB():" +
-                        " id = " + id +
-                        ", teamNumber = " + teamNumber +
-                        ", robotFunction = " + robotFunction);
+                Profile profile = new Profile(id, teamNumber, robotFunction);
 
-                profiles.add(new Profile(id, teamNumber, robotFunction));
+                Log.v(LOG_TAG, "readProfilesFromDB():" + "\n" + profile);
+
+                profiles.add(profile);
                 cursor.moveToNext();
             }
         }
@@ -167,10 +166,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         Profile profile = new Profile(id, teamNumber, robotFunction);
 
-        Log.v(LOG_TAG, "readProfileFromDB():" +
-                " id = " + id +
-                ", teamNumber = " + teamNumber +
-                ", robotFunction = " + robotFunction);
+        Log.v(LOG_TAG, "readProfileFromDB():" + "\n" + profile);
 
         return profile;
     }
@@ -213,21 +209,21 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         values.put(MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER, match.getOpponent2TeamNumber());
         values.put(MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER, match.getOpponent3TeamNumber());
 
-        values.put(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES, match.getLowShootingSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS, match.getLowShootingSuccess().getAttempts());
-        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES, match.getHighShootingSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS, match.getHighShootingSuccess().getAttempts());
+        values.put(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES, match.getLowShootingSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS, match.getLowShootingSuccessRate().getAttempts());
+        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES, match.getHighShootingSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS, match.getHighShootingSuccessRate().getAttempts());
 
-        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES, match.getDefenseLowBarBreachSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS, match.getDefenseLowBarBreachSuccess().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES, match.getDefenseCategoryABreachSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS, match.getDefenseCategoryABreachSuccess().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES, match.getDefenseCategoryBBreachSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS, match.getDefenseCategoryBBreachSuccess().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES, match.getDefenseCategoryCBreachSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS, match.getDefenseCategoryCBreachSuccess().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES, match.getDefenseCategoryDBreachSuccess().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS, match.getDefenseCategoryDBreachSuccess().getAttempts());
+        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES, match.getDefenseLowBarBreachSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS, match.getDefenseLowBarBreachSuccessRate().getAttempts());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES, match.getDefenseCategoryABreachSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS, match.getDefenseCategoryABreachSuccessRate().getAttempts());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES, match.getDefenseCategoryBBreachSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS, match.getDefenseCategoryBBreachSuccessRate().getAttempts());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES, match.getDefenseCategoryCBreachSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS, match.getDefenseCategoryCBreachSuccessRate().getAttempts());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES, match.getDefenseCategoryDBreachSuccessRate().getSuccesses());
+        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS, match.getDefenseCategoryDBreachSuccessRate().getAttempts());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowID = database.insert(

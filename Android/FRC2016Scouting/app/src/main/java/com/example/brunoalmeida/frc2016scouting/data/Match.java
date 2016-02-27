@@ -17,14 +17,14 @@ public class Match {
     private int opponent2TeamNumber;
     private int opponent3TeamNumber;
 
-    private SuccessRate lowShootingSuccess;
-    private SuccessRate highShootingSuccess;
+    private SuccessRate lowShootingSuccessRate;
+    private SuccessRate highShootingSuccessRate;
 
-    private SuccessRate defenseLowBarBreachSuccess;
-    private SuccessRate defenseCategoryABreachSuccess;
-    private SuccessRate defenseCategoryBBreachSuccess;
-    private SuccessRate defenseCategoryCBreachSuccess;
-    private SuccessRate defenseCategoryDBreachSuccess;
+    private SuccessRate defenseLowBarBreachSuccessRate;
+    private SuccessRate defenseCategoryABreachSuccessRate;
+    private SuccessRate defenseCategoryBBreachSuccessRate;
+    private SuccessRate defenseCategoryCBreachSuccessRate;
+    private SuccessRate defenseCategoryDBreachSuccessRate;
 
 
     public Match(long id,
@@ -42,14 +42,14 @@ public class Match {
         this.opponent2TeamNumber = opponent2TeamNumber;
         this.opponent3TeamNumber = opponent3TeamNumber;
 
-        this.lowShootingSuccess = new SuccessRate();
-        this.highShootingSuccess = new SuccessRate();
+        this.lowShootingSuccessRate = new SuccessRate();
+        this.highShootingSuccessRate = new SuccessRate();
 
-        this.defenseLowBarBreachSuccess = new SuccessRate();
-        this.defenseCategoryABreachSuccess = new SuccessRate();
-        this.defenseCategoryBBreachSuccess = new SuccessRate();
-        this.defenseCategoryCBreachSuccess = new SuccessRate();
-        this.defenseCategoryDBreachSuccess = new SuccessRate();
+        this.defenseLowBarBreachSuccessRate = new SuccessRate();
+        this.defenseCategoryABreachSuccessRate = new SuccessRate();
+        this.defenseCategoryBBreachSuccessRate = new SuccessRate();
+        this.defenseCategoryCBreachSuccessRate = new SuccessRate();
+        this.defenseCategoryDBreachSuccessRate = new SuccessRate();
     }
 
     public Match(int teamNumber,
@@ -66,6 +66,31 @@ public class Match {
                 opponent1TeamNumber,
                 opponent2TeamNumber,
                 opponent3TeamNumber);
+    }
+
+    @Override
+    public String toString() {
+        String str = "";
+
+        str += "id = " + id;
+
+        str += "\n" + "teamNumber = " + teamNumber;
+        str += "\n" + "ally1TeamNumber = " + ally1TeamNumber;
+        str += "\n" + "ally2TeamNumber = " + ally2TeamNumber;
+        str += "\n" + "opponent1TeamNumber" + opponent1TeamNumber;
+        str += "\n" + "opponent2TeamNumber" + opponent2TeamNumber;
+        str += "\n" + "opponent3TeamNumber" + opponent3TeamNumber;
+
+        str += "\n" + "lowShootingSuccessRate" + lowShootingSuccessRate;
+        str += "\n" + "highShootingSuccessRate" + highShootingSuccessRate;
+
+        str += "\n" + "defenseLowBarBreachSuccessRate" + defenseLowBarBreachSuccessRate;
+        str += "\n" + "defenseCategoryABreachSuccessRate" + defenseCategoryABreachSuccessRate;
+        str += "\n" + "defenseCategoryBBreachSuccessRate" + defenseCategoryBBreachSuccessRate;
+        str += "\n" + "defenseCategoryCBreachSuccessRate" + defenseCategoryCBreachSuccessRate;
+        str += "\n" + "defenseCategoryDBreachSuccessRate" + defenseCategoryDBreachSuccessRate;
+
+        return str;
     }
 
     public long getId() {
@@ -96,32 +121,32 @@ public class Match {
         return opponent3TeamNumber;
     }
 
-    public SuccessRate getLowShootingSuccess() {
-        return lowShootingSuccess;
+    public SuccessRate getLowShootingSuccessRate() {
+        return lowShootingSuccessRate;
     }
 
-    public SuccessRate getHighShootingSuccess() {
-        return highShootingSuccess;
+    public SuccessRate getHighShootingSuccessRate() {
+        return highShootingSuccessRate;
     }
 
-    public SuccessRate getDefenseLowBarBreachSuccess() {
-        return defenseLowBarBreachSuccess;
+    public SuccessRate getDefenseLowBarBreachSuccessRate() {
+        return defenseLowBarBreachSuccessRate;
     }
 
-    public SuccessRate getDefenseCategoryABreachSuccess() {
-        return defenseCategoryABreachSuccess;
+    public SuccessRate getDefenseCategoryABreachSuccessRate() {
+        return defenseCategoryABreachSuccessRate;
     }
 
-    public SuccessRate getDefenseCategoryBBreachSuccess() {
-        return defenseCategoryBBreachSuccess;
+    public SuccessRate getDefenseCategoryBBreachSuccessRate() {
+        return defenseCategoryBBreachSuccessRate;
     }
 
-    public SuccessRate getDefenseCategoryCBreachSuccess() {
-        return defenseCategoryCBreachSuccess;
+    public SuccessRate getDefenseCategoryCBreachSuccessRate() {
+        return defenseCategoryCBreachSuccessRate;
     }
 
-    public SuccessRate getDefenseCategoryDBreachSuccess() {
-        return defenseCategoryDBreachSuccess;
+    public SuccessRate getDefenseCategoryDBreachSuccessRate() {
+        return defenseCategoryDBreachSuccessRate;
     }
 
 }
