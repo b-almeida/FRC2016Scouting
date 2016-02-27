@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.brunoalmeida.frc2016scouting.Match;
+import com.example.brunoalmeida.frc2016scouting.data.Match;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ProfileEntry;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.MatchEntry;
 
-import com.example.brunoalmeida.frc2016scouting.Profile;
+import com.example.brunoalmeida.frc2016scouting.data.Profile;
 
 import java.util.ArrayList;
 

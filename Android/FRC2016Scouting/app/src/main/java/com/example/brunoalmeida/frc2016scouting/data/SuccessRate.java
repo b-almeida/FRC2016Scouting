@@ -1,4 +1,4 @@
-package com.example.brunoalmeida.frc2016scouting;
+package com.example.brunoalmeida.frc2016scouting.data;
 
 /**
  * Represents a fraction, with a numerator and denominator.

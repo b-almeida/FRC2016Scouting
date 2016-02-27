@@ -1,4 +1,4 @@
-package com.example.brunoalmeida.frc2016scouting;
+package com.example.brunoalmeida.frc2016scouting.data;
 
 /**
  * The data for one robot's match.

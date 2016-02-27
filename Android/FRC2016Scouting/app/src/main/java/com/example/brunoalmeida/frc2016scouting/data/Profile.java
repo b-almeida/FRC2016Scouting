@@ -1,4 +1,4 @@
-package com.example.brunoalmeida.frc2016scouting;
+package com.example.brunoalmeida.frc2016scouting.data;
 
 /**
  * A profile of a single team and robot, with information on both the team and robot.
