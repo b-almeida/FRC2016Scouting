@@ -163,7 +163,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return robotType;
     }
 
-    public static void writeProfileToDB(Context context, int teamNumber, String robotType) {
+    public static long writeProfileToDB(Context context, int teamNumber, String robotType) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
         // Gets the data repository in write mode
@@ -181,9 +181,11 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 values);
 
         Log.v(LOG_TAG, "writeProfileToDB(): newRowID = " + newRowID);
+
+        return newRowID;
     }
 
-    public static void writeMatchToDB(Context context, Match match) {
+    public static long writeMatchToDB(Context context, Match match) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
         // Gets the data repository in write mode
@@ -221,6 +223,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 values);
 
         Log.v(LOG_TAG, "writeMatchToDB(): newRowID = " + newRowID);
+
+        return newRowID;
     }
 
 }
