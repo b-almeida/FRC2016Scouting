@@ -97,7 +97,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
 
 
-    // Read/Write Operations
+    // Profile Read/Write Operations
 
     public static ArrayList<Profile> readAllProfiles(Context context) {
         ArrayList<Profile> profiles = new ArrayList<>();
@@ -191,6 +191,120 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         Log.v(LOG_TAG, "writeProfileToDB(): newRowID = " + newRowID);
 
         return newRowID;
+    }
+
+
+
+    // Match Read/Write Operations
+
+    public static Match readMatch(Context context, long id) {
+        ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
+
+        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                MatchEntry.COLUMN_TEAM_NUMBER,
+                MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER,
+                MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER,
+                MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER,
+                MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER,
+                MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER,
+
+                MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES,
+                MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS,
+                MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES,
+                MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS,
+
+                MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES,
+                MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES,
+                MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS
+        };
+
+        String selection = MatchEntry.TABLE_NAME + "." + MatchEntry._ID + " = ? ";
+
+        String[] selectionArgs = new String[] {String.valueOf(id)};
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder = MatchEntry.COLUMN_TEAM_NUMBER + " DESC";
+
+        Cursor cursor = db.query(
+                MatchEntry.TABLE_NAME,      // The table to query
+                projection,                 // The columns to return
+                selection,                  // The columns for the WHERE clause
+                selectionArgs,              // The values for the WHERE clause
+                null,                       // don't group the rows
+                null,                       // don't filter by row groups
+                sortOrder                   // The sort order
+        );
+
+        cursor.moveToFirst();
+
+        int columnIndex;
+
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_TEAM_NUMBER);
+        int teamNumber = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER);
+        int ally1TeamNumber = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER);
+        int ally2TeamNumber = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER);
+        int opponent1TeamNumber = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER);
+        int opponent2TeamNumber = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER);
+        int opponent3TeamNumber = cursor.getInt(columnIndex);
+
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES);
+        int lowShootingSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS);
+        int lowShootingAttempts = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES);
+        int highShootingSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS);
+        int highShootingAttempts = cursor.getInt(columnIndex);
+
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES);
+        int lowBarBreachSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS);
+        int lowBarBreachAttempts = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES);
+        int categoryABreachSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS);
+        int categoryABreachAttempts = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES);
+        int categoryBBreachSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS);
+        int categoryBBreachAttempts = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES);
+        int categoryCBreachSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS);
+        int categoryCBreachAttempts = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES);
+        int categoryDBreachSuccesses = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS);
+        int categoryDBreachAttempts = cursor.getInt(columnIndex);
+
+        Match match  = new Match(
+                id,
+                teamNumber,
+                ally1TeamNumber,
+                ally2TeamNumber,
+                opponent1TeamNumber,
+                opponent2TeamNumber,
+                opponent3TeamNumber);
+
+        Log.v(LOG_TAG, "readMatch():" + "\n" + match);
+
+        return match;
     }
 
     public static long writeMatch(Context context, Match match) {
