@@ -113,18 +113,18 @@ public class Match {
         str += "\n" + "teamNumber = " + teamNumber;
         str += "\n" + "ally1TeamNumber = " + ally1TeamNumber;
         str += "\n" + "ally2TeamNumber = " + ally2TeamNumber;
-        str += "\n" + "opponent1TeamNumber" + opponent1TeamNumber;
-        str += "\n" + "opponent2TeamNumber" + opponent2TeamNumber;
-        str += "\n" + "opponent3TeamNumber" + opponent3TeamNumber;
+        str += "\n" + "opponent1TeamNumber = " + opponent1TeamNumber;
+        str += "\n" + "opponent2TeamNumber = " + opponent2TeamNumber;
+        str += "\n" + "opponent3TeamNumber = " + opponent3TeamNumber;
 
-        str += "\n" + "lowShootingSuccessRate" + lowShootingSuccessRate;
-        str += "\n" + "highShootingSuccessRate" + highShootingSuccessRate;
+        str += "\n" + "lowShootingSuccessRate = " + lowShootingSuccessRate;
+        str += "\n" + "highShootingSuccessRate = " + highShootingSuccessRate;
 
-        str += "\n" + "defenseLowBarBreachSuccessRate" + defenseLowBarBreachSuccessRate;
-        str += "\n" + "defenseCategoryABreachSuccessRate" + defenseCategoryABreachSuccessRate;
-        str += "\n" + "defenseCategoryBBreachSuccessRate" + defenseCategoryBBreachSuccessRate;
-        str += "\n" + "defenseCategoryCBreachSuccessRate" + defenseCategoryCBreachSuccessRate;
-        str += "\n" + "defenseCategoryDBreachSuccessRate" + defenseCategoryDBreachSuccessRate;
+        str += "\n" + "defenseLowBarBreachSuccessRate = " + defenseLowBarBreachSuccessRate;
+        str += "\n" + "defenseCategoryABreachSuccessRate = " + defenseCategoryABreachSuccessRate;
+        str += "\n" + "defenseCategoryBBreachSuccessRate = " + defenseCategoryBBreachSuccessRate;
+        str += "\n" + "defenseCategoryCBreachSuccessRate = " + defenseCategoryCBreachSuccessRate;
+        str += "\n" + "defenseCategoryDBreachSuccessRate = " + defenseCategoryDBreachSuccessRate;
 
         return str;
     }
