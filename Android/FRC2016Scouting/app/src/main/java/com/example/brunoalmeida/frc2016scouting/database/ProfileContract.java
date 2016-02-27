@@ -11,7 +11,7 @@ public abstract class ProfileContract {
         public static final String TABLE_NAME = "profiles";
 
         public static final String COLUMN_TEAM_NUMBER = "teamNumber";
-        public static final String COLUMN_ROBOT_TYPE = "robotType";
+        public static final String COLUMN_ROBOT_FUNCTION = "robotFunction";
     }
 
 

@@ -44,11 +44,11 @@
             android:text="@string/data_robot_type" />
 
         <Spinner
-            android:id="@+id/robot_type"
+            android:id="@+id/robot_function"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:entries="@array/data_robot_types" />
+            android:entries="@array/data_robot_functions" />
 
     </LinearLayout>
 

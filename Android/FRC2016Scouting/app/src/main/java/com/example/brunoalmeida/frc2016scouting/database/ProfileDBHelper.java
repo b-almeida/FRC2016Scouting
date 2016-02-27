@@ -34,7 +34,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                     " (" +
                     ProfileEntry._ID                + " INTEGER PRIMARY KEY," +
                     ProfileEntry.COLUMN_TEAM_NUMBER + " INTEGER," +
-                    ProfileEntry.COLUMN_ROBOT_TYPE  + " TEXT" +
+                    ProfileEntry.COLUMN_ROBOT_FUNCTION  + " TEXT" +
                     ")";
 
     private static final String SQL_DROP_PROFILE_TABLE =
@@ -108,15 +108,19 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             while (! cursor.isAfterLast()) {
+                long id = cursor.getLong(
+                        cursor.getColumnIndexOrThrow(ProfileEntry._ID));
                 int teamNumber = cursor.getInt(
-                        cursor.getColumnIndex(ProfileContract.ProfileEntry.COLUMN_TEAM_NUMBER));
-                String robotType = cursor.getString(
-                        cursor.getColumnIndex(ProfileContract.ProfileEntry.COLUMN_ROBOT_TYPE));
+                        cursor.getColumnIndex(ProfileEntry.COLUMN_TEAM_NUMBER));
+                String robotFunction = cursor.getString(
+                        cursor.getColumnIndex(ProfileEntry.COLUMN_ROBOT_FUNCTION));
 
-                Log.v(LOG_TAG, "readProfilesFromDB(): teamNumber = " + teamNumber +
-                        ", robotFunction = " + robotType);
+                Log.v(LOG_TAG, "readProfilesFromDB():" +
+                        " id = " + id +
+                        ", teamNumber = " + teamNumber +
+                        ", robotFunction = " + robotFunction);
 
-                profiles.add(new Profile(teamNumber, robotType));
+                profiles.add(new Profile(id, teamNumber, robotFunction));
                 cursor.moveToNext();
             }
         }
@@ -133,7 +137,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         // you will actually use after this query.
         String[] projection = {
                 ProfileEntry.COLUMN_TEAM_NUMBER,
-                ProfileEntry.COLUMN_ROBOT_TYPE
+                ProfileEntry.COLUMN_ROBOT_FUNCTION
         };
 
         String selection = ProfileEntry.TABLE_NAME + "." + ProfileEntry._ID + " = ? ";
@@ -141,7 +145,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         String[] selectionArgs = new String[] {String.valueOf(id)};
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = ProfileEntry.COLUMN_ROBOT_TYPE + " DESC";
+        String sortOrder = ProfileEntry.COLUMN_TEAM_NUMBER + " DESC";
 
         Cursor cursor = db.query(
                 ProfileEntry.TABLE_NAME,    // The table to query
@@ -158,59 +162,20 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         int teamNumberColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_TEAM_NUMBER);
         int teamNumber = cursor.getInt(teamNumberColumnIndex);
 
-        int robotTypeColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_TYPE);
-        String robotType = cursor.getString(robotTypeColumnIndex);
+        int robotFunctionColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_FUNCTION);
+        String robotFunction = cursor.getString(robotFunctionColumnIndex);
 
-        Profile profile = new Profile(id, teamNumber, robotType);
+        Profile profile = new Profile(id, teamNumber, robotFunction);
 
         Log.v(LOG_TAG, "readProfileFromDB():" +
                 " id = " + id +
                 ", teamNumber = " + teamNumber +
-                ", robotType = " + robotType);
+                ", robotFunction = " + robotFunction);
 
         return profile;
     }
 
-    public static String readRobotTypeFromDB(Context context, int teamNumber) {
-        ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
-
-        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
-
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                ProfileEntry.COLUMN_ROBOT_TYPE
-        };
-
-        String selection = ProfileEntry.TABLE_NAME +
-                "." + ProfileEntry.COLUMN_TEAM_NUMBER + " = ? ";
-
-        String[] selectionArgs = new String[] {String.valueOf(teamNumber)};
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                ProfileEntry.COLUMN_ROBOT_TYPE + " DESC";
-
-        Cursor cursor = db.query(
-                ProfileEntry.TABLE_NAME,    // The table to query
-                projection,                 // The columns to return
-                selection,                  // The columns for the WHERE clause
-                selectionArgs,              // The values for the WHERE clause
-                null,                       // don't group the rows
-                null,                       // don't filter by row groups
-                sortOrder                   // The sort order
-        );
-
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_TYPE);
-        String robotType = cursor.getString(columnIndex);
-
-        Log.v(LOG_TAG, "readRobotTypeFromDB(): robotType = " + robotType);
-
-        return robotType;
-    }
-
-    public static long writeProfileToDB(Context context, int teamNumber, String robotType) {
+    public static long writeProfileToDB(Context context, Profile profile) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
         // Gets the data repository in write mode
@@ -218,8 +183,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(ProfileEntry.COLUMN_TEAM_NUMBER, teamNumber);
-        values.put(ProfileEntry.COLUMN_ROBOT_TYPE, robotType);
+        values.put(ProfileEntry.COLUMN_TEAM_NUMBER, profile.getTeamNumber());
+        values.put(ProfileEntry.COLUMN_ROBOT_FUNCTION, profile.getRobotFunction());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowID = database.insert(
@@ -240,6 +205,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
+
         values.put(MatchEntry.COLUMN_TEAM_NUMBER, match.getTeamNumber());
         values.put(MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER, match.getAlly1TeamNumber());
         values.put(MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER, match.getAlly2TeamNumber());

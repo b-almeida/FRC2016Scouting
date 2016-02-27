@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
 public class NewProfileActivity extends AppCompatActivity {
@@ -48,11 +49,11 @@ public class NewProfileActivity extends AppCompatActivity {
             teamNumber = 0;
         }
 
-        String robotType = ( (Spinner) findViewById(R.id.robot_type) )
+        String robotFunction = ( (Spinner) findViewById(R.id.robot_function) )
                 .getSelectedItem().toString();
 
         // Write the data to the database
-        long profileID = ProfileDBHelper.writeProfileToDB(this, teamNumber, robotType);
+        long profileID = ProfileDBHelper.writeProfileToDB(this, new Profile(teamNumber, robotFunction));
 
         // Switch to NewProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
