@@ -64,7 +64,7 @@ public class NewProfileActivity extends AppCompatActivity {
                 .getSelectedItem().toString();
 
         // Write the data to the database
-        writeProfileToDB(teamNumber, robotType);
+        ProfileDBHelper.writeProfileToDB(this, teamNumber, robotType);
 
         // Switch to NewProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
@@ -73,26 +73,6 @@ public class NewProfileActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting ProfileActivity");
-    }
-
-    private void writeProfileToDB(int teamNumber, String robotType) {
-        ProfileDBHelper profileDBHelper = new ProfileDBHelper(this);
-
-        // Gets the data repository in write mode
-        SQLiteDatabase database = profileDBHelper.getWritableDatabase();
-
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values.put(ProfileEntry.COLUMN_TEAM_NUMBER, teamNumber);
-        values.put(ProfileEntry.COLUMN_ROBOT_TYPE, robotType);
-
-        // Insert the new row, returning the primary key value of the new row
-        long newRowID = database.insert(
-                ProfileEntry.TABLE_NAME,
-                null,
-                values);
-
-        Log.v(LOG_TAG, "writeProfileToDB(): newRowID = " + newRowID);
     }
 
 }

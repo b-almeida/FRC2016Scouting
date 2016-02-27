@@ -42,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "teamNumber received from intent: " + teamNumber);
 
         // Read the robot type from the database
-        robotType = readRobotTypeFromDB(teamNumber);
+        robotType = ProfileDBHelper.readRobotTypeFromDB(this, teamNumber);
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();
@@ -67,45 +67,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewMatchActivity.class);
         startActivity(intent);
         Log.v(LOG_TAG, "Starting NewMatchActivity");
-    }
-
-    private String readRobotTypeFromDB(int teamNumber) {
-        ProfileDBHelper profileDBHelper = new ProfileDBHelper(this);
-
-        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
-
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                ProfileEntry.COLUMN_ROBOT_TYPE
-        };
-
-        String selection = ProfileEntry.TABLE_NAME +
-                "." + ProfileEntry.COLUMN_TEAM_NUMBER + " = ? ";
-
-        String[] selectionArgs = new String[] {String.valueOf(teamNumber)};
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                ProfileEntry.COLUMN_ROBOT_TYPE + " DESC";
-
-        Cursor cursor = db.query(
-                ProfileEntry.TABLE_NAME,    // The table to query
-                projection,                 // The columns to return
-                selection,                  // The columns for the WHERE clause
-                selectionArgs,              // The values for the WHERE clause
-                null,                       // don't group the rows
-                null,                       // don't filter by row groups
-                sortOrder                   // The sort order
-        );
-
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_TYPE);
-        String robotType = cursor.getString(columnIndex);
-
-        Log.v(LOG_TAG, "readRobotTypeFromDB(): robotType = " + robotType);
-
-        return robotType;
     }
 
 }

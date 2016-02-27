@@ -76,52 +76,12 @@ public class NewMatchActivity extends AppCompatActivity {
                 opponent3TeamNumber);
 
         // Write the data to the database
-        writeMatchToDB(match);
+        ProfileDBHelper.writeMatchToDB(this, match);
 
         // Switch to MatchActivity
         Intent intent = new Intent(this, MatchActivity.class);
         startActivity(intent);
         Log.v(LOG_TAG, "Starting MatchActivity");
-    }
-
-    private void writeMatchToDB(Match match) {
-        ProfileDBHelper profileDBHelper = new ProfileDBHelper(this);
-
-        // Gets the data repository in write mode
-        SQLiteDatabase database = profileDBHelper.getWritableDatabase();
-
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values.put(MatchEntry.COLUMN_TEAM_NUMBER, match.getTeamNumber());
-        values.put(MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER, match.getAlly1TeamNumber());
-        values.put(MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER, match.getAlly2TeamNumber());
-        values.put(MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER, match.getOpponent1TeamNumber());
-        values.put(MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER, match.getOpponent2TeamNumber());
-        values.put(MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER, match.getOpponent3TeamNumber());
-
-        values.put(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES, match.getLowShootingSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS, match.getLowShootingSuccess().getDenominator());
-        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES, match.getHighShootingSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS, match.getHighShootingSuccess().getDenominator());
-
-        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES, match.getDefenseLowBarBreachSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS, match.getDefenseLowBarBreachSuccess().getDenominator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES, match.getDefenseCategoryABreachSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS, match.getDefenseCategoryABreachSuccess().getDenominator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES, match.getDefenseCategoryBBreachSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS, match.getDefenseCategoryBBreachSuccess().getDenominator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES, match.getDefenseCategoryCBreachSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS, match.getDefenseCategoryCBreachSuccess().getDenominator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES, match.getDefenseCategoryDBreachSuccess().getNumerator());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS, match.getDefenseCategoryDBreachSuccess().getDenominator());
-
-        // Insert the new row, returning the primary key value of the new row
-        long newRowID = database.insert(
-                ProfileContract.MatchEntry.TABLE_NAME,
-                null,
-                values);
-
-        Log.v(LOG_TAG, "writeMatchToDB(): newRowID = " + newRowID);
     }
 
 }

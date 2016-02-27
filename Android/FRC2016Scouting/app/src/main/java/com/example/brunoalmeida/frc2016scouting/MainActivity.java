@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
         Log.v(LOG_TAG, "onCreate(): Database deleted");
 
-        ArrayList<Profile> profiles = readProfilesFromDB();
+        ArrayList<Profile> profiles = ProfileDBHelper.readAllProfilesFromDB(this);
 
         String log = "onCreate(): Profiles read from database:\n";
         for (Profile profile : profiles) {
@@ -93,31 +93,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting NewProfileActivity");
-    }
-
-    private ArrayList<Profile> readProfilesFromDB() {
-        ArrayList<Profile> profiles = new ArrayList<>();
-
-        ProfileDBHelper profileDBHelper = new ProfileDBHelper(this);
-        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ProfileContract.ProfileEntry.TABLE_NAME, null);
-
-        if (cursor.moveToFirst()) {
-            while (! cursor.isAfterLast()) {
-                int teamNumber = cursor.getInt(
-                        cursor.getColumnIndex(ProfileContract.ProfileEntry.COLUMN_TEAM_NUMBER));
-                String robotType = cursor.getString(
-                        cursor.getColumnIndex(ProfileContract.ProfileEntry.COLUMN_ROBOT_TYPE));
-
-                Log.v(LOG_TAG, "readProfilesFromDB(): teamNumber = " + teamNumber +
-                        ", robotFunction = " + robotType);
-
-                profiles.add(new Profile(teamNumber, robotType));
-                cursor.moveToNext();
-            }
-        }
-
-        return profiles;
     }
 
     private void displayProfileList(final ArrayList<Profile> profiles) {
