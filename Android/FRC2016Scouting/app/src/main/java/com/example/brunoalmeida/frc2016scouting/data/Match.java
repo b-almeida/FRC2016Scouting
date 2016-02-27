@@ -8,6 +8,30 @@ package com.example.brunoalmeida.frc2016scouting.data;
  */
 public class Match {
 
+    public enum Team {
+        ALLY_1,
+        ALLY_2,
+        ALLY_3,
+
+        OPPONENT_1,
+        OPPONENT_2,
+        OPPONENT_3
+    }
+
+    public enum Shooting {
+        LOW_GOAL,
+        HIGH_GOAL
+    }
+
+    public enum Defense {
+        LOW_BAR,
+        CATEGORY_A,
+        CATEGORY_B,
+        CATEGORY_C,
+        CATEGORY_D
+    }
+
+    
     private long id;
 
     private int teamNumber;
