@@ -53,7 +53,7 @@ public class NewProfileActivity extends AppCompatActivity {
                 .getSelectedItem().toString();
 
         // Write to the database
-        long profileID = ProfileDBHelper.writeProfileToDB(this, new Profile(teamNumber, robotFunction));
+        long profileID = ProfileDBHelper.writeProfile(this, new Profile(teamNumber, robotFunction));
 
         startProfileActivity(profileID);
     }

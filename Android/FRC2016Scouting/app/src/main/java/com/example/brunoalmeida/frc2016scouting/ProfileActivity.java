@@ -33,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "profileID received from intent: " + profileID);
 
         // Read the robot type from the database
-        profile = ProfileDBHelper.readProfileFromDB(this, profileID);
+        profile = ProfileDBHelper.readProfile(this, profileID);
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();

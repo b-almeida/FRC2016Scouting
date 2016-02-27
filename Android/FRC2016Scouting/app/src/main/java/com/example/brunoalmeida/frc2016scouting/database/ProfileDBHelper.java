@@ -99,7 +99,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
     // Read/Write Operations
 
-    public static ArrayList<Profile> readAllProfilesFromDB(Context context) {
+    public static ArrayList<Profile> readAllProfiles(Context context) {
         ArrayList<Profile> profiles = new ArrayList<>();
 
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
@@ -127,7 +127,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return profiles;
     }
 
-    public static Profile readProfileFromDB(Context context, long id) {
+    public static Profile readProfile(Context context, long id) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
         SQLiteDatabase db = profileDBHelper.getReadableDatabase();
@@ -171,7 +171,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return profile;
     }
 
-    public static long writeProfileToDB(Context context, Profile profile) {
+    public static long writeProfile(Context context, Profile profile) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
         // Gets the data repository in write mode
@@ -193,7 +193,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return newRowID;
     }
 
-    public static long writeMatchToDB(Context context, Match match) {
+    public static long writeMatch(Context context, Match match) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
         // Gets the data repository in write mode

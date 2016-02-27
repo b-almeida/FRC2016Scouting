@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
         Log.v(LOG_TAG, "onCreate(): Database deleted");
 
-        ArrayList<Profile> profiles = ProfileDBHelper.readAllProfilesFromDB(this);
+        ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
 
         String log = "onCreate(): Profiles read from database:\n";
         for (Profile profile : profiles) {

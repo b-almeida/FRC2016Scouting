@@ -67,7 +67,7 @@ public class NewMatchActivity extends AppCompatActivity {
                 opponent2TeamNumber,
                 opponent3TeamNumber);
 
-        ProfileDBHelper.writeMatchToDB(this, match);
+        ProfileDBHelper.writeMatch(this, match);
 
         startMatchActivity();
     }
