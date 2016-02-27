@@ -2,15 +2,24 @@ package com.example.brunoalmeida.frc2016scouting;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.brunoalmeida.frc2016scouting.data.Match;
+import com.example.brunoalmeida.frc2016scouting.data.Profile;
+import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
+
 public class MatchActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MatchActivity";
+
+    public static final String INTENT_MATCH_ID = "matchID";
+
+    private Match match;
 
 
     @Override
@@ -20,6 +29,19 @@ public class MatchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_match);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+/*        // Get the match ID  from the intent
+        long matchID = getIntent().getLongExtra(INTENT_MATCH_ID, -1);
+        Log.v(LOG_TAG, "matchID received from intent: " + matchID);
+
+        // Read the robot type from the database
+        match = ProfileDBHelper.readMatch(this, matchID);
+
+        // Set the title bar to the team number
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Team " + profile.getTeamNumber());
+        actionBar.setDisplayShowTitleEnabled(true);
+        Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
