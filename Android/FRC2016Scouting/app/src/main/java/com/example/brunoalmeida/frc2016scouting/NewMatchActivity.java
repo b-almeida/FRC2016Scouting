@@ -36,10 +36,10 @@ public class NewMatchActivity extends AppCompatActivity {
     }
 
     /**
-     * @param id EditText view id.
+     * @param editTextID EditText view id.
      */
-    private int getTeamNumberFromEditText(int id) {
-        String teamNumberString = ( (EditText) findViewById(R.id.team_number) )
+    private int getTeamNumberFromEditText(int editTextID) {
+        String teamNumberString = ( (EditText) findViewById(editTextID) )
                 .getText().toString();
 
         if (teamNumberString != null && teamNumberString.length() > 0) {
