@@ -8,41 +8,41 @@ package com.example.brunoalmeida.frc2016scouting;
  */
 public class SuccessRate {
 
-    private int numerator;
-    private int denominator;
+    private int successes;
+    private int attempts;
 
     public SuccessRate() {
         this(0, 0);
     }
 
-    public SuccessRate(int numerator, int denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
+    public SuccessRate(int successes, int attempts) {
+        this.successes = successes;
+        this.attempts = attempts;
     }
 
-    public int getNumerator() {
-        return numerator;
+    public int getSuccesses() {
+        return successes;
     }
 
-    public int getDenominator() {
-        return denominator;
+    public int getAttempts() {
+        return attempts;
     }
 
-    public int getPercent() {
-        if (denominator == 0) {
+    public int getPercentRate() {
+        if (attempts == 0) {
             return 0;
         } else {
-            return (numerator * 100) / denominator;
+            return (successes * 100) / attempts;
         }
     }
 
     @Override
     public String toString() {
-        return numerator + "/" + denominator;
+        return successes + "/" + attempts;
     }
 
-    public String toPercent() {
-        return getPercent() + "%";
+    public String toPercentRate() {
+        return getPercentRate() + "%";
     }
 
 }
