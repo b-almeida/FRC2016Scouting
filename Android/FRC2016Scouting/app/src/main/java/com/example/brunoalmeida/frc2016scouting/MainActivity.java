@@ -79,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public void newProfileOnClick(View view) {
         Log.v(LOG_TAG, "In newProfileOnClick()");
 
-        // Switch to NewProfileActivity
-        Intent intent = new Intent(this, NewProfileActivity.class);
-        startActivity(intent);
+        startNewProfileActivity();
 
         Log.v(LOG_TAG, "Starting NewProfileActivity");
     }
@@ -110,11 +108,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void startNewProfileActivity() {
+        Intent intent = new Intent(this, NewProfileActivity.class);
+        startActivity(intent);
+    }
+
     private void startProfileActivity(long profileID) {
-        // Switch to ProfileActivity
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
         startActivity(intent);
+        Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 
 }

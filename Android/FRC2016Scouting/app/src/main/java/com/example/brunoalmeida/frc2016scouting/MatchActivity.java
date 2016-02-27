@@ -49,12 +49,17 @@ public class MatchActivity extends AppCompatActivity {
 
         // Save item - Switch to ProfileActivity
         if (id == R.id.action_save) {
-            startActivity(new Intent(this, ProfileActivity.class));
-            Log.v(LOG_TAG, "Starting ProfileActivity");
+            startProfileActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+        Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 
 }

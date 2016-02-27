@@ -67,10 +67,12 @@ public class NewMatchActivity extends AppCompatActivity {
                 opponent2TeamNumber,
                 opponent3TeamNumber);
 
-        // Write the data to the database
         ProfileDBHelper.writeMatchToDB(this, match);
 
-        // Switch to MatchActivity
+        startMatchActivity();
+    }
+
+    private void startMatchActivity() {
         Intent intent = new Intent(this, MatchActivity.class);
         startActivity(intent);
         Log.v(LOG_TAG, "Starting MatchActivity");

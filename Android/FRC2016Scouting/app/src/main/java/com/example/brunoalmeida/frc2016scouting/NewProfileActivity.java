@@ -52,10 +52,13 @@ public class NewProfileActivity extends AppCompatActivity {
         String robotFunction = ( (Spinner) findViewById(R.id.robot_function) )
                 .getSelectedItem().toString();
 
-        // Write the data to the database
+        // Write to the database
         long profileID = ProfileDBHelper.writeProfileToDB(this, new Profile(teamNumber, robotFunction));
 
-        // Switch to NewProfileActivity
+        startProfileActivity(profileID);
+    }
+
+    private void startProfileActivity(long profileID) {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
         startActivity(intent);

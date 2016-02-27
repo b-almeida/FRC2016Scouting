@@ -54,7 +54,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void newMatchOnClick(View view) {
-        // Switch to NewMatchActivity
+        startNewMatchActivity();
+    }
+
+    private void startNewMatchActivity() {
         Intent intent = new Intent(this, NewMatchActivity.class);
         startActivity(intent);
         Log.v(LOG_TAG, "Starting NewMatchActivity");
