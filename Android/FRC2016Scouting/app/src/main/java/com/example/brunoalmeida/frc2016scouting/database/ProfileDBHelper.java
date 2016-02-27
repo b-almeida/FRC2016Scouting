@@ -124,6 +124,53 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return profiles;
     }
 
+    public static Profile readProfileFromDB(Context context, long id) {
+        ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
+
+        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                ProfileEntry.COLUMN_TEAM_NUMBER,
+                ProfileEntry.COLUMN_ROBOT_TYPE
+        };
+
+        String selection = ProfileEntry.TABLE_NAME + "." + ProfileEntry._ID + " = ? ";
+
+        String[] selectionArgs = new String[] {String.valueOf(id)};
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder = ProfileEntry.COLUMN_ROBOT_TYPE + " DESC";
+
+        Cursor cursor = db.query(
+                ProfileEntry.TABLE_NAME,    // The table to query
+                projection,                 // The columns to return
+                selection,                  // The columns for the WHERE clause
+                selectionArgs,              // The values for the WHERE clause
+                null,                       // don't group the rows
+                null,                       // don't filter by row groups
+                sortOrder                   // The sort order
+        );
+
+        cursor.moveToFirst();
+
+        int teamNumberColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_TEAM_NUMBER);
+        int teamNumber = cursor.getInt(teamNumberColumnIndex);
+
+        int robotTypeColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_TYPE);
+        String robotType = cursor.getString(robotTypeColumnIndex);
+
+        Profile profile = new Profile(id, teamNumber, robotType);
+
+        Log.v(LOG_TAG, "readProfileFromDB():" +
+                " id = " + id +
+                ", teamNumber = " + teamNumber +
+                ", robotType = " + robotType);
+
+        return profile;
+    }
+
     public static String readRobotTypeFromDB(Context context, int teamNumber) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
