@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.brunoalmeida.frc2016scouting.data.Match;
+import com.example.brunoalmeida.frc2016scouting.data.SuccessRate;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ProfileEntry;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.MatchEntry;
 
@@ -300,7 +301,16 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 ally2TeamNumber,
                 opponent1TeamNumber,
                 opponent2TeamNumber,
-                opponent3TeamNumber);
+                opponent3TeamNumber,
+
+                new SuccessRate(lowShootingSuccesses, lowShootingAttempts),
+                new SuccessRate(highShootingSuccesses, highShootingAttempts),
+
+                new SuccessRate(lowBarBreachSuccesses, lowBarBreachAttempts),
+                new SuccessRate(categoryABreachSuccesses, categoryABreachAttempts),
+                new SuccessRate(categoryBBreachSuccesses, categoryBBreachAttempts),
+                new SuccessRate(categoryCBreachSuccesses, categoryCBreachAttempts),
+                new SuccessRate(categoryDBreachSuccesses, categoryDBreachAttempts));
 
         Log.v(LOG_TAG, "readMatch():" + "\n" + match);
 
