@@ -76,6 +76,7 @@ public class NewMatchActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MatchActivity.class);
         intent.putExtra(MatchActivity.INTENT_MATCH_ID, matchID);
         startActivity(intent);
+
         Log.v(LOG_TAG, "Starting MatchActivity");
     }
 

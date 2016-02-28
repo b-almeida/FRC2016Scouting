@@ -1,8 +1,12 @@
 package com.example.brunoalmeida.frc2016scouting.data;
 
+import android.util.Log;
+
+import java.util.EnumMap;
+
 /**
- * The data for one robot's match.
- * Includes the robot, its allies, and its statistics.
+ * The data for a match, focusing on one team's statistics.
+ * Includes the team, its allies/opponents, and its statistics.
  *
  * Created by Bruno on 2016-02-25.
  */
@@ -12,7 +16,6 @@ public class Match {
         ALLY_1,
         ALLY_2,
         ALLY_3,
-
         OPPONENT_1,
         OPPONENT_2,
         OPPONENT_3
@@ -23,7 +26,7 @@ public class Match {
         HIGH_GOAL
     }
 
-    public enum Defense {
+    public enum DefenseBreach {
         LOW_BAR,
         CATEGORY_A,
         CATEGORY_B,
@@ -31,102 +34,86 @@ public class Match {
         CATEGORY_D
     }
 
-    
+
+
+
     private long id;
+    private EnumMap<Team, Integer> teamNumbers = new EnumMap<>(Team.class);
+    private EnumMap<Shooting, SuccessRate> shootingRates = new EnumMap<>(Shooting.class);
+    private EnumMap<DefenseBreach, SuccessRate> defenseBreachRates = new EnumMap<>(DefenseBreach.class);
 
-    private int teamNumber;
-    private int ally1TeamNumber;
-    private int ally2TeamNumber;
-    private int opponent1TeamNumber;
-    private int opponent2TeamNumber;
-    private int opponent3TeamNumber;
 
-    private SuccessRate lowShootingSuccessRate;
-    private SuccessRate highShootingSuccessRate;
-
-    private SuccessRate defenseLowBarBreachSuccessRate;
-    private SuccessRate defenseCategoryABreachSuccessRate;
-    private SuccessRate defenseCategoryBBreachSuccessRate;
-    private SuccessRate defenseCategoryCBreachSuccessRate;
-    private SuccessRate defenseCategoryDBreachSuccessRate;
 
 
     public Match(long id,
-                 int teamNumber,
                  int ally1TeamNumber,
                  int ally2TeamNumber,
+                 int ally3TeamNumber,
                  int opponent1TeamNumber,
                  int opponent2TeamNumber,
-                 int opponent3TeamNumber,
+                 int opponent3TeamNumber) {
 
-                 SuccessRate lowShootingSuccessRate,
-                 SuccessRate highShootingSuccessRate,
-
-                 SuccessRate defenseLowBarBreachSuccessRate,
-                 SuccessRate defenseCategoryABreachSuccessRate,
-                 SuccessRate defenseCategoryBBreachSuccessRate,
-                 SuccessRate defenseCategoryCBreachSuccessRate,
-                 SuccessRate defenseCategoryDBreachSuccessRate) {
         this.id = id;
-        this.teamNumber = teamNumber;
-        this.ally1TeamNumber = ally1TeamNumber;
-        this.ally2TeamNumber = ally2TeamNumber;
-        this.opponent1TeamNumber = opponent1TeamNumber;
-        this.opponent2TeamNumber = opponent2TeamNumber;
-        this.opponent3TeamNumber = opponent3TeamNumber;
 
-        this.lowShootingSuccessRate = lowShootingSuccessRate;
-        this.highShootingSuccessRate = highShootingSuccessRate;
+        this.teamNumbers.put(Team.ALLY_1, ally1TeamNumber);
+        this.teamNumbers.put(Team.ALLY_2, ally2TeamNumber);
+        this.teamNumbers.put(Team.ALLY_3, ally3TeamNumber);
+        this.teamNumbers.put(Team.OPPONENT_1, opponent1TeamNumber);
+        this.teamNumbers.put(Team.OPPONENT_2, opponent2TeamNumber);
+        this.teamNumbers.put(Team.OPPONENT_3, opponent3TeamNumber);
 
-        this.defenseLowBarBreachSuccessRate = defenseLowBarBreachSuccessRate;
-        this.defenseCategoryABreachSuccessRate = defenseCategoryABreachSuccessRate;
-        this.defenseCategoryBBreachSuccessRate = defenseCategoryBBreachSuccessRate;
-        this.defenseCategoryCBreachSuccessRate = defenseCategoryCBreachSuccessRate;
-        this.defenseCategoryDBreachSuccessRate = defenseCategoryDBreachSuccessRate;
+        for (Shooting shooting : Shooting.values()) {
+            this.shootingRates.put(shooting, new SuccessRate());
+        }
+
+        for (DefenseBreach defenseBreach : DefenseBreach.values()) {
+            this.defenseBreachRates.put(defenseBreach, new SuccessRate());
+        }
     }
 
-    public Match(long id,
-                 int teamNumber,
-                 int ally1TeamNumber,
+    public Match(int ally1TeamNumber,
                  int ally2TeamNumber,
+                 int ally3TeamNumber,
                  int opponent1TeamNumber,
                  int opponent2TeamNumber,
                  int opponent3TeamNumber) {
-        this(
-                id,
-                teamNumber,
-                ally1TeamNumber,
-                ally2TeamNumber,
-                opponent1TeamNumber,
-                opponent2TeamNumber,
-                opponent3TeamNumber,
 
-                new SuccessRate(),
-                new SuccessRate(),
-
-                new SuccessRate(),
-                new SuccessRate(),
-                new SuccessRate(),
-                new SuccessRate(),
-                new SuccessRate()
-        );
-    }
-
-    public Match(int teamNumber,
-                 int ally1TeamNumber,
-                 int ally2TeamNumber,
-                 int opponent1TeamNumber,
-                 int opponent2TeamNumber,
-                 int opponent3TeamNumber) {
         this(
                 -1,
-                teamNumber,
                 ally1TeamNumber,
                 ally2TeamNumber,
+                ally3TeamNumber,
                 opponent1TeamNumber,
                 opponent2TeamNumber,
                 opponent3TeamNumber);
     }
+
+
+    public long getID() {
+        return id;
+    }
+
+    public int getTeamNumber(Team team) {
+        return teamNumbers.get(team);
+    }
+
+    public SuccessRate getShootingRate(Shooting shooting) {
+        return shootingRates.get(shooting);
+    }
+
+    public SuccessRate getDefenseBreachRate(DefenseBreach defenseBreach) {
+        return defenseBreachRates.get(defenseBreach);
+    }
+
+
+    public void setShootingRate(Shooting shooting, int successes, int attempts) {
+        shootingRates.put(shooting, new SuccessRate(successes, attempts));
+    }
+
+    public void setDefenseBreachRate(DefenseBreach defenseBreach, int successes, int attempts) {
+        defenseBreachRates.put(defenseBreach, new SuccessRate(successes, attempts));
+    }
+
 
     @Override
     public String toString() {
@@ -134,79 +121,22 @@ public class Match {
 
         str += "id = " + id;
 
-        str += "\n" + "teamNumber = " + teamNumber;
-        str += "\n" + "ally1TeamNumber = " + ally1TeamNumber;
-        str += "\n" + "ally2TeamNumber = " + ally2TeamNumber;
-        str += "\n" + "opponent1TeamNumber = " + opponent1TeamNumber;
-        str += "\n" + "opponent2TeamNumber = " + opponent2TeamNumber;
-        str += "\n" + "opponent3TeamNumber = " + opponent3TeamNumber;
+        for (Team team : Team.values()) {
+            str += "\n" + team.toString() + " teamNumber = " +
+                    getTeamNumber(team);
+        }
 
-        str += "\n" + "lowShootingSuccessRate = " + lowShootingSuccessRate;
-        str += "\n" + "highShootingSuccessRate = " + highShootingSuccessRate;
+        for (Shooting shooting : Shooting.values()) {
+            str += "\n" + shooting.toString() + " shootingRate = " +
+                    getShootingRate(shooting);
+        }
 
-        str += "\n" + "defenseLowBarBreachSuccessRate = " + defenseLowBarBreachSuccessRate;
-        str += "\n" + "defenseCategoryABreachSuccessRate = " + defenseCategoryABreachSuccessRate;
-        str += "\n" + "defenseCategoryBBreachSuccessRate = " + defenseCategoryBBreachSuccessRate;
-        str += "\n" + "defenseCategoryCBreachSuccessRate = " + defenseCategoryCBreachSuccessRate;
-        str += "\n" + "defenseCategoryDBreachSuccessRate = " + defenseCategoryDBreachSuccessRate;
+        for (DefenseBreach defenseBreach : DefenseBreach.values()) {
+            str += "\n" + defenseBreach.toString() + " defenseBreachRate = " +
+                    getDefenseBreachRate(defenseBreach);
+        }
 
         return str;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public int getTeamNumber() {
-        return teamNumber;
-    }
-
-    public int getAlly1TeamNumber() {
-        return ally1TeamNumber;
-    }
-
-    public int getAlly2TeamNumber() {
-        return ally2TeamNumber;
-    }
-
-    public int getOpponent1TeamNumber() {
-        return opponent1TeamNumber;
-    }
-
-    public int getOpponent2TeamNumber() {
-        return opponent2TeamNumber;
-    }
-
-    public int getOpponent3TeamNumber() {
-        return opponent3TeamNumber;
-    }
-
-    public SuccessRate getLowShootingSuccessRate() {
-        return lowShootingSuccessRate;
-    }
-
-    public SuccessRate getHighShootingSuccessRate() {
-        return highShootingSuccessRate;
-    }
-
-    public SuccessRate getDefenseLowBarBreachSuccessRate() {
-        return defenseLowBarBreachSuccessRate;
-    }
-
-    public SuccessRate getDefenseCategoryABreachSuccessRate() {
-        return defenseCategoryABreachSuccessRate;
-    }
-
-    public SuccessRate getDefenseCategoryBBreachSuccessRate() {
-        return defenseCategoryBBreachSuccessRate;
-    }
-
-    public SuccessRate getDefenseCategoryCBreachSuccessRate() {
-        return defenseCategoryCBreachSuccessRate;
-    }
-
-    public SuccessRate getDefenseCategoryDBreachSuccessRate() {
-        return defenseCategoryDBreachSuccessRate;
     }
 
 }

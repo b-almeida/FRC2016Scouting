@@ -11,10 +11,15 @@ import com.example.brunoalmeida.frc2016scouting.data.Match;
 import com.example.brunoalmeida.frc2016scouting.data.SuccessRate;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ProfileEntry;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.MatchEntry;
+import com.example.brunoalmeida.frc2016scouting.data.Match.Team;
+import com.example.brunoalmeida.frc2016scouting.data.Match.Shooting;
+import com.example.brunoalmeida.frc2016scouting.data.Match.DefenseBreach;
+import com.example.brunoalmeida.frc2016scouting.database.ProfileContract.ColumnPair;
 
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 
 /**
  * Created by Bruno on 2016-02-22.
@@ -43,34 +48,37 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
 
     // Match Table - SQL operations
-    private static final String SQL_CREATE_MATCH_TABLE =
-            "CREATE TABLE " + MatchEntry.TABLE_NAME +
-                    " (" +
-                    MatchEntry._ID                              + " INTEGER PRIMARY KEY," +
+    private static final String SQL_CREATE_MATCH_TABLE;
 
-                    MatchEntry.COLUMN_TEAM_NUMBER               + " INTEGER," +
-                    MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER        + " INTEGER," +
-                    MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER        + " INTEGER," +
-                    MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER    + " INTEGER," +
-                    MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER    + " INTEGER," +
-                    MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER    + " INTEGER," +
+    // Construct SQL_CREATE_MATCH_TABLE
+    static {
+        String str = "";
 
-                    MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES    + " INTEGER," +
-                    MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS     + " INTEGER," +
-                    MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES   + " INTEGER," +
-                    MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS    + " INTEGER," +
+        str += "CREATE TABLE " + MatchEntry.TABLE_NAME + " (";
 
-                    MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES      + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS       + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES   + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS    + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES   + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS    + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES   + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS    + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES   + " INTEGER," +
-                    MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS    + " INTEGER" +
-                    ")";
+        str += MatchEntry._ID + " INTEGER PRIMARY KEY,";
+
+        for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
+            str += teamNumberColumn.getValue() + " INTEGER,";
+        }
+
+        for (EnumMap.Entry<Shooting, ColumnPair> shootingRateColumn : MatchEntry.SHOOTING_RATE_COLUMNS.entrySet()) {
+            str += shootingRateColumn.getValue().getSuccesses() + " INTEGER,";
+            str += shootingRateColumn.getValue().getAttempts() + " INTEGER,";
+        }
+
+        for (EnumMap.Entry<DefenseBreach, ColumnPair> defenseBreachRateColumn : MatchEntry.DEFENSE_BREACH_RATE_COLUMNS.entrySet()) {
+            str += defenseBreachRateColumn.getValue().getSuccesses() + " INTEGER,";
+            str += defenseBreachRateColumn.getValue().getAttempts() + " INTEGER,";
+        }
+
+        if (str.length() > 0 && str.charAt(str.length() - 1) == ',') {
+            str = str.substring(0, str.length() - 1);
+        }
+        str += ")";
+
+        SQL_CREATE_MATCH_TABLE = str;
+    }
 
     private static final String SQL_DROP_MATCH_TABLE =
             "DROP TABLE IF EXISTS " + MatchEntry.TABLE_NAME;
@@ -96,8 +104,6 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
     }
 
 
-
-
     // Profile Read/Write Operations
 
     public static ArrayList<Profile> readAllProfiles(Context context) {
@@ -111,14 +117,10 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
             while (! cursor.isAfterLast()) {
                 long id = cursor.getLong(
                         cursor.getColumnIndexOrThrow(ProfileEntry._ID));
-                int teamNumber = cursor.getInt(
-                        cursor.getColumnIndex(ProfileEntry.COLUMN_TEAM_NUMBER));
-                String robotFunction = cursor.getString(
-                        cursor.getColumnIndex(ProfileEntry.COLUMN_ROBOT_FUNCTION));
 
-                Profile profile = new Profile(id, teamNumber, robotFunction);
+                Profile profile = readProfile(context, id);
 
-                Log.v(LOG_TAG, "readProfilesFromDB():" + "\n" + profile);
+                Log.v(LOG_TAG, "readAllProfiles():" + "\n" + profile);
 
                 profiles.add(profile);
                 cursor.moveToNext();
@@ -159,15 +161,17 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         cursor.moveToFirst();
 
-        int teamNumberColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_TEAM_NUMBER);
-        int teamNumber = cursor.getInt(teamNumberColumnIndex);
+        int columnIndex;
 
-        int robotFunctionColumnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_FUNCTION);
-        String robotFunction = cursor.getString(robotFunctionColumnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_TEAM_NUMBER);
+        int teamNumber = cursor.getInt(columnIndex);
+
+        columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_FUNCTION);
+        String robotFunction = cursor.getString(columnIndex);
 
         Profile profile = new Profile(id, teamNumber, robotFunction);
 
-        Log.v(LOG_TAG, "readProfileFromDB():" + "\n" + profile);
+        Log.v(LOG_TAG, "readProfile():" + "\n" + profile);
 
         return profile;
     }
@@ -189,12 +193,11 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 null,
                 values);
 
-        Log.v(LOG_TAG, "writeProfileToDB(): newRowID = " + newRowID);
+        Log.v(LOG_TAG, "writeProfile():" + "\n" + profile);
+        Log.v(LOG_TAG, "writeProfile(): newRowID = " + newRowID);
 
         return newRowID;
     }
-
-
 
 
     // Match Read/Write Operations
@@ -204,39 +207,32 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = profileDBHelper.getReadableDatabase();
 
+        ArrayList<String> projectionArrayList = new ArrayList<>();
+
+        for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
+            projectionArrayList.add(teamNumberColumn.getValue());
+        }
+
+        for (EnumMap.Entry<Shooting, ColumnPair> shootingRateColumn : MatchEntry.SHOOTING_RATE_COLUMNS.entrySet()) {
+            projectionArrayList.add(shootingRateColumn.getValue().getSuccesses());
+            projectionArrayList.add(shootingRateColumn.getValue().getAttempts());
+        }
+
+        for (EnumMap.Entry<DefenseBreach, ColumnPair> defenseBreachRateColumn : MatchEntry.DEFENSE_BREACH_RATE_COLUMNS.entrySet()) {
+            projectionArrayList.add(defenseBreachRateColumn.getValue().getSuccesses());
+            projectionArrayList.add(defenseBreachRateColumn.getValue().getAttempts());
+        }
+
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
-        String[] projection = {
-                MatchEntry.COLUMN_TEAM_NUMBER,
-                MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER,
-                MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER,
-                MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER,
-                MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER,
-                MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER,
-
-                MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES,
-                MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS,
-                MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES,
-                MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS,
-
-                MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES,
-                MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES,
-                MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS
-        };
+        String[] projection = projectionArrayList.toArray(new String[projectionArrayList.size()]);
 
         String selection = MatchEntry.TABLE_NAME + "." + MatchEntry._ID + " = ? ";
 
         String[] selectionArgs = new String[] {String.valueOf(id)};
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = MatchEntry.COLUMN_TEAM_NUMBER + " DESC";
+        String sortOrder = MatchEntry._ID + " DESC";
 
         Cursor cursor = db.query(
                 MatchEntry.TABLE_NAME,      // The table to query
@@ -252,66 +248,45 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         int columnIndex;
 
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_TEAM_NUMBER);
-        int teamNumber = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.ALLY_1));
         int ally1TeamNumber = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.ALLY_2));
         int ally2TeamNumber = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.ALLY_3));
+        int ally3TeamNumber = cursor.getInt(columnIndex);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.OPPONENT_1));
         int opponent1TeamNumber = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.OPPONENT_2));
         int opponent2TeamNumber = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER);
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.OPPONENT_3));
         int opponent3TeamNumber = cursor.getInt(columnIndex);
 
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES);
-        int lowShootingSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS);
-        int lowShootingAttempts = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES);
-        int highShootingSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS);
-        int highShootingAttempts = cursor.getInt(columnIndex);
-
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES);
-        int lowBarBreachSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS);
-        int lowBarBreachAttempts = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES);
-        int categoryABreachSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS);
-        int categoryABreachAttempts = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES);
-        int categoryBBreachSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS);
-        int categoryBBreachAttempts = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES);
-        int categoryCBreachSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS);
-        int categoryCBreachAttempts = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES);
-        int categoryDBreachSuccesses = cursor.getInt(columnIndex);
-        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS);
-        int categoryDBreachAttempts = cursor.getInt(columnIndex);
-
-        Match match  = new Match(
+        Match match = new Match(
                 id,
-                teamNumber,
                 ally1TeamNumber,
                 ally2TeamNumber,
+                ally3TeamNumber,
                 opponent1TeamNumber,
                 opponent2TeamNumber,
-                opponent3TeamNumber,
+                opponent3TeamNumber);
 
-                new SuccessRate(lowShootingSuccesses, lowShootingAttempts),
-                new SuccessRate(highShootingSuccesses, highShootingAttempts),
+        for (EnumMap.Entry<Shooting, ColumnPair> shootingRateColumn : MatchEntry.SHOOTING_RATE_COLUMNS.entrySet()) {
+            columnIndex = cursor.getColumnIndexOrThrow(shootingRateColumn.getValue().getSuccesses());
+            int successes = cursor.getInt(columnIndex);
+            columnIndex = cursor.getColumnIndexOrThrow(shootingRateColumn.getValue().getAttempts());
+            int attempts = cursor.getInt(columnIndex);
 
-                new SuccessRate(lowBarBreachSuccesses, lowBarBreachAttempts),
-                new SuccessRate(categoryABreachSuccesses, categoryABreachAttempts),
-                new SuccessRate(categoryBBreachSuccesses, categoryBBreachAttempts),
-                new SuccessRate(categoryCBreachSuccesses, categoryCBreachAttempts),
-                new SuccessRate(categoryDBreachSuccesses, categoryDBreachAttempts));
+            match.setShootingRate(shootingRateColumn.getKey(), successes, attempts);
+        }
+
+        for (EnumMap.Entry<DefenseBreach, ColumnPair> defenseBreachRateColumn : MatchEntry.DEFENSE_BREACH_RATE_COLUMNS.entrySet()) {
+            columnIndex = cursor.getColumnIndexOrThrow(defenseBreachRateColumn.getValue().getSuccesses());
+            int successes = cursor.getInt(columnIndex);
+            columnIndex = cursor.getColumnIndexOrThrow(defenseBreachRateColumn.getValue().getAttempts());
+            int attempts = cursor.getInt(columnIndex);
+
+            match.setDefenseBreachRate(defenseBreachRateColumn.getKey(), successes, attempts);
+        }
 
         Log.v(LOG_TAG, "readMatch():" + "\n" + match);
 
@@ -327,28 +302,19 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
 
-        values.put(MatchEntry.COLUMN_TEAM_NUMBER, match.getTeamNumber());
-        values.put(MatchEntry.COLUMN_ALLY_1_TEAM_NUMBER, match.getAlly1TeamNumber());
-        values.put(MatchEntry.COLUMN_ALLY_2_TEAM_NUMBER, match.getAlly2TeamNumber());
-        values.put(MatchEntry.COLUMN_OPPONENT_1_TEAM_NUMBER, match.getOpponent1TeamNumber());
-        values.put(MatchEntry.COLUMN_OPPONENT_2_TEAM_NUMBER, match.getOpponent2TeamNumber());
-        values.put(MatchEntry.COLUMN_OPPONENT_3_TEAM_NUMBER, match.getOpponent3TeamNumber());
+        for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
+            values.put(teamNumberColumn.getValue(), match.getTeamNumber(teamNumberColumn.getKey()));
+        }
 
-        values.put(MatchEntry.COLUMN_LOW_SHOOTING_SUCCESSES, match.getLowShootingSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_LOW_SHOOTING_ATTEMPTS, match.getLowShootingSuccessRate().getAttempts());
-        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_SUCCESSES, match.getHighShootingSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_HIGH_SHOOTING_ATTEMPTS, match.getHighShootingSuccessRate().getAttempts());
+        for (EnumMap.Entry<Shooting, ColumnPair> shootingRateColumn : MatchEntry.SHOOTING_RATE_COLUMNS.entrySet()) {
+            values.put(shootingRateColumn.getValue().getSuccesses(), match.getShootingRate(shootingRateColumn.getKey()).getSuccesses());
+            values.put(shootingRateColumn.getValue().getAttempts(), match.getShootingRate(shootingRateColumn.getKey()).getAttempts());
+        }
 
-        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_SUCCESSES, match.getDefenseLowBarBreachSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_LOW_BAR_BREACH_ATTEMPTS, match.getDefenseLowBarBreachSuccessRate().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_SUCCESSES, match.getDefenseCategoryABreachSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_A_BREACH_ATTEMPTS, match.getDefenseCategoryABreachSuccessRate().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_SUCCESSES, match.getDefenseCategoryBBreachSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_B_BREACH_ATTEMPTS, match.getDefenseCategoryBBreachSuccessRate().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_SUCCESSES, match.getDefenseCategoryCBreachSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_C_BREACH_ATTEMPTS, match.getDefenseCategoryCBreachSuccessRate().getAttempts());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_SUCCESSES, match.getDefenseCategoryDBreachSuccessRate().getSuccesses());
-        values.put(MatchEntry.COLUMN_DEFENSE_CATEGORY_D_BREACH_ATTEMPTS, match.getDefenseCategoryDBreachSuccessRate().getAttempts());
+        for (EnumMap.Entry<DefenseBreach, ColumnPair> defenseBreachRateColumn : MatchEntry.DEFENSE_BREACH_RATE_COLUMNS.entrySet()) {
+            values.put(defenseBreachRateColumn.getValue().getSuccesses(), match.getDefenseBreachRate(defenseBreachRateColumn.getKey()).getSuccesses());
+            values.put(defenseBreachRateColumn.getValue().getAttempts(), match.getDefenseBreachRate(defenseBreachRateColumn.getKey()).getAttempts());
+        }
 
         // Insert the new row, returning the primary key value of the new row
         long newRowID = database.insert(
@@ -356,7 +322,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 null,
                 values);
 
-        Log.v(LOG_TAG, "writeMatchToDB(): newRowID = " + newRowID);
+        Log.v(LOG_TAG, "writeMatch():" + "\n" + match);
+        Log.v(LOG_TAG, "writeMatch(): newRowID = " + newRowID);
 
         return newRowID;
     }

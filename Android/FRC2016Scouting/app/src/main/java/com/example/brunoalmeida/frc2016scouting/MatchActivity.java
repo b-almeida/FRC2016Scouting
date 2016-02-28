@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.brunoalmeida.frc2016scouting.data.Match;
+import com.example.brunoalmeida.frc2016scouting.data.Match.Team;
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
@@ -36,11 +37,11 @@ public class MatchActivity extends AppCompatActivity {
 
         // Read the robot type from the database
         match = ProfileDBHelper.readMatch(this, matchID);
-        Log.v(LOG_TAG, "match received from intent:\n" + match);
+        Log.v(LOG_TAG, "match received from intent:" + "\n" + match);
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Match - Team " + match.getTeamNumber());
+        actionBar.setTitle("Match - Team " + match.getTeamNumber(Team.ALLY_1));
         actionBar.setDisplayShowTitleEnabled(true);
         Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
@@ -70,9 +71,8 @@ public class MatchActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        // Save item - Switch to ProfileActivity
         if (id == R.id.action_save) {
-            startProfileActivity();
+            //startProfileActivity();
             return true;
         }
 
