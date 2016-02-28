@@ -61,93 +61,7 @@ public class MatchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ListView statList = (ListView) findViewById(R.id.stat_list);
-        statList.setAdapter(new BaseAdapter() {
-
-            @Override
-            public int getCount() {
-                Log.v(LOG_TAG, "In onCreate(): statList.getCount()");
-                return match.getShootingRates().size() + match.getDefenseBreachRates().size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                Log.v(LOG_TAG, "In onCreate(): statList.getItem()");
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                Log.v(LOG_TAG, "In onCreate(): statList.getItemId()");
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                // Initialize the convertView here...
-                if (convertView == null) {
-                    Log.v(LOG_TAG, "In onCreate(): statList.getView(): convertView = null");
-
-                    LayoutInflater inflater =
-                            (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView = inflater.inflate(R.layout.match_row, parent, false);
-                }
-
-                LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
-                TextView description = (TextView) convertView.findViewById(R.id.description);
-                TextView successRate = (TextView) convertView.findViewById(R.id.success_rate);
-                Button successButton = (Button) convertView.findViewById(R.id.success);
-                Button missButton = (Button) convertView.findViewById(R.id.miss);
-
-                description.setText(getDescription(position));
-                //successRate.setText(new SuccessRate(position + 1, position + 1).toString());
-                successRate.setText(getSuccessRate(position).toString());
-
-                layout.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Log.v(LOG_TAG, "In onCreate(): statList.getView(): layout.onClick()");
-                    }
-                });
-
-                successButton.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Log.v(LOG_TAG, "In onCreate(): statList.getView(): successButton.onClick()");
-                    }
-                });
-
-                missButton.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Log.v(LOG_TAG, "In onCreate(): statList.getView(): missButton.onClick()");
-                    }
-                });
-
-                return convertView;
-            }
-
-            private String getDescription(int position) {
-                if (position < match.getShootingRates().size()) {
-                    return Shooting.values()[position].toString();
-                } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
-                    int defenseBreachIndex = position - match.getShootingRates().size();
-                    return DefenseBreach.values()[defenseBreachIndex].toString();
-                } else {
-                    Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
-                    return "Not Found";
-                }
-            }
-
-            private SuccessRate getSuccessRate(int position) {
-                if (position < match.getShootingRates().size()) {
-                    return match.getShootingRate(Shooting.values()[position]);
-                } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
-                    int defenseBreachIndex = position - match.getShootingRates().size();
-                    return match.getDefenseBreachRate(DefenseBreach.values()[defenseBreachIndex]);
-                } else {
-                    Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
-                    return new SuccessRate();
-                }
-            }
-
-        });
+        statList.setAdapter(new MatchBaseAdapter(match));
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +99,105 @@ public class MatchActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
         Log.v(LOG_TAG, "Starting ProfileActivity");
+    }
+
+
+
+
+    private class MatchBaseAdapter extends BaseAdapter {
+
+        private static final String LOG_TAG = "MatchBaseAdapter";
+
+        private Match match;
+
+
+        public MatchBaseAdapter(Match match) {
+            this.match = match;
+        }
+
+        @Override
+        public int getCount() {
+            Log.v(LOG_TAG, "In onCreate(): statList.getCount()");
+            return match.getShootingRates().size() + match.getDefenseBreachRates().size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            Log.v(LOG_TAG, "In onCreate(): statList.getItem()");
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            Log.v(LOG_TAG, "In onCreate(): statList.getItemId()");
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                Log.v(LOG_TAG, "getView(): convertView = null");
+
+                LayoutInflater inflater =
+                        (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.match_row, parent, false);
+            }
+
+            LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
+            TextView description = (TextView) convertView.findViewById(R.id.description);
+            TextView successRate = (TextView) convertView.findViewById(R.id.success_rate);
+            Button successButton = (Button) convertView.findViewById(R.id.success);
+            Button missButton = (Button) convertView.findViewById(R.id.miss);
+
+            description.setText(getDescription(position));
+            successRate.setText(getSuccessRate(position).toString());
+            //successRate.setText(new SuccessRate(position + 1, position + 1).toString());
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.v(LOG_TAG, "getView(): layout.onClick()");
+                }
+            });
+
+            successButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.v(LOG_TAG, "getView(): successButton.onClick()");
+                }
+            });
+
+            missButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.v(LOG_TAG, "getView(): missButton.onClick()");
+                }
+            });
+
+            return convertView;
+        }
+
+        private String getDescription(int position) {
+            if (position < match.getShootingRates().size()) {
+                return Shooting.values()[position].toString();
+            } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
+                int defenseBreachIndex = position - match.getShootingRates().size();
+                return DefenseBreach.values()[defenseBreachIndex].toString();
+            } else {
+                Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
+                return "Not Found";
+            }
+        }
+
+        private SuccessRate getSuccessRate(int position) {
+            if (position < match.getShootingRates().size()) {
+                return match.getShootingRate(Shooting.values()[position]);
+            } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
+                int defenseBreachIndex = position - match.getShootingRates().size();
+                return match.getDefenseBreachRate(DefenseBreach.values()[defenseBreachIndex]);
+            } else {
+                Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
+                return new SuccessRate();
+            }
+        }
+
     }
 
 }
