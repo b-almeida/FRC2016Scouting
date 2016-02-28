@@ -23,7 +23,7 @@
 
     <Button
         android:id="@+id/success"
-        android:background="@drawable/ic_check_circle_white_24dp"
+        android:background="@drawable/ic_check_circle_white_48dp"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:backgroundTint="@android:color/holo_green_dark"/>
