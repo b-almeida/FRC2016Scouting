@@ -23,15 +23,15 @@
 
     <Button
         android:id="@+id/success"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/match_row_button_size"
+        android:layout_height="@dimen/match_row_button_size"
         android:background="@drawable/ic_check_circle_white_48dp"
         android:backgroundTint="@android:color/holo_green_dark" />
 
     <Button
         android:id="@+id/miss"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/match_row_button_size"
+        android:layout_height="@dimen/match_row_button_size"
         android:background="@drawable/ic_cancel_white_48dp"
         android:backgroundTint="@android:color/holo_red_dark" />
 

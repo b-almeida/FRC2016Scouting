@@ -26,24 +26,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_alliance_1" />
-
-            <EditText
-                android:id="@+id/team_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="1" />
+                android:text="Alliance 1" />
 
             <EditText
                 android:id="@+id/ally_1_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="2" />
+                android:text="1" />
 
             <EditText
                 android:id="@+id/ally_2_team_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="2" />
+
+            <EditText
+                android:id="@+id/ally_3_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_alliance_2" />
+                android:text="Alliance 2" />
 
             <EditText
                 android:id="@+id/opponent_1_team_number"
@@ -94,6 +94,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_vertical_margin"
         android:onClick="createMatchOnClick"
-        android:text="@string/button_create_match" />
+        android:text="Create" />
 
 </LinearLayout>

@@ -7,6 +7,6 @@
 
     <!-- 500 -->
     <color name="colorFloatingActionButtonBackgroundTint">#3F51B5</color>
-    <!-- 100 -->
-    <color name="colorFloatingActionButtonTint">#C5CAE9</color>
+    <!-- 50 -->
+    <color name="colorFloatingActionButtonTint">#E8EAF6</color>
 </resources>
