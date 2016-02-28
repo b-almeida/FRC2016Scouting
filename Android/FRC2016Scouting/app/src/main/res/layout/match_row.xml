@@ -25,9 +25,9 @@
         android:text="success" />
 
     <Button
-        android:id="@+id/fail"
+        android:id="@+id/miss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fail" />
+        android:text="miss" />
 
 </LinearLayout>
