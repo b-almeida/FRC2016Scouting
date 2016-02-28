@@ -89,38 +89,64 @@ public class Match {
     }
 
 
+
+
     public long getID() {
         return id;
     }
+
 
     public int getTeamNumber(Team team) {
         return teamNumbers.get(team);
     }
 
+
     public EnumMap<Shooting, SuccessRate> getShootingRates() {
         return shootingRates;
-    }
-
-    public EnumMap<DefenseBreach, SuccessRate> getDefenseBreachRates() {
-        return defenseBreachRates;
     }
 
     public SuccessRate getShootingRate(Shooting shooting) {
         return shootingRates.get(shooting);
     }
 
+    public SuccessRate getShootingRate(int index) {
+        return getShootingRate(Shooting.values()[index]);
+    }
+
+
+    public EnumMap<DefenseBreach, SuccessRate> getDefenseBreachRates() {
+        return defenseBreachRates;
+    }
+
     public SuccessRate getDefenseBreachRate(DefenseBreach defenseBreach) {
         return defenseBreachRates.get(defenseBreach);
     }
+
+    public SuccessRate getDefenseBreachRate(int index) {
+        return getDefenseBreachRate(DefenseBreach.values()[index]);
+    }
+
+
 
 
     public void setShootingRate(Shooting shooting, int successes, int attempts) {
         shootingRates.put(shooting, new SuccessRate(successes, attempts));
     }
 
+    public void setShootingRate(int index, int successes, int attempts) {
+        setShootingRate(Shooting.values()[index], successes, attempts);
+    }
+
+
     public void setDefenseBreachRate(DefenseBreach defenseBreach, int successes, int attempts) {
         defenseBreachRates.put(defenseBreach, new SuccessRate(successes, attempts));
     }
+
+    public void setDefenseBreachRate(int index, int successes, int attempts) {
+        setDefenseBreachRate(DefenseBreach.values()[index], successes, attempts);
+    }
+
+
 
 
     @Override
