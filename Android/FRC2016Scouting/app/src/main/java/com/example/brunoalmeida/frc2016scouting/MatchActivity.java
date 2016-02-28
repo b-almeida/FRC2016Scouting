@@ -176,10 +176,13 @@ public class MatchActivity extends AppCompatActivity {
 
         private String getDescription(int position) {
             if (position < match.getShootingRates().size()) {
-                return Shooting.values()[position].toString();
+                int shootingIndex = position;
+                return Shooting.values()[shootingIndex].toString();
+
             } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
                 int defenseBreachIndex = position - match.getShootingRates().size();
                 return DefenseBreach.values()[defenseBreachIndex].toString();
+
             } else {
                 Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
                 return "Not Found";
@@ -188,10 +191,13 @@ public class MatchActivity extends AppCompatActivity {
 
         private SuccessRate getSuccessRate(int position) {
             if (position < match.getShootingRates().size()) {
-                return match.getShootingRate(Shooting.values()[position]);
+                int shootingIndex = position;
+                return match.getShootingRate(shootingIndex);
+
             } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
                 int defenseBreachIndex = position - match.getShootingRates().size();
-                return match.getDefenseBreachRate(DefenseBreach.values()[defenseBreachIndex]);
+                return match.getDefenseBreachRate(defenseBreachIndex);
+
             } else {
                 Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
                 return new SuccessRate();
