@@ -32,19 +32,22 @@
                 android:id="@+id/team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="1" />
 
             <EditText
                 android:id="@+id/ally_1_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="2" />
 
             <EditText
                 android:id="@+id/ally_2_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="3" />
 
         </LinearLayout>
 
@@ -64,19 +67,22 @@
                 android:id="@+id/opponent_1_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="4" />
 
             <EditText
                 android:id="@+id/opponent_2_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="5" />
 
             <EditText
                 android:id="@+id/opponent_3_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="6" />
 
         </LinearLayout>
 

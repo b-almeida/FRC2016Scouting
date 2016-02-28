@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
-        Log.v(LOG_TAG, "onCreate(): Database deleted");
+        //this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
+        //Log.v(LOG_TAG, "onCreate(): Database deleted");
 
         ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
 
