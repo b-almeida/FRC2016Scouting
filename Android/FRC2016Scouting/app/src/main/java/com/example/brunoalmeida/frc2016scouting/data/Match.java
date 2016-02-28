@@ -97,6 +97,14 @@ public class Match {
         return teamNumbers.get(team);
     }
 
+    public EnumMap<Shooting, SuccessRate> getShootingRates() {
+        return shootingRates;
+    }
+
+    public EnumMap<DefenseBreach, SuccessRate> getDefenseBreachRates() {
+        return defenseBreachRates;
+    }
+
     public SuccessRate getShootingRate(Shooting shooting) {
         return shootingRates.get(shooting);
     }
