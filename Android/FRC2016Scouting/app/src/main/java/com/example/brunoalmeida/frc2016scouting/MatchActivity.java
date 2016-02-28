@@ -117,26 +117,26 @@ public class MatchActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            Log.v(LOG_TAG, "In onCreate(): statList.getCount()");
+            Log.v(LOG_TAG, "In getCount()");
             return match.getShootingRates().size() + match.getDefenseBreachRates().size();
         }
 
         @Override
         public Object getItem(int position) {
-            Log.v(LOG_TAG, "In onCreate(): statList.getItem()");
+            Log.v(LOG_TAG, "In getItem()");
             return null;
         }
 
         @Override
         public long getItemId(int position) {
-            Log.v(LOG_TAG, "In onCreate(): statList.getItemId()");
+            Log.v(LOG_TAG, "In getItemId()");
             return position;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                Log.v(LOG_TAG, "getView(): convertView = null");
+                Log.v(LOG_TAG, "In getView(): convertView = null");
 
                 LayoutInflater inflater =
                         (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -155,19 +155,21 @@ public class MatchActivity extends AppCompatActivity {
 
             layout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Log.v(LOG_TAG, "getView(): layout.onClick()");
+                    Log.v(LOG_TAG, "In getView(): layout.onClick()");
                 }
             });
 
             successButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Log.v(LOG_TAG, "getView(): successButton.onClick()");
+                    Log.v(LOG_TAG, "In getView(): successButton.onClick()");
+                    successOnClick(position);
                 }
             });
 
             missButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Log.v(LOG_TAG, "getView(): missButton.onClick()");
+                    Log.v(LOG_TAG, "In getView(): missButton.onClick()");
+                    missOnClick(position);
                 }
             });
 
@@ -202,6 +204,46 @@ public class MatchActivity extends AppCompatActivity {
                 Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");
                 return new SuccessRate();
             }
+        }
+
+        private void successOnClick(int position) {
+            SuccessRate currentRate = getSuccessRate(position);
+
+            if (position < match.getShootingRates().size()) {
+                int shootingIndex = position;
+                match.setShootingRate(shootingIndex,
+                        currentRate.getSuccesses() + 1, currentRate.getAttempts() + 1);
+
+            } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
+                int defenseBreachIndex = position - match.getShootingRates().size();
+                match.setDefenseBreachRate(defenseBreachIndex,
+                        currentRate.getSuccesses() + 1, currentRate.getAttempts() + 1);
+
+            } else {
+                Log.w(LOG_TAG, "successOnClick(): SuccessRate not found in match");
+            }
+
+            notifyDataSetChanged();
+        }
+
+        private void missOnClick(int position) {
+            SuccessRate currentRate = getSuccessRate(position);
+
+            if (position < match.getShootingRates().size()) {
+                int shootingIndex = position;
+                match.setShootingRate(shootingIndex,
+                        currentRate.getSuccesses(), currentRate.getAttempts() + 1);
+
+            } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
+                int defenseBreachIndex = position - match.getShootingRates().size();
+                match.setDefenseBreachRate(defenseBreachIndex,
+                        currentRate.getSuccesses(), currentRate.getAttempts() + 1);
+
+            } else {
+                Log.w(LOG_TAG, "missOnClick(): SuccessRate not found in match");
+            }
+
+            notifyDataSetChanged();
         }
 
     }
