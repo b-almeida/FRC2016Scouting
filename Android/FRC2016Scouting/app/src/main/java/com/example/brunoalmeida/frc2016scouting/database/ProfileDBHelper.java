@@ -202,6 +202,52 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
     // Match Read/Write Operations
 
+    public static ArrayList<Match> readMatches(Context context, int teamNumber) {
+        ArrayList<Match> matches = new ArrayList<>();
+
+        ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
+        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                MatchEntry._ID,
+        };
+
+        String selection = MatchEntry.TABLE_NAME + "." + MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.ALLY_1) + " = ? ";
+
+        String[] selectionArgs = new String[] {String.valueOf(teamNumber)};
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder = MatchEntry._ID + " DESC";
+
+        Cursor cursor = db.query(
+                MatchEntry.TABLE_NAME,      // The table to query
+                projection,                 // The columns to return
+                selection,                  // The columns for the WHERE clause
+                selectionArgs,              // The values for the WHERE clause
+                null,                       // don't group the rows
+                null,                       // don't filter by row groups
+                sortOrder                   // The sort order
+        );
+
+        if (cursor.moveToFirst()) {
+            while (! cursor.isAfterLast()) {
+                long id = cursor.getLong(
+                        cursor.getColumnIndexOrThrow(MatchEntry._ID));
+
+                Match match = readMatch(context, id);
+
+                Log.v(LOG_TAG, "readMatches():" + "\n" + match);
+
+                matches.add(match);
+                cursor.moveToNext();
+            }
+        }
+
+        return matches;
+    }
+
     public static Match readMatch(Context context, long id) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
 
