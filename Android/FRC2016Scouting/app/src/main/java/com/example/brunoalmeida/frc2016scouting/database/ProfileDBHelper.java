@@ -127,12 +127,15 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
             }
         }
 
+        cursor.close();
+        db.close();
+        profileDBHelper.close();
+
         return profiles;
     }
 
     public static Profile readProfile(Context context, long id) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
-
         SQLiteDatabase db = profileDBHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
@@ -173,6 +176,10 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         Log.v(LOG_TAG, "readProfile():" + "\n" + profile);
 
+        cursor.close();
+        db.close();
+        profileDBHelper.close();
+
         return profile;
     }
 
@@ -195,6 +202,9 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         Log.v(LOG_TAG, "writeProfile():" + "\n" + profile);
         Log.v(LOG_TAG, "writeProfile(): newRowID = " + newRowID);
+
+        database.close();
+        profileDBHelper.close();
 
         return newRowID;
     }
@@ -244,6 +254,10 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 cursor.moveToNext();
             }
         }
+
+        cursor.close();
+        db.close();
+        profileDBHelper.close();
 
         return matches;
     }
@@ -336,6 +350,10 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         Log.v(LOG_TAG, "readMatch():" + "\n" + match);
 
+        cursor.close();
+        db.close();
+        profileDBHelper.close();
+
         return match;
     }
 
@@ -370,6 +388,9 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         Log.v(LOG_TAG, "writeMatch():" + "\n" + match);
         Log.v(LOG_TAG, "writeMatch(): newRowID = " + newRowID);
+
+        database.close();
+        profileDBHelper.close();
 
         return newRowID;
     }
