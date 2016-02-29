@@ -7,9 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.example.brunoalmeida.frc2016scouting.data.Match;
+import com.example.brunoalmeida.frc2016scouting.data.Match.Team;
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -44,6 +51,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ArrayList<Match> matches = ProfileDBHelper.readMatches(this, profile.getTeamNumber());
+
+        String log = "onCreate(): Matches read from database:\n";
+        for (Match match : matches) {
+            log += match + "\n";
+        }
+        Log.v(LOG_TAG, log);
+
+        displayMatchList(matches);
+
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +69,45 @@ public class ProfileActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+    }
+
+    private void displayMatchList(final ArrayList<Match> matches) {
+        // Create a string for each profile
+        ArrayList<String> matchStrings = new ArrayList<>();
+        for (Match match : matches) {
+            matchStrings.add(getMatchString(match));
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,                                   // The current context (this activity)
+                android.R.layout.simple_list_item_1,    // The layout to populate.
+                matchStrings);
+
+        ListView matchList = (ListView) findViewById(R.id.match_list);
+        matchList.setAdapter(arrayAdapter);
+        matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(LOG_TAG, "match_list: In onItemClick()");
+                Log.v(LOG_TAG, "view = " + view + ", position = " + position + ", id = " + id);
+
+                startMatchActivity(matches.get(position).getID());
+            }
+        });
+    }
+
+    private String getMatchString(Match match) {
+        String str = "";
+
+        for (Team team : Team.values()) {
+            str += match.getTeamNumber(team) + ", ";
+        }
+
+        if (str.endsWith(", ")) {
+            str = str.substring(0, str.length() - 2);
+        }
+
+        return str;
     }
 
     public void newMatchOnClick(View view) {
@@ -63,6 +119,14 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting NewMatchActivity");
+    }
+
+    private void startMatchActivity(long matchID) {
+        Intent intent = new Intent(this, MatchActivity.class);
+        intent.putExtra(MatchActivity.INTENT_MATCH_ID, matchID);
+        startActivity(intent);
+
+        Log.v(LOG_TAG, "Starting MatchActivity");
     }
 
 }

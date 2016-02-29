@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "In newProfileOnClick()");
 
         startNewProfileActivity();
-
-        Log.v(LOG_TAG, "Starting NewProfileActivity");
     }
 
     private void displayProfileList(final ArrayList<Profile> profiles) {
@@ -111,12 +109,15 @@ public class MainActivity extends AppCompatActivity {
     private void startNewProfileActivity() {
         Intent intent = new Intent(this, NewProfileActivity.class);
         startActivity(intent);
+
+        Log.v(LOG_TAG, "Starting NewProfileActivity");
     }
 
     private void startProfileActivity(long profileID) {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(ProfileActivity.INTENT_PROFILE_ID, profileID);
         startActivity(intent);
+
         Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 
