@@ -179,11 +179,11 @@ public class MatchActivity extends AppCompatActivity {
         private String getDescription(int position) {
             if (position < match.getShootingRates().size()) {
                 int shootingIndex = position;
-                return Shooting.values()[shootingIndex].toString();
+                return Shooting.values()[shootingIndex].getDisplayString();
 
             } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
                 int defenseBreachIndex = position - match.getShootingRates().size();
-                return DefenseBreach.values()[defenseBreachIndex].toString();
+                return DefenseBreach.values()[defenseBreachIndex].getDisplayString();
 
             } else {
                 Log.w(LOG_TAG, "getSuccessRate(): SuccessRate not found in match");

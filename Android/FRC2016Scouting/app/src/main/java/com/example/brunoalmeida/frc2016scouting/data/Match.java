@@ -13,25 +13,55 @@ import java.util.EnumMap;
 public class Match {
 
     public enum Team {
-        ALLY_1,
-        ALLY_2,
-        ALLY_3,
-        OPPONENT_1,
-        OPPONENT_2,
-        OPPONENT_3
+        ALLY_1 ("Ally 1"),
+        ALLY_2 ("Ally 2"),
+        ALLY_3 ("Ally 3"),
+        OPPONENT_1("Opponent 1"),
+        OPPONENT_2("Opponent 2"),
+        OPPONENT_3("Opponent 3");
+
+        private String displayString;
+
+        Team(final String displayString) {
+            this.displayString = displayString;
+        }
+
+        public String getDisplayString() {
+            return displayString;
+        }
     }
 
     public enum Shooting {
-        LOW_GOAL,
-        HIGH_GOAL
+        LOW_GOAL("Low Goal"),
+        HIGH_GOAL("High Goal");
+
+        private String displayString;
+
+        Shooting(final String displayString) {
+            this.displayString = displayString;
+        }
+
+        public String getDisplayString() {
+            return displayString;
+        }
     }
 
     public enum DefenseBreach {
-        LOW_BAR,
-        CATEGORY_A,
-        CATEGORY_B,
-        CATEGORY_C,
-        CATEGORY_D
+        LOW_BAR("Low Bar"),
+        CATEGORY_A("Category A"),
+        CATEGORY_B("Category B"),
+        CATEGORY_C("Category C"),
+        CATEGORY_D("Category D");
+
+        private String displayString;
+
+        DefenseBreach(final String displayString) {
+            this.displayString = displayString;
+        }
+
+        public String getDisplayString() {
+            return displayString;
+        }
     }
 
 
