@@ -1,7 +1,10 @@
 package com.example.brunoalmeida.frc2016scouting;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
+    private ArrayList<Profile> profiles = new ArrayList<>();
+    private ArrayList<String> profileStrings = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +36,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //this.deleteDatabase(ProfileDBHelper.DATABASE_NAME);
-        //Log.v(LOG_TAG, "onCreate(): Database deleted");
+        updateProfiles();
+        updateProfileStrings();
 
-        ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
-
-        String log = "onCreate(): Profiles read from database:\n";
-        for (Profile profile : profiles) {
-            log += "teamNumber = " + profile.getTeamNumber() +
-                    ", robotFunction = " + profile.getRobotFunction() + "\n";
-        }
-        Log.v(LOG_TAG, log);
-
-        displayProfileList(profiles);
+        displayProfileList();
 
         /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +68,30 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_delete_data) {
+            deleteData();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateProfiles() {
+        profiles = ProfileDBHelper.readAllProfiles(this);
+
+        String log = "updateProfiles(): Profiles read from database:\n";
+        for (Profile profile : profiles) {
+            log += profile + "\n";
+        }
+
+        Log.v(LOG_TAG, log);
+    }
+
+    private void updateProfileStrings() {
+        profileStrings.clear();
+        for (Profile profile : profiles) {
+            profileStrings.add(String.valueOf(profile.getTeamNumber()));
+        }
     }
 
     public void newProfileOnClick(View view) {
@@ -82,12 +100,8 @@ public class MainActivity extends AppCompatActivity {
         startNewProfileActivity();
     }
 
-    private void displayProfileList(final ArrayList<Profile> profiles) {
-        // Create a string for each profile
-        ArrayList<String> profileStrings = new ArrayList<>();
-        for (Profile profile : profiles) {
-            profileStrings.add(String.valueOf(profile.getTeamNumber()));
-        }
+    private void displayProfileList() {
+        updateProfileStrings();
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,                                   // The current context (this activity)
@@ -101,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v(LOG_TAG, "profile_list: In onItemClick()");
                 Log.v(LOG_TAG, "view = " + view + ", position = " + position + ", id = " + id);
+
                 startProfileActivity(profiles.get(position).getId());
             }
         });
@@ -119,6 +134,37 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting ProfileActivity");
+    }
+
+    private void deleteData() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Delete Data");
+        builder.setMessage("Are you sure you want to delete all data?");
+
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                deleteDatabase(ProfileDBHelper.DATABASE_NAME);
+
+                Log.v(LOG_TAG, "In deleteData(): Database deleted");
+
+                updateProfiles();
+                updateProfileStrings();
+
+                ( (ArrayAdapter) ((ListView) findViewById(R.id.profile_list)).getAdapter() )
+                        .notifyDataSetChanged();
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+        builder.show();
     }
 
 }
