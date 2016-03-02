@@ -75,6 +75,15 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        Log.v(LOG_TAG, "In onPause()");
+
+        super.onPause();
+
+        ProfileDBHelper.writeMatch(this, match);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_match, menu);
