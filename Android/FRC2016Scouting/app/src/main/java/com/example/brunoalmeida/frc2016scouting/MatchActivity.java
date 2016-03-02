@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,9 +96,18 @@ public class MatchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // replaces the default 'Back' button action
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            startProfileActivity();
+        }
+        return true;
+    }
+
     private void startProfileActivity() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+
         Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 

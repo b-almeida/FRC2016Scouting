@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String LOG_TAG = "ProfileActivity";
 
     public static final String INTENT_PROFILE_ID = "profileID";
+    private static long profileID = -1;
 
     private Profile profile;
 
@@ -36,7 +38,10 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get the team number from the intent
-        long profileID = getIntent().getLongExtra(INTENT_PROFILE_ID, -1);
+        long id = getIntent().getLongExtra(INTENT_PROFILE_ID, -1);
+        if (id != -1) {
+            profileID = id;
+        }
         Log.v(LOG_TAG, "profileID received from intent: " + profileID);
 
         // Read the robot type from the database
@@ -69,6 +74,14 @@ public class ProfileActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // replaces the default 'Back' button action
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            startMainActivity();
+        }
+        return true;
     }
 
     private void displayMatchList(final ArrayList<Match> matches) {
@@ -112,6 +125,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void newMatchOnClick(View view) {
         startNewMatchActivity();
+    }
+
+    private void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
+        Log.v(LOG_TAG, "Starting MainActivity");
     }
 
     private void startNewMatchActivity() {
