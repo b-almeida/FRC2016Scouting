@@ -395,4 +395,38 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return newRowID;
     }
 
+    public static void updateMatch(Context context, Match match) {
+        ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
+
+        // Gets the data repository in write mode
+        SQLiteDatabase database = profileDBHelper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
+            values.put(teamNumberColumn.getValue(), match.getTeamNumber(teamNumberColumn.getKey()));
+        }
+
+        for (EnumMap.Entry<Shooting, ColumnPair> shootingRateColumn : MatchEntry.SHOOTING_RATE_COLUMNS.entrySet()) {
+            values.put(shootingRateColumn.getValue().getSuccesses(), match.getShootingRate(shootingRateColumn.getKey()).getSuccesses());
+            values.put(shootingRateColumn.getValue().getAttempts(), match.getShootingRate(shootingRateColumn.getKey()).getAttempts());
+        }
+
+        for (EnumMap.Entry<DefenseBreach, ColumnPair> defenseBreachRateColumn : MatchEntry.DEFENSE_BREACH_RATE_COLUMNS.entrySet()) {
+            values.put(defenseBreachRateColumn.getValue().getSuccesses(), match.getDefenseBreachRate(defenseBreachRateColumn.getKey()).getSuccesses());
+            values.put(defenseBreachRateColumn.getValue().getAttempts(), match.getDefenseBreachRate(defenseBreachRateColumn.getKey()).getAttempts());
+        }
+
+        String strFilter = MatchEntry._ID + "=" + match.getID();
+
+        // Insert the new row, returning the primary key value of the new row
+        database.update(MatchEntry.TABLE_NAME, values, strFilter, null);
+
+        Log.v(LOG_TAG, "updateMatch():" + "\n" + match);
+
+        database.close();
+        profileDBHelper.close();
+    }
+
 }
