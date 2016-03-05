@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_undo_white_24dp"
         android:orderInCategory="1"
         android:title="Undo"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"

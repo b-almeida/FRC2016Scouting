@@ -28,6 +28,10 @@ import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.data.SuccessRate;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
+import java.util.AbstractMap;
+import java.util.EnumMap;
+import java.util.Stack;
+
 public class MatchActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MatchActivity";
@@ -35,6 +39,10 @@ public class MatchActivity extends AppCompatActivity {
     public static final String INTENT_MATCH_ID = "matchID";
 
     private Match match;
+
+    private Stack<EnumMap.Entry<Enum, SuccessRate>> undoActions = new Stack<>();
+
+
 
 
     @Override
@@ -97,6 +105,14 @@ public class MatchActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_undo) {
+            undoAction();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -115,6 +131,34 @@ public class MatchActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 
+    private void undoAction() {
+        if (undoActions.size() > 0) {
+            EnumMap.Entry<Enum, SuccessRate> action = undoActions.pop();
+
+            if (action.getKey() instanceof Shooting) {
+                Shooting shooting = (Shooting) action.getKey();
+                SuccessRate shootingRate = action.getValue();
+
+                match.setShootingRate(shooting, shootingRate.getSuccesses(), shootingRate.getAttempts());
+
+            } else if (action.getKey() instanceof DefenseBreach) {
+                DefenseBreach defenseBreach = (DefenseBreach) action.getKey();
+                SuccessRate defenseBreachRate = action.getValue();
+
+                match.setDefenseBreachRate(defenseBreach, defenseBreachRate.getSuccesses(), defenseBreachRate.getAttempts());
+
+            } else {
+                Log.v(LOG_TAG, "In undoAction(): action key not found");
+            }
+
+            ListView statList = (ListView) findViewById(R.id.stat_list);
+            ((MatchBaseAdapter) statList.getAdapter()).notifyDataSetChanged();
+
+        } else {
+            Log.v(LOG_TAG, "In undoAction(): no undo actions found in stack");
+        }
+    }
+
 
 
 
@@ -125,6 +169,8 @@ public class MatchActivity extends AppCompatActivity {
         private Match match;
 
 
+
+        
         public MatchBaseAdapter(Match match) {
             this.match = match;
         }
@@ -225,11 +271,25 @@ public class MatchActivity extends AppCompatActivity {
 
             if (position < match.getShootingRates().size()) {
                 int shootingIndex = position;
+                Shooting shooting = Shooting.values()[shootingIndex];
+
+                EnumMap.Entry<Enum, SuccessRate> oldShootingRate = new AbstractMap.SimpleEntry(shooting, match.getShootingRate(shooting));
+                undoActions.push(oldShootingRate);
+
+                Log.v(LOG_TAG, "In successOnClick(): " + undoActions.size() + " undo actions in stack");
+
                 match.setShootingRate(shootingIndex,
                         currentRate.getSuccesses() + 1, currentRate.getAttempts() + 1);
 
             } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
                 int defenseBreachIndex = position - match.getShootingRates().size();
+                DefenseBreach defenseBreach = DefenseBreach.values()[defenseBreachIndex];
+
+                EnumMap.Entry<Enum, SuccessRate> oldDefenseBreachRate = new AbstractMap.SimpleEntry(defenseBreach, match.getDefenseBreachRate(defenseBreach));
+                undoActions.push(oldDefenseBreachRate);
+
+                Log.v(LOG_TAG, "In successOnClick(): " + undoActions.size() + " undo actions in stack");
+
                 match.setDefenseBreachRate(defenseBreachIndex,
                         currentRate.getSuccesses() + 1, currentRate.getAttempts() + 1);
 
@@ -245,11 +305,25 @@ public class MatchActivity extends AppCompatActivity {
 
             if (position < match.getShootingRates().size()) {
                 int shootingIndex = position;
+                Shooting shooting = Shooting.values()[shootingIndex];
+
+                EnumMap.Entry<Enum, SuccessRate> oldShootingRate = new AbstractMap.SimpleEntry(shooting, match.getShootingRate(shooting));
+                undoActions.push(oldShootingRate);
+
+                Log.v(LOG_TAG, "In missOnClick(): " + undoActions.size() + " undo actions in stack");
+
                 match.setShootingRate(shootingIndex,
                         currentRate.getSuccesses(), currentRate.getAttempts() + 1);
 
             } else if (position < match.getShootingRates().size() + match.getDefenseBreachRates().size()) {
                 int defenseBreachIndex = position - match.getShootingRates().size();
+                DefenseBreach defenseBreach = DefenseBreach.values()[defenseBreachIndex];
+
+                EnumMap.Entry<Enum, SuccessRate> oldDefenseBreachRate = new AbstractMap.SimpleEntry(defenseBreach, match.getDefenseBreachRate(defenseBreach));
+                undoActions.push(oldDefenseBreachRate);
+
+                Log.v(LOG_TAG, "In missOnClick(): " + undoActions.size() + " undo actions in stack");
+
                 match.setDefenseBreachRate(defenseBreachIndex,
                         currentRate.getSuccesses(), currentRate.getAttempts() + 1);
 
