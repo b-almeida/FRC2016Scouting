@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import com.example.brunoalmeida.frc2016scouting.data.Match;
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
+import com.example.brunoalmeida.frc2016scouting.database.DataExport;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Profile> profiles = new ArrayList<>();
     private ArrayList<String> profileStrings = new ArrayList<>();
+
+
 
 
     @Override
@@ -77,7 +80,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }*/
 
-        if (id == R.id.action_delete_data) {
+        if (id == R.id.action_export_data_csv) {
+            Log.v(LOG_TAG, "action_export_data_csv selected");
+            DataExport.exportDataToCSV(this);
+            return true;
+
+        } else if (id == R.id.action_delete_data) {
+            Log.v(LOG_TAG, "action_delete_data selected");
             deleteData();
             return true;
         }
