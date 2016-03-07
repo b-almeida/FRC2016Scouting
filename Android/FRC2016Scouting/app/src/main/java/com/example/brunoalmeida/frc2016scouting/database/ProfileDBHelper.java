@@ -231,7 +231,11 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         String[] selectionArgs = new String[] {String.valueOf(teamNumber)};
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = MatchEntry._ID + " DESC";
+        String sortOrder = "";
+        for (Team team : Team.values()) {
+            sortOrder += MatchEntry.TEAM_NUMBER_COLUMNS.get(team) + ", ";
+        }
+        sortOrder += MatchEntry._ID;
 
         Cursor cursor = db.query(
                 MatchEntry.TABLE_NAME,      // The table to query
