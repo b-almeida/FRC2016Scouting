@@ -111,7 +111,9 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
         SQLiteDatabase db = profileDBHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ProfileContract.ProfileEntry.TABLE_NAME, null);
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + ProfileContract.ProfileEntry.TABLE_NAME +
+                " ORDER BY " + ProfileEntry.COLUMN_TEAM_NUMBER + " ASC", null);
 
         if (cursor.moveToFirst()) {
             while (! cursor.isAfterLast()) {
@@ -150,7 +152,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         String[] selectionArgs = new String[] {String.valueOf(id)};
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = ProfileEntry.COLUMN_TEAM_NUMBER + " DESC";
+        String sortOrder = ProfileEntry.COLUMN_TEAM_NUMBER + " ASC";
 
         Cursor cursor = db.query(
                 ProfileEntry.TABLE_NAME,    // The table to query
