@@ -38,8 +38,9 @@ public class MatchActivity extends AppCompatActivity {
 
     public static final String INTENT_MATCH_ID = "matchID";
 
-    private Match match;
+    private Menu menu;
 
+    private Match match;
     private Stack<EnumMap.Entry<Enum, SuccessRate>> undoActions = new Stack<>();
 
 
@@ -95,6 +96,18 @@ public class MatchActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_match, menu);
+
+        this.menu = menu;
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        updateUndoActionMenuItem();
+
         return true;
     }
 
@@ -133,9 +146,34 @@ public class MatchActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "Starting ProfileActivity");
     }
 
+    private void updateUndoActionMenuItem() {
+        Log.v(LOG_TAG, "In updateUndoActionMenuItem()");
+
+        MenuItem undoActionMenuItem = menu.findItem(R.id.action_undo);
+
+        if (undoActions.size() > 0) {
+            undoActionMenuItem.setEnabled(true);
+            undoActionMenuItem.getIcon().setAlpha(255);
+        } else {
+            undoActionMenuItem.setEnabled(false);
+            undoActionMenuItem.getIcon().setAlpha(0);
+        }
+    }
+
+    private void pushUndoAction(EnumMap.Entry<Enum, SuccessRate> rate) {
+        undoActions.push(rate);
+        updateUndoActionMenuItem();
+    }
+
+    private EnumMap.Entry<Enum, SuccessRate> popUndoAction() {
+        EnumMap.Entry<Enum, SuccessRate> rate = undoActions.pop();
+        updateUndoActionMenuItem();
+        return rate;
+    }
+
     private void undoAction() {
         if (undoActions.size() > 0) {
-            EnumMap.Entry<Enum, SuccessRate> action = undoActions.pop();
+            EnumMap.Entry<Enum, SuccessRate> action = popUndoAction();
 
             if (action.getKey() instanceof Shooting) {
                 Shooting shooting = (Shooting) action.getKey();
@@ -276,7 +314,7 @@ public class MatchActivity extends AppCompatActivity {
                 Shooting shooting = Shooting.values()[shootingIndex];
 
                 EnumMap.Entry<Enum, SuccessRate> oldShootingRate = new AbstractMap.SimpleEntry(shooting, match.getShootingRate(shooting));
-                undoActions.push(oldShootingRate);
+                pushUndoAction(oldShootingRate);
 
                 Log.v(LOG_TAG, "In successOnClick(): " + undoActions.size() + " undo actions in stack");
 
@@ -288,7 +326,7 @@ public class MatchActivity extends AppCompatActivity {
                 DefenseBreach defenseBreach = DefenseBreach.values()[defenseBreachIndex];
 
                 EnumMap.Entry<Enum, SuccessRate> oldDefenseBreachRate = new AbstractMap.SimpleEntry(defenseBreach, match.getDefenseBreachRate(defenseBreach));
-                undoActions.push(oldDefenseBreachRate);
+                pushUndoAction(oldDefenseBreachRate);
 
                 Log.v(LOG_TAG, "In successOnClick(): " + undoActions.size() + " undo actions in stack");
 
@@ -310,7 +348,7 @@ public class MatchActivity extends AppCompatActivity {
                 Shooting shooting = Shooting.values()[shootingIndex];
 
                 EnumMap.Entry<Enum, SuccessRate> oldShootingRate = new AbstractMap.SimpleEntry(shooting, match.getShootingRate(shooting));
-                undoActions.push(oldShootingRate);
+                pushUndoAction(oldShootingRate);
 
                 Log.v(LOG_TAG, "In missOnClick(): " + undoActions.size() + " undo actions in stack");
 
@@ -322,7 +360,7 @@ public class MatchActivity extends AppCompatActivity {
                 DefenseBreach defenseBreach = DefenseBreach.values()[defenseBreachIndex];
 
                 EnumMap.Entry<Enum, SuccessRate> oldDefenseBreachRate = new AbstractMap.SimpleEntry(defenseBreach, match.getDefenseBreachRate(defenseBreach));
-                undoActions.push(oldDefenseBreachRate);
+                pushUndoAction(oldDefenseBreachRate);
 
                 Log.v(LOG_TAG, "In missOnClick(): " + undoActions.size() + " undo actions in stack");
 
