@@ -29,6 +29,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Profile profile;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,17 +112,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private String getMatchString(Match match) {
-        String str = "";
-
-        for (Team team : Team.values()) {
-            str += match.getTeamNumber(team) + ", ";
-        }
-
-        if (str.endsWith(", ")) {
-            str = str.substring(0, str.length() - 2);
-        }
-
-        return str;
+        return String.format("Teams %s, %s, %s vs. Teams %s, %s, %s",
+                match.getTeamNumber(Team.ALLY_1),
+                match.getTeamNumber(Team.ALLY_2),
+                match.getTeamNumber(Team.ALLY_3),
+                match.getTeamNumber(Team.OPPONENT_1),
+                match.getTeamNumber(Team.OPPONENT_2),
+                match.getTeamNumber(Team.OPPONENT_3));
     }
 
     public void newMatchOnClick(View view) {

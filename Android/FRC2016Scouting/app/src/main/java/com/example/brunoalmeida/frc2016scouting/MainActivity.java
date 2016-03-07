@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateProfileStrings() {
         profileStrings.clear();
         for (Profile profile : profiles) {
-            profileStrings.add(String.valueOf(profile.getTeamNumber()));
+            profileStrings.add("Team " + String.valueOf(profile.getTeamNumber()));
         }
     }
 
