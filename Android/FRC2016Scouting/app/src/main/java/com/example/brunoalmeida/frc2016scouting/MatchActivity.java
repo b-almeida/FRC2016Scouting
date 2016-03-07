@@ -88,7 +88,7 @@ public class MatchActivity extends AppCompatActivity {
 
         super.onPause();
 
-        ProfileDBHelper.writeMatch(this, match);
+        ProfileDBHelper.updateMatch(this, match);
     }
 
     @Override
