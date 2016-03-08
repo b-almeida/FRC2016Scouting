@@ -44,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (id != -1) {
             profileID = id;
         }
+
         Log.v(LOG_TAG, "profileID received from intent: " + profileID);
 
         // Read the robot type from the database
@@ -134,6 +135,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void startNewMatchActivity() {
         Intent intent = new Intent(this, NewMatchActivity.class);
+        intent.putExtra(NewMatchActivity.INTENT_TEAM_NUMBER, profile.getTeamNumber());
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting NewMatchActivity");

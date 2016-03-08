@@ -11,13 +11,23 @@
     tools:context="com.example.brunoalmeida.frc2016scouting.NewMatchActivityFragment"
     tools:showIn="@layout/activity_new_match">
 
+    <TextView
+        android:id="@+id/ally_1_team_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Team"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_vertical_margin"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/view_horizontal_margin"
             android:layout_weight="1"
@@ -26,14 +36,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alliance 1" />
+                android:text="Allies" />
 
-            <EditText
-                android:id="@+id/ally_1_team_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="1" />
+            <!--            <EditText
+                            android:id="@+id/ally_1_team_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:text="1" />-->
 
             <EditText
                 android:id="@+id/ally_2_team_number"
@@ -52,7 +62,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_horizontal_margin"
             android:layout_weight="1"
@@ -61,7 +71,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alliance 2" />
+                android:text="Opponents" />
 
             <EditText
                 android:id="@+id/opponent_1_team_number"

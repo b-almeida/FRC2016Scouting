@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.brunoalmeida.frc2016scouting.data.Match;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
@@ -14,6 +15,12 @@ import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 public class NewMatchActivity extends AppCompatActivity {
 
     private static String LOG_TAG = "NewMatchActivity";
+
+    public static final String INTENT_TEAM_NUMBER = "TeamNumber";
+
+    private int teamNumber = -1;
+
+
 
 
     @Override
@@ -24,6 +31,16 @@ public class NewMatchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Get the team number from the intent
+        int teamNumber = getIntent().getIntExtra(INTENT_TEAM_NUMBER, -1);
+        if (teamNumber != -1) {
+            this.teamNumber = teamNumber;
+        }
+
+        Log.v(LOG_TAG, "teamNumber received from intent: " + this.teamNumber);
+
+        ((TextView) findViewById(R.id.ally_1_team_number)).setText("Team " + teamNumber);
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +69,7 @@ public class NewMatchActivity extends AppCompatActivity {
     public void createMatchOnClick(View view) {
         Log.v(LOG_TAG, "in createMatchOnClick()");
 
-        int ally1TeamNumber = getTeamNumberFromEditText(R.id.ally_1_team_number);
+        int ally1TeamNumber = teamNumber;
         int ally2TeamNumber = getTeamNumberFromEditText(R.id.ally_2_team_number);
         int ally3TeamNumber = getTeamNumberFromEditText(R.id.ally_3_team_number);
         int opponent1TeamNumber = getTeamNumberFromEditText(R.id.opponent_1_team_number);
