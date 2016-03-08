@@ -68,6 +68,7 @@ public class Match {
 
 
     private long id;
+    private String description;
     private EnumMap<Team, Integer> teamNumbers = new EnumMap<>(Team.class);
     private EnumMap<Shooting, SuccessRate> shootingRates = new EnumMap<>(Shooting.class);
     private EnumMap<DefenseBreach, SuccessRate> defenseBreachRates = new EnumMap<>(DefenseBreach.class);
@@ -76,6 +77,7 @@ public class Match {
 
 
     public Match(long id,
+                 String description,
                  int ally1TeamNumber,
                  int ally2TeamNumber,
                  int ally3TeamNumber,
@@ -84,6 +86,7 @@ public class Match {
                  int opponent3TeamNumber) {
 
         this.id = id;
+        this.description = description;
 
         this.teamNumbers.put(Team.ALLY_1, ally1TeamNumber);
         this.teamNumbers.put(Team.ALLY_2, ally2TeamNumber);
@@ -101,7 +104,8 @@ public class Match {
         }
     }
 
-    public Match(int ally1TeamNumber,
+    public Match(String description,
+                 int ally1TeamNumber,
                  int ally2TeamNumber,
                  int ally3TeamNumber,
                  int opponent1TeamNumber,
@@ -110,6 +114,7 @@ public class Match {
 
         this(
                 -1,
+                description,
                 ally1TeamNumber,
                 ally2TeamNumber,
                 ally3TeamNumber,
@@ -123,6 +128,10 @@ public class Match {
 
     public long getID() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
 
@@ -183,7 +192,9 @@ public class Match {
     public String toString() {
         String str = "";
 
-        str += "id = " + id;
+        str += "id = " + getID();
+
+        str += "\n" + "description = " + getDescription();
 
         for (Team team : Team.values()) {
             str += "\n" + team.toString() + " teamNumber = " +

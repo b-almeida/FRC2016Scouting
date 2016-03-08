@@ -58,6 +58,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         str += MatchEntry._ID + " INTEGER PRIMARY KEY,";
 
+        str += MatchEntry.COLUMN_DESCRIPTION + " STRING,";
+
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
             str += teamNumberColumn.getValue() + " INTEGER,";
         }
@@ -72,7 +74,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
             str += defenseBreachRateColumn.getValue().getAttempts() + " INTEGER,";
         }
 
-        if (str.length() > 0 && str.charAt(str.length() - 1) == ',') {
+        if (str.length() > 0 && str.endsWith(",")) {
             str = str.substring(0, str.length() - 1);
         }
         str += ")";
@@ -231,11 +233,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         String[] selectionArgs = new String[] {String.valueOf(teamNumber)};
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = "";
-        for (Team team : Team.values()) {
-            sortOrder += MatchEntry.TEAM_NUMBER_COLUMNS.get(team) + ", ";
-        }
-        sortOrder += MatchEntry._ID;
+        String sortOrder = MatchEntry._ID;
 
         Cursor cursor = db.query(
                 MatchEntry.TABLE_NAME,      // The table to query
@@ -275,6 +273,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         ArrayList<String> projectionArrayList = new ArrayList<>();
 
+        projectionArrayList.add(MatchEntry.COLUMN_DESCRIPTION);
+
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
             projectionArrayList.add(teamNumberColumn.getValue());
         }
@@ -298,7 +298,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         String[] selectionArgs = new String[] {String.valueOf(id)};
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = MatchEntry._ID + " DESC";
+        String sortOrder = MatchEntry._ID;
 
         Cursor cursor = db.query(
                 MatchEntry.TABLE_NAME,      // The table to query
@@ -313,6 +313,9 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         int columnIndex;
+
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DESCRIPTION);
+        String description = cursor.getString(columnIndex);
 
         columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.TEAM_NUMBER_COLUMNS.get(Team.ALLY_1));
         int ally1TeamNumber = cursor.getInt(columnIndex);
@@ -329,6 +332,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         Match match = new Match(
                 id,
+                description,
                 ally1TeamNumber,
                 ally2TeamNumber,
                 ally3TeamNumber,
@@ -339,6 +343,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         for (EnumMap.Entry<Shooting, ColumnPair> shootingRateColumn : MatchEntry.SHOOTING_RATE_COLUMNS.entrySet()) {
             columnIndex = cursor.getColumnIndexOrThrow(shootingRateColumn.getValue().getSuccesses());
             int successes = cursor.getInt(columnIndex);
+
             columnIndex = cursor.getColumnIndexOrThrow(shootingRateColumn.getValue().getAttempts());
             int attempts = cursor.getInt(columnIndex);
 
@@ -348,6 +353,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         for (EnumMap.Entry<DefenseBreach, ColumnPair> defenseBreachRateColumn : MatchEntry.DEFENSE_BREACH_RATE_COLUMNS.entrySet()) {
             columnIndex = cursor.getColumnIndexOrThrow(defenseBreachRateColumn.getValue().getSuccesses());
             int successes = cursor.getInt(columnIndex);
+
             columnIndex = cursor.getColumnIndexOrThrow(defenseBreachRateColumn.getValue().getAttempts());
             int attempts = cursor.getInt(columnIndex);
 
@@ -371,6 +377,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
+
+        values.put(MatchEntry.COLUMN_DESCRIPTION, match.getDescription());
 
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
             values.put(teamNumberColumn.getValue(), match.getTeamNumber(teamNumberColumn.getKey()));
@@ -409,6 +417,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
+
+        values.put(MatchEntry.COLUMN_DESCRIPTION, match.getDescription());
 
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.TEAM_NUMBER_COLUMNS.entrySet()) {
             values.put(teamNumberColumn.getValue(), match.getTeamNumber(teamNumberColumn.getKey()));

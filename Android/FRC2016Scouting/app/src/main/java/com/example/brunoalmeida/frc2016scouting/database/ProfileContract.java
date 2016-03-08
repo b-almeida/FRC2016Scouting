@@ -47,6 +47,8 @@ public abstract class ProfileContract {
 
         public static final String TABLE_NAME = "matches";
 
+        public static final String COLUMN_DESCRIPTION = "description";
+
         public static final EnumMap<Team, String> TEAM_NUMBER_COLUMNS =
                 new EnumMap<>(Team.class);
         public static final EnumMap<Shooting, ColumnPair> SHOOTING_RATE_COLUMNS =
@@ -55,6 +57,7 @@ public abstract class ProfileContract {
                 new EnumMap<>(DefenseBreach.class);
 
 
+        // Construct TEAM_NUMBER_COLUMNS, SHOOTING_RATE_COLUMNS, DEFENSE_BREACH_RATE_COLUMNS
         static {
             for (Team team : Team.values()) {
                 TEAM_NUMBER_COLUMNS.put(team, "TEAM_NUMBER_" + team.toString());

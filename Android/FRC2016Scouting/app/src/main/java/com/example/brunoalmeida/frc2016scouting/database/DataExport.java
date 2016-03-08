@@ -70,6 +70,8 @@ public class DataExport {
 
                 String line = "";
 
+                line += "Description,";
+
                 for (Team team : Team.values()) {
                     line += team.getDisplayString() + ",";
                 }
@@ -88,6 +90,8 @@ public class DataExport {
 
                 for (Match match : matches) {
                     line = "";
+
+                    line += match.getDescription() + ",";
 
                     for (Team team : Team.values()) {
                         line += match.getTeamNumber(team) + ",";
@@ -121,7 +125,7 @@ public class DataExport {
             context.sendBroadcast(intent);
 
         } catch (Exception e) {
-            Log.v(LOG_TAG, "In exportDataToCSV(): operation failed\n" + e.getLocalizedMessage());
+            Log.v(LOG_TAG, "In exportDataToCSV(): operation failed" + "\n" + e.getLocalizedMessage());
         }
 
         return false;
