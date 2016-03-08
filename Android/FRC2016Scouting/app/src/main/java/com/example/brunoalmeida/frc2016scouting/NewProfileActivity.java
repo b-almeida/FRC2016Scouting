@@ -12,9 +12,15 @@ import android.widget.Spinner;
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
+import java.util.ArrayList;
+
 public class NewProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "NewProfileActivity";
+
+    private ArrayList<Profile> allProfiles;
+
+
 
 
     @Override
@@ -27,6 +33,8 @@ public class NewProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        allProfiles = ProfileDBHelper.readAllProfiles(this);
+
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,25 +45,47 @@ public class NewProfileActivity extends AppCompatActivity {
         });*/
     }
 
-    public void createProfileOnClick(View view) {
-        // Get the data from the interface
-        String teamNumberString = ( (EditText) findViewById(R.id.team_number) )
-                .getText().toString();
-
-        int teamNumber;
-        if (teamNumberString != null && teamNumberString.length() > 0) {
-            teamNumber = Integer.parseInt(teamNumberString);
-        } else {
-            teamNumber = 0;
+    private boolean doesProfileExist(Profile newProfile) {
+        for (Profile existingProfile : allProfiles) {
+            if (newProfile.getTeamNumber() == existingProfile.getTeamNumber()) {
+                return true;
+            }
         }
 
-        String robotFunction = ( (Spinner) findViewById(R.id.robot_function) )
-                .getSelectedItem().toString();
+        return false;
+    }
 
-        // Write to the database
-        long profileID = ProfileDBHelper.writeProfile(this, new Profile(teamNumber, robotFunction));
+    public void createProfileOnClick(View view) {
+        boolean allDataValid = true;
 
-        startProfileActivity(profileID);
+        // Get the team number from the interface
+        EditText teamNumberInput = (EditText) findViewById(R.id.team_number);
+        String teamNumberString = teamNumberInput.getText().toString().trim();
+
+        if (teamNumberString.isEmpty()) {
+            allDataValid = false;
+            teamNumberInput.setError("Can't be empty.");
+
+        } else if (Integer.parseInt(teamNumberString) < 0) {
+            allDataValid = false;
+            teamNumberInput.setError("Can't be negative.");
+        }
+
+        if (allDataValid) {
+            int teamNumber = Integer.parseInt(teamNumberString);
+            String robotFunction = ((Spinner) findViewById(R.id.robot_function))
+                    .getSelectedItem().toString();
+
+            Profile profile = new Profile(teamNumber, robotFunction);
+
+            if (doesProfileExist(profile)) {
+                allDataValid = false;
+                teamNumberInput.setError("Team " + teamNumber + " already exists.");
+            } else {
+                long profileID = ProfileDBHelper.writeProfile(this, profile);
+                startProfileActivity(profileID);
+            }
+        }
     }
 
     private void startProfileActivity(long profileID) {
