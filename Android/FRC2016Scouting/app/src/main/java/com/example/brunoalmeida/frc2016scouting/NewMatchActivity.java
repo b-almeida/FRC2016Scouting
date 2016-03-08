@@ -56,10 +56,10 @@ public class NewMatchActivity extends AppCompatActivity {
      * @param editTextID EditText view id.
      */
     private int getTeamNumberFromEditText(int editTextID) {
-        String teamNumberString = ( (EditText) findViewById(editTextID) )
-                .getText().toString();
+        String teamNumberString = ((EditText) findViewById(editTextID))
+                .getText().toString().trim();
 
-        if (teamNumberString != null && teamNumberString.length() > 0) {
+        if (teamNumberString.length() > 0) {
             return Integer.parseInt(teamNumberString);
         } else {
             return 0;
@@ -69,24 +69,42 @@ public class NewMatchActivity extends AppCompatActivity {
     public void createMatchOnClick(View view) {
         Log.v(LOG_TAG, "in createMatchOnClick()");
 
-        int ally1TeamNumber = teamNumber;
-        int ally2TeamNumber = getTeamNumberFromEditText(R.id.ally_2_team_number);
-        int ally3TeamNumber = getTeamNumberFromEditText(R.id.ally_3_team_number);
-        int opponent1TeamNumber = getTeamNumberFromEditText(R.id.opponent_1_team_number);
-        int opponent2TeamNumber = getTeamNumberFromEditText(R.id.opponent_2_team_number);
-        int opponent3TeamNumber = getTeamNumberFromEditText(R.id.opponent_3_team_number);
+        boolean allDataValid = true;
 
-        Match match = new Match(
-                ally1TeamNumber,
-                ally2TeamNumber,
-                ally3TeamNumber,
-                opponent1TeamNumber,
-                opponent2TeamNumber,
-                opponent3TeamNumber);
+        for (int editTextID : new int[] {
+                R.id.ally_2_team_number,
+                R.id.ally_3_team_number,
+                R.id.opponent_1_team_number,
+                R.id.opponent_2_team_number,
+                R.id.opponent_3_team_number}) {
 
-        long matchID = ProfileDBHelper.writeMatch(this, match);
+            EditText editText = (EditText) findViewById(editTextID);
+            if ( editText.getText().toString().trim().isEmpty() ) {
+                allDataValid = false;
+                editText.setError("Can't be blank.");
+            }
+        }
 
-        startMatchActivity(matchID);
+        if (allDataValid) {
+            int ally1TeamNumber = teamNumber;
+            int ally2TeamNumber = getTeamNumberFromEditText(R.id.ally_2_team_number);
+            int ally3TeamNumber = getTeamNumberFromEditText(R.id.ally_3_team_number);
+            int opponent1TeamNumber = getTeamNumberFromEditText(R.id.opponent_1_team_number);
+            int opponent2TeamNumber = getTeamNumberFromEditText(R.id.opponent_2_team_number);
+            int opponent3TeamNumber = getTeamNumberFromEditText(R.id.opponent_3_team_number);
+
+            Match match = new Match(
+                    ally1TeamNumber,
+                    ally2TeamNumber,
+                    ally3TeamNumber,
+                    opponent1TeamNumber,
+                    opponent2TeamNumber,
+                    opponent3TeamNumber);
+
+            long matchID = ProfileDBHelper.writeMatch(this, match);
+
+            startMatchActivity(matchID);
+        }
     }
 
     private void startMatchActivity(long matchID) {
