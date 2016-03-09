@@ -1,6 +1,5 @@
 package com.example.brunoalmeida.frc2016scouting;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.brunoalmeida.frc2016scouting.data.Match;
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
-import com.example.brunoalmeida.frc2016scouting.database.DataExport;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
 import java.util.ArrayList;
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_export_data_csv) {
             Log.v(LOG_TAG, "action_export_data_csv selected");
-            DataExport.exportDataToCSV(this);
+            // DataExport.exportDataToCSV(this);
             return true;
 
         } else if (id == R.id.action_delete_data) {
