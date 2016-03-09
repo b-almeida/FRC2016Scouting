@@ -78,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         if (id == R.id.action_export_data_csv) {
-            Log.v(LOG_TAG, "action_export_data_csv selected");
-            // DataExport.exportDataToCSV(this);
+            Log.v(LOG_TAG, "action_export_data_csv options item selected");
+            startExportDataActivity();
             return true;
 
         } else if (id == R.id.action_delete_data) {
-            Log.v(LOG_TAG, "action_delete_data selected");
+            Log.v(LOG_TAG, "action_delete_data options item selected");
             deleteData();
             return true;
         }
@@ -134,6 +134,13 @@ public class MainActivity extends AppCompatActivity {
                 startProfileActivity(profiles.get(position).getId());
             }
         });
+    }
+
+    private void startExportDataActivity() {
+        Intent intent = new Intent(this, ExportDataActivity.class);
+        startActivity(intent);
+
+        Log.v(LOG_TAG, "Starting ExportDataActivity");
     }
 
     private void startNewProfileActivity() {
