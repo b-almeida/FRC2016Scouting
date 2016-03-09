@@ -8,5 +8,5 @@
     <string name="title_activity_profile">Team</string>
     <string name="title_activity_new_match">New Match</string>
     <string name="title_activity_match">Match</string>
-    <string name="title_activity_export_data">ExportDataActivity</string>
+    <string name="title_activity_export_data">Export Data</string>
 </resources>
