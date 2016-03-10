@@ -1,5 +1,6 @@
 package com.example.brunoalmeida.frc2016scouting;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
 import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
@@ -25,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = "MainActivity";
 
     private ArrayList<Profile> profiles = new ArrayList<>();
-    private ArrayList<String> profileStrings = new ArrayList<>();
 
 
 
@@ -43,10 +46,12 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
-        updateProfiles();
-        updateProfileStrings();
 
-        displayProfileList();
+        updateProfiles();
+
+        ListView profileList = (ListView) findViewById(R.id.profile_list);
+        profileList.setAdapter(new MainBaseAdapter(profiles));
+
 
         /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,39 +109,11 @@ public class MainActivity extends AppCompatActivity {
         Log.v(LOG_TAG, log);
     }
 
-    private void updateProfileStrings() {
-        profileStrings.clear();
-        for (Profile profile : profiles) {
-            profileStrings.add("Team " + String.valueOf(profile.getTeamNumber()));
-        }
-    }
-
     public void newProfileOnClick(View view) {
         Log.v(LOG_TAG, "In newProfileOnClick()");
-
         startNewProfileActivity();
     }
 
-    private void displayProfileList() {
-        updateProfileStrings();
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,                                   // The current context (this activity)
-                android.R.layout.simple_list_item_1,    // The layout to populate.
-                profileStrings);
-
-        ListView profileList = (ListView) findViewById(R.id.profile_list);
-        profileList.setAdapter(arrayAdapter);
-        profileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v(LOG_TAG, "profile_list: In onItemClick()");
-                Log.v(LOG_TAG, "view = " + view + ", position = " + position + ", id = " + id);
-
-                startProfileActivity(profiles.get(position).getId());
-            }
-        });
-    }
 
     private void startExportDataActivity() {
         Intent intent = new Intent(this, ExportDataActivity.class);
@@ -172,11 +149,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.v(LOG_TAG, "In deleteData(): Database deleted");
 
+                // Update the profiles in the activity
                 updateProfiles();
-                updateProfileStrings();
 
-                ( (ArrayAdapter) ((ListView) findViewById(R.id.profile_list)).getAdapter() )
-                        .notifyDataSetChanged();
+                // Update the data in the adapter
+                ListView profileList = (ListView) findViewById(R.id.profile_list);
+                MainBaseAdapter adapter = (MainBaseAdapter) profileList.getAdapter();
+                adapter.setProfiles(profiles);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -189,6 +169,74 @@ public class MainActivity extends AppCompatActivity {
         builder.setIcon(android.R.drawable.ic_dialog_alert);
 
         builder.show();
+    }
+
+
+
+
+    private class MainBaseAdapter extends BaseAdapter {
+
+        private static final String LOG_TAG = "MainBaseAdapter";
+
+        private ArrayList<Profile> profiles;
+
+
+
+
+        public MainBaseAdapter(ArrayList<Profile> profiles) {
+            this.profiles = profiles;
+        }
+
+        @Override
+        public int getCount() {
+            Log.v(LOG_TAG, "In getCount()");
+            return profiles.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            Log.v(LOG_TAG, "In getItem()");
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            Log.v(LOG_TAG, "In getItemId()");
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                Log.v(LOG_TAG, "In getView(): convertView = null");
+
+                LayoutInflater inflater =
+                        (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.main_row, parent, false);
+            }
+
+            RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout);
+            TextView primaryString = (TextView) convertView.findViewById(R.id.primary_string);
+            TextView secondaryString = (TextView) convertView.findViewById(R.id.secondary_string);
+
+            primaryString.setText("Team " + profiles.get(position).getTeamNumber());
+            secondaryString.setText(profiles.get(position).getRobotFunction());
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.v(LOG_TAG, "In getView(): layout.onClick()");
+                    Log.v(LOG_TAG, "position = " + position + ", v = " + v);
+
+                    startProfileActivity(profiles.get(position).getId());
+                }
+            });
+
+            return convertView;
+        }
+
+        public void setProfiles(ArrayList<Profile> profiles) {
+            this.profiles = profiles;
+        }
     }
 
 }
