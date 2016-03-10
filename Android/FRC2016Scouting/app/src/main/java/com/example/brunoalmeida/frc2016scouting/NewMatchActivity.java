@@ -2,6 +2,7 @@ package com.example.brunoalmeida.frc2016scouting;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class NewMatchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_match);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,7 +42,12 @@ public class NewMatchActivity extends AppCompatActivity {
 
         Log.v(LOG_TAG, "teamNumber received from intent: " + this.teamNumber);
 
-        ((TextView) findViewById(R.id.ally_1_team_number)).setText("Team " + teamNumber);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("New Match - Team " + this.teamNumber);
+        actionBar.setDisplayShowTitleEnabled(true);
+        Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
+
+        ((TextView) findViewById(R.id.ally_1_team_number)).setText("Team " + this.teamNumber);
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

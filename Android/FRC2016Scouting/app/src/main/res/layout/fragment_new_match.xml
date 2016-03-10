@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Allies" />
+                android:text="Ally Teams" />
 
             <!--            <EditText
                             android:id="@+id/ally_1_team_number"
@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Opponents" />
+                android:text="Opponent Teams" />
 
             <EditText
                 android:id="@+id/opponent_1_team_number"

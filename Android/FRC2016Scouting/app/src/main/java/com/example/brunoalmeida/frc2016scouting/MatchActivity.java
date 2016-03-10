@@ -64,7 +64,7 @@ public class MatchActivity extends AppCompatActivity {
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Team " + match.getTeamNumber(Team.ALLY_1) + " Match");
+        actionBar.setTitle(match.getDescription() + " - Team " + match.getTeamNumber(Team.ALLY_1));
         actionBar.setDisplayShowTitleEnabled(true);
         Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
