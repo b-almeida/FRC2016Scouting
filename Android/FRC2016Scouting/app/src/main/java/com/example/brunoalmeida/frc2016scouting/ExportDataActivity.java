@@ -63,7 +63,10 @@ public class ExportDataActivity
 
         super.onStart();
 
-        // Check for write permission
+        /* Check for write permission */
+
+        // Permission is not already granded
+        // Must request permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -71,6 +74,7 @@ public class ExportDataActivity
             ActivityCompat.requestPermissions(this,
                     new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                     PERMISSION_REQUEST_CODE_EXPORT_DATA_TO_CSV);
+
 
 /*            // Should we show an explanation?
             // "True if the app has requested this permission previously
@@ -90,9 +94,12 @@ public class ExportDataActivity
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }*/
-        }
 
-        writeDataToMultipleCSVFiles();
+
+        // Permission is already granted
+        } else {
+            writeDataToMultipleCSVFiles();
+        }
     }
 
     @Override
@@ -240,7 +247,6 @@ public class ExportDataActivity
                 downloadsDirectory.mkdir();
                 Log.v(LOG_TAG, "Created directory: " + downloadsDirectory);
             }
-
             Log.v(LOG_TAG, "downloadsDirectory: " + downloadsDirectory);
 
             File scoutingDirectory = new File(Environment.getExternalStorageDirectory().toString(), "FRCScouting");
@@ -251,8 +257,8 @@ public class ExportDataActivity
             Log.v(LOG_TAG, "scoutingDirectory: " + scoutingDirectory);
 
 
+            // Can modify to export to downloads directory instead
             File baseDirectory = scoutingDirectory;
-
 
             // Create a separate folder for each export operation
             File exportDirectory = null;
@@ -260,6 +266,7 @@ public class ExportDataActivity
 
             while (true) {
                 exportDirectory = new File(baseDirectory, "FRCScouting-" + exportNumber);
+
                 if (exportDirectory.exists()) {
                     exportNumber++;
                 } else {
@@ -270,15 +277,21 @@ public class ExportDataActivity
             exportDirectory.mkdir();
 
 
+            writeProfileDataToCSVFile(exportDirectory);
+            writeMatchDataToCSVFiles(exportDirectory);
 
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n" + e.getLocalizedMessage());
+        }
+    }
 
-            /* Export team list */
-
-            File file = new File(exportDirectory, "Teams.csv");
+    private void writeProfileDataToCSVFile(File directory) {
+        try {
+            File file = new File(directory, "TeamList.csv");
             if (!file.exists()) {
                 file.createNewFile();
             }
-            Log.v(LOG_TAG, "Teams file: " + file);
+            Log.v(LOG_TAG, "Team list file: " + file);
 
             FileWriter writer = new FileWriter(file);
 
@@ -287,7 +300,7 @@ public class ExportDataActivity
 
             writer.write("Team Number,Robot Function\n");
             for (Profile profile : profiles) {
-                writer.write( String.format("%d,%s\n", profile.getTeamNumber(), profile.getRobotFunction()) );
+                writer.write(String.format("%d,%s\n", profile.getTeamNumber(), profile.getRobotFunction()));
             }
             writer.write("\n");
 
@@ -300,25 +313,31 @@ public class ExportDataActivity
             intent.setData(Uri.fromFile(file));
             sendBroadcast(intent);
 
+        } catch (Exception e) {
+            Log.w(LOG_TAG, e);
+        }
+    }
 
+    private void writeMatchDataToCSVFiles(File directory) {
+        /* Export profiles (match data) in separate files */
 
-
-            /* Export profiles (match data) in separate files */
+        try {
 
             // Write match data (loop through each profile for its matches)
-            for (Profile profile : profiles) {
-                file = new File(exportDirectory, "Team" + profile.getTeamNumber() + ".csv");
+            for (Profile profile : ProfileDBHelper.readAllProfiles(this)) {
+
+                File file = new File(directory, "Team" + profile.getTeamNumber() + ".csv");
                 if (!file.exists()) {
                     file.createNewFile();
                 }
                 Log.v(LOG_TAG, "Team " + profile.getTeamNumber() + " file: " + file);
 
-                writer = new FileWriter(file);
+                FileWriter writer = new FileWriter(file);
 
                 ArrayList<Match> matches = ProfileDBHelper.readMatches(this, profile.getTeamNumber());
 
 
-                // Write match columns
+                // Write columns
                 String line = "";
 
                 line += "Description,";
@@ -370,13 +389,13 @@ public class ExportDataActivity
                 writer.close();
 
                 // Notify the system to make this file visible
-                intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intent.setData(Uri.fromFile(file));
                 sendBroadcast(intent);
             }
 
         } catch (Exception e) {
-            Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n" + e.getLocalizedMessage());
+            Log.w(LOG_TAG, e);
         }
     }
 
