@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.brunoalmeida.frc2016scouting.data.Match;
 import com.example.brunoalmeida.frc2016scouting.data.Profile;
@@ -279,6 +280,28 @@ public class ExportDataActivity
 
             writeProfileDataToCSVFile(exportDirectory);
             writeMatchDataToCSVFiles(exportDirectory);
+
+            TextView exportResult = (TextView) findViewById(R.id.export_result);
+
+            String exportResultText = "";
+
+            exportResultText += "Data export successful.";
+            exportResultText += "\n\n" + "Data location: " + exportDirectory;
+
+            exportResultText += "\n\n" +
+                    "Windows: Plug your device into your computer," +
+                    " and it will show up in the File Explorer sidebar." +
+                    " Open it and navigate to the FRCScouting folder," +
+                    " where you can copy the data to your computer.";
+
+            exportResultText += "\n\n" +
+                    "Mac: Download Android File Transfer from android.com/filetransfer." +
+                    " Plug your device into your computer," +
+                    " and Android File Transfer will open and display the files on your device." +
+                    " Navigate to the FRCScouting folder," +
+                    " where you can copy the data to your computer.";
+
+            exportResult.setText(exportResultText);
 
         } catch (Exception e) {
             Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n" + e.getLocalizedMessage());
