@@ -126,16 +126,20 @@ public class ExportDataActivity
 
         try {
             // Set up the file and writer
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            downloadsDirectory.mkdir();
+            Log.v(LOG_TAG, "downloadsDirectory: " + downloadsDirectory);
 
-            File file = new File(directory, "Scouting.csv");
+            File scoutingDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/FRCScouting");
+            scoutingDirectory.mkdir();
+            Log.v(LOG_TAG, "scoutingDirectory: " + scoutingDirectory);
 
-            Log.v(LOG_TAG, "directory: " + directory);
-            Log.v(LOG_TAG, "file: " + file);
 
+            File file = new File(scoutingDirectory, "Scouting.csv");
             if (!file.exists()) {
                 file.createNewFile();
             }
+            Log.v(LOG_TAG, "file: " + file);
 
             FileWriter writer = new FileWriter(file);
 
