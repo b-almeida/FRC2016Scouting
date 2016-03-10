@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.EventLogTags;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.example.brunoalmeida.frc2016scouting.database.ProfileDBHelper;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ExportDataActivity
@@ -277,6 +279,7 @@ public class ExportDataActivity
             writeProfileDataToCSVFile(exportDirectory);
             writeMatchDataToCSVFiles(exportDirectory);
 
+
             TextView exportResult = (TextView) findViewById(R.id.export_result);
 
             String exportResultText = "";
@@ -299,28 +302,116 @@ public class ExportDataActivity
 
             exportResult.setText(exportResultText);
 
-        } catch (Exception e) {
-            Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n" + e.getLocalizedMessage());
+        } catch (IOException e) {
+            Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n");
+            Log.w(LOG_TAG, e);
+
+
+            TextView exportResult = (TextView) findViewById(R.id.export_result);
+
+            String exportResultText = "";
+
+            exportResultText += "Data export failed.";
+
+            exportResultText += "\n\n" +
+                    "Make sure this app has permission to write to storage in your device's settings.";
+
+            exportResultText += "\n\n" +
+                    "If data export repeatedly fails," +
+                    " choose \"Delete Data\" from the main screen to clear all stored data.";
+
+            exportResult.setText(exportResultText);
         }
     }
 
-    private void writeProfileDataToCSVFile(File directory) {
-        try {
-            File file = new File(directory, "TeamList.csv");
+    private void writeProfileDataToCSVFile(File directory) throws IOException {
+        File file = new File(directory, "TeamList.csv");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        Log.v(LOG_TAG, "Team list file: " + file);
+
+        FileWriter writer = new FileWriter(file);
+
+        // Write profile data
+        ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
+
+        writer.write("Team Number,Robot Function\n");
+        for (Profile profile : profiles) {
+            writer.write(String.format("%d,%s\n", profile.getTeamNumber(), profile.getRobotFunction()));
+        }
+        writer.write("\n");
+
+        // Cleanup
+        writer.flush();
+        writer.close();
+
+        // Notify the system to make this file visible
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);
+    }
+
+    private void writeMatchDataToCSVFiles(File directory) throws IOException {
+        // Write match data (loop through each profile for its matches)
+        for (Profile profile : ProfileDBHelper.readAllProfiles(this)) {
+
+            File file = new File(directory, "Team" + profile.getTeamNumber() + ".csv");
             if (!file.exists()) {
                 file.createNewFile();
             }
-            Log.v(LOG_TAG, "Team list file: " + file);
+            Log.v(LOG_TAG, "Team " + profile.getTeamNumber() + " file: " + file);
 
             FileWriter writer = new FileWriter(file);
 
-            // Write profile data
-            ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
+            ArrayList<Match> matches = ProfileDBHelper.readMatches(this, profile.getTeamNumber());
 
-            writer.write("Team Number,Robot Function\n");
-            for (Profile profile : profiles) {
-                writer.write(String.format("%d,%s\n", profile.getTeamNumber(), profile.getRobotFunction()));
+
+            // Write columns
+            String line = "";
+
+            line += "Description,";
+
+            for (Match.Team team : Match.Team.values()) {
+                line += team.getDisplayString() + ",";
             }
+            for (Match.Shooting shooting : Match.Shooting.values()) {
+                line += shooting.getDisplayString() + ",";
+            }
+            for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
+                line += defenseBreach.getDisplayString() + ",";
+            }
+
+            if (line.endsWith(",")) {
+                line = line.substring(0, line.length() - 1);
+            }
+
+            writer.write(line + "\n");
+
+
+            // Write match data
+            for (Match match : matches) {
+                line = "";
+
+                line += match.getDescription() + ",";
+
+                for (Match.Team team : Match.Team.values()) {
+                    line += match.getTeamNumber(team) + ",";
+                }
+                for (Match.Shooting shooting : Match.Shooting.values()) {
+                    line += match.getShootingRate(shooting).toAlternateString() + ",";
+                }
+                for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
+                    line += match.getDefenseBreachRate(defenseBreach).toAlternateString() + ",";
+                }
+
+                if (line.endsWith(",")) {
+                    line = line.substring(0, line.length() - 1);
+                }
+
+                writer.write(line + "\n");
+            }
+
             writer.write("\n");
 
             // Cleanup
@@ -331,88 +422,6 @@ public class ExportDataActivity
             Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             intent.setData(Uri.fromFile(file));
             sendBroadcast(intent);
-
-        } catch (Exception e) {
-            Log.w(LOG_TAG, e);
-        }
-    }
-
-    private void writeMatchDataToCSVFiles(File directory) {
-        try {
-
-            // Write match data (loop through each profile for its matches)
-            for (Profile profile : ProfileDBHelper.readAllProfiles(this)) {
-
-                File file = new File(directory, "Team" + profile.getTeamNumber() + ".csv");
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-                Log.v(LOG_TAG, "Team " + profile.getTeamNumber() + " file: " + file);
-
-                FileWriter writer = new FileWriter(file);
-
-                ArrayList<Match> matches = ProfileDBHelper.readMatches(this, profile.getTeamNumber());
-
-
-                // Write columns
-                String line = "";
-
-                line += "Description,";
-
-                for (Match.Team team : Match.Team.values()) {
-                    line += team.getDisplayString() + ",";
-                }
-                for (Match.Shooting shooting : Match.Shooting.values()) {
-                    line += shooting.getDisplayString() + ",";
-                }
-                for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
-                    line += defenseBreach.getDisplayString() + ",";
-                }
-
-                if (line.endsWith(",")) {
-                    line = line.substring(0, line.length() - 1);
-                }
-
-                writer.write(line + "\n");
-
-
-                // Write match data
-                for (Match match : matches) {
-                    line = "";
-
-                    line += match.getDescription() + ",";
-
-                    for (Match.Team team : Match.Team.values()) {
-                        line += match.getTeamNumber(team) + ",";
-                    }
-                    for (Match.Shooting shooting : Match.Shooting.values()) {
-                        line += match.getShootingRate(shooting).toAlternateString() + ",";
-                    }
-                    for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
-                        line += match.getDefenseBreachRate(defenseBreach).toAlternateString() + ",";
-                    }
-
-                    if (line.endsWith(",")) {
-                        line = line.substring(0, line.length() - 1);
-                    }
-
-                    writer.write(line + "\n");
-                }
-
-                writer.write("\n");
-
-                // Cleanup
-                writer.flush();
-                writer.close();
-
-                // Notify the system to make this file visible
-                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                intent.setData(Uri.fromFile(file));
-                sendBroadcast(intent);
-            }
-
-        } catch (Exception e) {
-            Log.w(LOG_TAG, e);
         }
     }
 
