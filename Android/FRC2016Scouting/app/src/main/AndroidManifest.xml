@@ -65,6 +65,7 @@
             android:name=".ExportDataActivity"
             android:label="@string/title_activity_export_data"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
