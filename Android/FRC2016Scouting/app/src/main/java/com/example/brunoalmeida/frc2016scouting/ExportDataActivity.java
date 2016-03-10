@@ -72,13 +72,13 @@ public class ExportDataActivity
                     new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                     PERMISSION_REQUEST_CODE_EXPORT_DATA_TO_CSV);
 
-            // Should we show an explanation?
+/*            // Should we show an explanation?
             // "True if the app has requested this permission previously
             // and the user denied the request."
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
+                // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
@@ -89,8 +89,10 @@ public class ExportDataActivity
                 // PERMISSION_REQUEST_EXPORT_DATA_TO_CSV is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
-            }
+            }*/
         }
+
+        writeDataToMultipleCSVFiles();
     }
 
     @Override
@@ -107,7 +109,7 @@ public class ExportDataActivity
 
                 // permission was granted, yay! Do the
                 // export-related task you need to do.
-                writeDataToSingleCSVFile();
+                writeDataToMultipleCSVFiles();
 
             } else {
 
@@ -224,6 +226,157 @@ public class ExportDataActivity
 
         } catch (Exception e) {
             Log.w(LOG_TAG, "In writeDataToSingleCSVFile(): operation failed" + "\n" + e.getLocalizedMessage());
+        }
+    }
+
+    private void writeDataToMultipleCSVFiles() {
+
+        Log.v(LOG_TAG, "In writeDataToMultipleCSVFiles()");
+
+        try {
+            // Set up the file and writer
+            File downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            if (!downloadsDirectory.exists()) {
+                downloadsDirectory.mkdir();
+                Log.v(LOG_TAG, "Created directory: " + downloadsDirectory);
+            }
+
+            Log.v(LOG_TAG, "downloadsDirectory: " + downloadsDirectory);
+
+            File scoutingDirectory = new File(Environment.getExternalStorageDirectory().toString(), "FRCScouting");
+            if (!scoutingDirectory.exists()) {
+                scoutingDirectory.mkdir();
+                Log.v(LOG_TAG, "Created directory: " + scoutingDirectory);
+            }
+            Log.v(LOG_TAG, "scoutingDirectory: " + scoutingDirectory);
+
+
+            File baseDirectory = scoutingDirectory;
+
+
+            // Create a separate folder for each export operation
+            File exportDirectory = null;
+            int exportNumber = 1;
+
+            while (true) {
+                exportDirectory = new File(baseDirectory, "FRCScouting-" + exportNumber);
+                if (exportDirectory.exists()) {
+                    exportNumber++;
+                } else {
+                    break;
+                }
+            }
+
+            exportDirectory.mkdir();
+
+
+
+
+            /* Export team list */
+
+            File file = new File(exportDirectory, "Teams.csv");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            Log.v(LOG_TAG, "Teams file: " + file);
+
+            FileWriter writer = new FileWriter(file);
+
+            // Write profile data
+            ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
+
+            writer.write("Team Number,Robot Function\n");
+            for (Profile profile : profiles) {
+                writer.write( String.format("%d,%s\n", profile.getTeamNumber(), profile.getRobotFunction()) );
+            }
+            writer.write("\n");
+
+            // Cleanup
+            writer.flush();
+            writer.close();
+
+            // Notify the system to make this file visible
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            intent.setData(Uri.fromFile(file));
+            sendBroadcast(intent);
+
+
+
+
+            /* Export profiles (match data) in separate files */
+
+            // Write match data (loop through each profile for its matches)
+            for (Profile profile : profiles) {
+                file = new File(exportDirectory, "Team" + profile.getTeamNumber() + ".csv");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                Log.v(LOG_TAG, "Team " + profile.getTeamNumber() + " file: " + file);
+
+                writer = new FileWriter(file);
+
+                ArrayList<Match> matches = ProfileDBHelper.readMatches(this, profile.getTeamNumber());
+
+
+                // Write match columns
+                String line = "";
+
+                line += "Description,";
+
+                for (Match.Team team : Match.Team.values()) {
+                    line += team.getDisplayString() + ",";
+                }
+                for (Match.Shooting shooting : Match.Shooting.values()) {
+                    line += shooting.getDisplayString() + ",";
+                }
+                for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
+                    line += defenseBreach.getDisplayString() + ",";
+                }
+
+                if (line.endsWith(",")) {
+                    line = line.substring(0, line.length() - 1);
+                }
+
+                writer.write(line + "\n");
+
+
+                // Write match data
+                for (Match match : matches) {
+                    line = "";
+
+                    line += match.getDescription() + ",";
+
+                    for (Match.Team team : Match.Team.values()) {
+                        line += match.getTeamNumber(team) + ",";
+                    }
+                    for (Match.Shooting shooting : Match.Shooting.values()) {
+                        line += match.getShootingRate(shooting) + ",";
+                    }
+                    for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
+                        line += match.getDefenseBreachRate(defenseBreach) + ",";
+                    }
+
+                    if (line.endsWith(",")) {
+                        line = line.substring(0, line.length() - 1);
+                    }
+
+                    writer.write(line + "\n");
+                }
+
+                writer.write("\n");
+
+                // Cleanup
+                writer.flush();
+                writer.close();
+
+                // Notify the system to make this file visible
+                intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intent.setData(Uri.fromFile(file));
+                sendBroadcast(intent);
+            }
+
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n" + e.getLocalizedMessage());
         }
     }
 
