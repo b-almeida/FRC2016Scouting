@@ -240,6 +240,9 @@ public class ExportDataActivity
         Log.v(LOG_TAG, "In writeDataToMultipleCSVFiles()");
 
         try {
+            // Test exception handling
+            //throw new IOException("Test exception");
+
             // Set up the file and writer
             File downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             if (!downloadsDirectory.exists()) {
@@ -280,12 +283,13 @@ public class ExportDataActivity
             writeMatchDataToCSVFiles(exportDirectory);
 
 
+
+
             TextView exportResult = (TextView) findViewById(R.id.export_result);
 
             String exportResultText = "";
 
             exportResultText += "Data export successful.";
-            exportResultText += "\n\n" + "Data location: " + exportDirectory;
 
             exportResultText += "\n\n" +
                     "Windows: Plug your device into your computer," +
@@ -301,6 +305,10 @@ public class ExportDataActivity
                     " where you can copy the data to your computer.";
 
             exportResult.setText(exportResultText);
+
+
+            TextView exportDataLocation = (TextView) findViewById(R.id.export_data_location);
+            exportDataLocation.setText(String.format("Data location: %s", exportDirectory));
 
         } catch (IOException e) {
             Log.w(LOG_TAG, "In writeDataToMultipleCSVFiles(): operation failed" + "\n");
