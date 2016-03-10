@@ -203,10 +203,10 @@ public class ExportDataActivity
                         line += match.getTeamNumber(team) + ",";
                     }
                     for (Match.Shooting shooting : Match.Shooting.values()) {
-                        line += match.getShootingRate(shooting) + ",";
+                        line += match.getShootingRate(shooting).toAlternateString() + ",";
                     }
                     for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
-                        line += match.getDefenseBreachRate(defenseBreach) + ",";
+                        line += match.getDefenseBreachRate(defenseBreach).toAlternateString() + ",";
                     }
 
                     if (line.endsWith(",")) {
@@ -369,10 +369,10 @@ public class ExportDataActivity
                         line += match.getTeamNumber(team) + ",";
                     }
                     for (Match.Shooting shooting : Match.Shooting.values()) {
-                        line += match.getShootingRate(shooting) + ",";
+                        line += match.getShootingRate(shooting).toAlternateString() + ",";
                     }
                     for (Match.DefenseBreach defenseBreach : Match.DefenseBreach.values()) {
-                        line += match.getDefenseBreachRate(defenseBreach) + ",";
+                        line += match.getDefenseBreachRate(defenseBreach).toAlternateString() + ",";
                     }
 
                     if (line.endsWith(",")) {

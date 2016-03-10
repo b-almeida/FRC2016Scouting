@@ -42,8 +42,11 @@ public class SuccessRate {
         return successes + "/" + attempts;
     }
 
+    public String toAlternateString() {
+        return successes + " of " + attempts;
+    }
+
     public String toPercentRateString() {
         return getPercentRate() + "%";
     }
-
 }
