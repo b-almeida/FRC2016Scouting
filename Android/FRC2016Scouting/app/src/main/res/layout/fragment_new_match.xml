@@ -15,8 +15,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/view_vertical_margin">
+        android:layout_marginBottom="@dimen/view_vertical_margin"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="80dp"
@@ -28,8 +28,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Match"
-            android:inputType="textCapWords" />
+            android:inputType="textCapWords"
+            android:text="Match" />
 
     </LinearLayout>
 
@@ -39,9 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_vertical_margin"
         android:text="Team"
-        android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,15 +73,13 @@
                 android:id="@+id/ally_2_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="2" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/ally_3_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="3" />
+                android:inputType="number" />
 
         </LinearLayout>
 
@@ -101,22 +99,19 @@
                 android:id="@+id/opponent_1_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="4" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/opponent_2_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="5" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/opponent_3_team_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="6" />
+                android:inputType="number" />
 
         </LinearLayout>
 

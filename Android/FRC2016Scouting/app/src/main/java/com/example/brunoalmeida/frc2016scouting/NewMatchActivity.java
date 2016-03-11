@@ -80,29 +80,19 @@ public class NewMatchActivity extends AppCompatActivity {
 
         boolean allDataValid = true;
 
+
+        // Description
         EditText descriptionInput = (EditText) findViewById(R.id.description);
         if (descriptionInput.getText().toString().trim().isEmpty()) {
             allDataValid = false;
             descriptionInput.setError("Can't be blank.");
         }
 
-        for (int editTextID : new int[] {
-                R.id.ally_2_team_number,
-                R.id.ally_3_team_number,
-                R.id.opponent_1_team_number,
-                R.id.opponent_2_team_number,
-                R.id.opponent_3_team_number} ) {
-
-            EditText editText = (EditText) findViewById(editTextID);
-            if (editText.getText().toString().trim().isEmpty()) {
-                allDataValid = false;
-                editText.setError("Can't be blank.");
-            }
-        }
-
         if (allDataValid) {
             String description = descriptionInput.getText().toString().trim();
 
+
+            // Ally and opponent teams
             int ally1TeamNumber = teamNumber;
             int ally2TeamNumber = getTeamNumberFromEditText(R.id.ally_2_team_number);
             int ally3TeamNumber = getTeamNumberFromEditText(R.id.ally_3_team_number);
