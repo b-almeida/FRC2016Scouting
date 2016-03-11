@@ -154,7 +154,7 @@ public class MatchActivity extends AppCompatActivity {
             undoActionMenuItem.getIcon().setAlpha(255);
         } else {
             undoActionMenuItem.setEnabled(false);
-            undoActionMenuItem.getIcon().setAlpha(0);
+            undoActionMenuItem.getIcon().setAlpha(50);
         }
     }
 
