@@ -219,6 +219,37 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         return newRowID;
     }
 
+    public static void updateProfile(Context context, Profile profile) {
+        ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
+
+        // Gets the data repository in write mode
+        SQLiteDatabase database = profileDBHelper.getWritableDatabase();
+
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(ProfileEntry.COLUMN_TEAM_NUMBER, profile.getTeamNumber());
+        values.put(ProfileEntry.COLUMN_DESCRIPTION, profile.getDescription());
+        values.put(ProfileEntry.COLUMN_ROBOT_FUNCTION, profile.getRobotFunction());
+        values.put(ProfileEntry.COLUMN_NOTES, profile.getNotes());
+
+
+        String strFilter = ProfileEntry._ID + " = " + profile.getID();
+
+        // Insert the new row, returning the primary key value of the new row
+        database.update(
+                ProfileEntry.TABLE_NAME,
+                values,
+                strFilter,
+                null);
+
+        Log.v(LOG_TAG, "updateProfile(): " + profile);
+
+        database.close();
+        profileDBHelper.close();
+    }
+
 
     public static ArrayList<Match> readMatches(Context context, int teamNumber) {
         ArrayList<Match> matches = new ArrayList<>();
