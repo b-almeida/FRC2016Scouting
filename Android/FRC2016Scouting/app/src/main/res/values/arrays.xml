@@ -2,6 +2,7 @@
 
 <resources>
     <string-array name="data_robot_functions">
+        <item>Unknown</item>
         <item>Defensive</item>
         <item>Breacher</item>
         <item>Bellhop</item>
