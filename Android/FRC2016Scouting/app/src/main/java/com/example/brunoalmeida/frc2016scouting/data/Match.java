@@ -32,14 +32,17 @@ public class Match {
     }
 
     public enum Statistic {
-        LOW_GOAL_SHOOTING   ("LowGoalShooting", "Low Shot"),
-        HIGH_GOAL_SHOOTING  ("HighGoalShooting", "High Shot"),
+        LOW_BAR_DEFENSE_BREACH      ("LowBarDefenseBreach",     "Low Bar"),
+        CATEGORY_A_DEFENSE_BREACH   ("CategoryADefenseBreach",  "Category A"),
+        CATEGORY_B_DEFENSE_BREACH   ("CategoryBDefenseBreach",  "Category B"),
+        CATEGORY_C_DEFENSE_BREACH   ("CategoryCDefenseBreach",  "Category C"),
+        CATEGORY_D_DEFENSE_BREACH   ("CategoryDDefenseBreach",  "Category D"),
 
-        LOW_BAR_DEFENSE_BREACH      ("LowBarDefenseBreach", "Low Bar"),
-        CATEGORY_A_DEFENSE_BREACH   ("CategoryADefenseBreach", "Category A"),
-        CATEGORY_B_DEFENSE_BREACH   ("CategoryBDefenseBreach", "Category B"),
-        CATEGORY_C_DEFENSE_BREACH   ("CategoryCDefenseBreach", "Category C"),
-        CATEGORY_D_DEFENSE_BREACH   ("CategoryDDefenseBreach", "Category D");
+        LOW_GOAL_SHOOTING   ("LowGoalShooting",     "Low Shot"),
+        HIGH_GOAL_SHOOTING  ("HighGoalShooting",    "High Shot"),
+
+        TOWER_CHALLENGE ("TowerChallenge",  "Challenge Tower"),
+        TOWER_SCALE     ("TowerScale",      "Scale Tower");
 
 
         private String databaseColumnString;
