@@ -77,8 +77,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         existingProfiles = ProfileDBHelper.readAllProfiles(this);
 
-        setupInterface();
-
 
 
 
@@ -92,13 +90,17 @@ public class EditProfileActivity extends AppCompatActivity {
         });*/
     }
 
-    private void setupInterface() {
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         EditText teamNumberInput = (EditText) findViewById(R.id.team_number);
         EditText descriptionInput = (EditText) findViewById(R.id.description);
         Spinner robotFunctionInput = (Spinner) findViewById(R.id.robot_function);
         EditText notesInput = (EditText) findViewById(R.id.notes);
 
-        teamNumberInput.setText(profile.getTeamNumber());
+        teamNumberInput.setText(String.valueOf(profile.getTeamNumber()));
         descriptionInput.setText(profile.getDescription());
         robotFunctionInput.setSelection(robotFunctions.indexOf(profile.getRobotFunction()));
         notesInput.setText(profile.getNotes());
@@ -155,7 +157,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
             // Update profile
-            Profile profile = new Profile(teamNumber, description, robotFunction, notes);
+            Profile profile = new Profile(this.profile.getID(), teamNumber, description, robotFunction, notes);
 
             if (profile.getTeamNumber() != this.profile.getTeamNumber() && doesProfileExist(profile)) {
                 teamNumberInput.setError("Team " + teamNumber + " already exists.");

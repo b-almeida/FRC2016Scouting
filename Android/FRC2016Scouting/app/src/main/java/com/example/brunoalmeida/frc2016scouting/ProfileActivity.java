@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -93,6 +95,29 @@ public class ProfileActivity extends AppCompatActivity {
         });*/
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_edit) {
+            startEditProfileActivity(profile.getID());
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+
+        return true;
+    }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // replaces the default 'Back' button action
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -111,6 +136,14 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.v(LOG_TAG, "Starting MainActivity");
+    }
+
+    private void startEditProfileActivity(long profileID) {
+        Intent intent = new Intent(this, EditProfileActivity.class);
+        intent.putExtra(EditProfileActivity.INTENT_PROFILE_ID, profileID);
+        startActivity(intent);
+
+        Log.v(LOG_TAG, "Starting EditProfileActivity");
     }
 
     private void startNewMatchActivity() {
