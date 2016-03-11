@@ -71,6 +71,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.brunoalmeida.frc2016scouting.MainActivity" />
         </activity>
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:parentActivityName=".ProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.brunoalmeida.frc2016scouting.ProfileActivity" />
+        </activity>
     </application>
 
 </manifest>
