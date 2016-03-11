@@ -36,7 +36,9 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                     " (" +
                     ProfileEntry._ID + " INTEGER PRIMARY KEY," +
                     ProfileEntry.COLUMN_TEAM_NUMBER + " INTEGER," +
-                    ProfileEntry.COLUMN_ROBOT_FUNCTION + " TEXT" +
+                    ProfileEntry.COLUMN_DESCRIPTION + " TEXT," +
+                    ProfileEntry.COLUMN_ROBOT_FUNCTION + " TEXT," +
+                    ProfileEntry.COLUMN_NOTES + " TEXT" +
                     ")";
 
     private static final String SQL_DROP_PROFILE_TABLE =
@@ -57,7 +59,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         str += MatchEntry._ID + " INTEGER PRIMARY KEY,";
 
-        str += MatchEntry.COLUMN_DESCRIPTION + " STRING,";
+        str += MatchEntry.COLUMN_DESCRIPTION + " TEXT,";
 
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.COLUMNS_TEAM_NUMBERS.entrySet()) {
             str += teamNumberColumn.getValue() + " INTEGER,";
@@ -101,19 +103,18 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         ArrayList<Profile> profiles = new ArrayList<>();
 
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
-        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        SQLiteDatabase database = profileDBHelper.getReadableDatabase();
+        Cursor cursor = database.rawQuery(
                 "SELECT * FROM " + ProfileContract.ProfileEntry.TABLE_NAME +
-                        " ORDER BY " + ProfileEntry.COLUMN_TEAM_NUMBER + " ASC", null);
+                        " ORDER BY " + ProfileEntry.COLUMN_TEAM_NUMBER, null);
 
         if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                long id = cursor.getLong(
-                        cursor.getColumnIndexOrThrow(ProfileEntry._ID));
+            while (! cursor.isAfterLast()) {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(ProfileEntry._ID));
 
                 Profile profile = readProfile(context, id);
 
-                Log.v(LOG_TAG, "readAllProfiles():" + "\n" + profile);
+                Log.v(LOG_TAG, "readAllProfiles(): " + profile);
 
                 profiles.add(profile);
                 cursor.moveToNext();
@@ -121,7 +122,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
+        database.close();
         profileDBHelper.close();
 
         return profiles;
@@ -129,23 +130,25 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
     public static Profile readProfile(Context context, long id) {
         ProfileDBHelper profileDBHelper = new ProfileDBHelper(context);
-        SQLiteDatabase db = profileDBHelper.getReadableDatabase();
+        SQLiteDatabase database = profileDBHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
                 ProfileEntry.COLUMN_TEAM_NUMBER,
-                ProfileEntry.COLUMN_ROBOT_FUNCTION
+                ProfileEntry.COLUMN_DESCRIPTION,
+                ProfileEntry.COLUMN_ROBOT_FUNCTION,
+                ProfileEntry.COLUMN_NOTES
         };
 
         String selection = ProfileEntry.TABLE_NAME + "." + ProfileEntry._ID + " = ? ";
 
-        String[] selectionArgs = new String[]{String.valueOf(id)};
+        String[] selectionArgs = new String[] { String.valueOf(id) };
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = ProfileEntry.COLUMN_TEAM_NUMBER + " ASC";
+        String sortOrder = ProfileEntry.COLUMN_TEAM_NUMBER;
 
-        Cursor cursor = db.query(
+        Cursor cursor = database.query(
                 ProfileEntry.TABLE_NAME,    // The table to query
                 projection,                 // The columns to return
                 selection,                  // The columns for the WHERE clause
@@ -162,15 +165,22 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_TEAM_NUMBER);
         int teamNumber = cursor.getInt(columnIndex);
 
+        columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_DESCRIPTION);
+        String description = cursor.getString(columnIndex);
+
         columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_ROBOT_FUNCTION);
         String robotFunction = cursor.getString(columnIndex);
 
-        Profile profile = new Profile(id, teamNumber, robotFunction);
+        columnIndex = cursor.getColumnIndexOrThrow(ProfileEntry.COLUMN_NOTES);
+        String notes = cursor.getString(columnIndex);
 
-        Log.v(LOG_TAG, "readProfile():" + "\n" + profile);
+
+        Profile profile = new Profile(id, teamNumber, description, robotFunction, notes);
+
+        Log.v(LOG_TAG, "readProfile(): " + profile);
 
         cursor.close();
-        db.close();
+        database.close();
         profileDBHelper.close();
 
         return profile;
@@ -182,10 +192,15 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         // Gets the data repository in write mode
         SQLiteDatabase database = profileDBHelper.getWritableDatabase();
 
+
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
+
         values.put(ProfileEntry.COLUMN_TEAM_NUMBER, profile.getTeamNumber());
+        values.put(ProfileEntry.COLUMN_DESCRIPTION, profile.getDescription());
         values.put(ProfileEntry.COLUMN_ROBOT_FUNCTION, profile.getRobotFunction());
+        values.put(ProfileEntry.COLUMN_NOTES, profile.getNotes());
+
 
         // Insert the new row, returning the primary key value of the new row
         long newRowID = database.insert(
@@ -193,7 +208,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
                 null,
                 values);
 
-        Log.v(LOG_TAG, "writeProfile():" + "\n" + profile);
+        Log.v(LOG_TAG, "writeProfile(): " + profile);
         Log.v(LOG_TAG, "writeProfile(): newRowID = " + newRowID);
 
         database.close();

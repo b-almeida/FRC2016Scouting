@@ -38,7 +38,9 @@ public abstract class ProfileContract {
         public static final String TABLE_NAME = "Profiles";
 
         public static final String COLUMN_TEAM_NUMBER = "TeamNumber";
+        public static final String COLUMN_DESCRIPTION = "Description";
         public static final String COLUMN_ROBOT_FUNCTION = "RobotFunction";
+        public static final String COLUMN_NOTES = "Notes";
     }
 
 

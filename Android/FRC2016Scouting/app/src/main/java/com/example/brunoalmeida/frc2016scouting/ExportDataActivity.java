@@ -240,9 +240,14 @@ public class ExportDataActivity
         // Write profile data
         ArrayList<Profile> profiles = ProfileDBHelper.readAllProfiles(this);
 
-        writer.write("Team Number,Robot Function\n");
+        writer.write("Team Number,Description,Robot Function,Notes\n");
         for (Profile profile : profiles) {
-            writer.write(String.format("%d,%s\n", profile.getTeamNumber(), profile.getRobotFunction()));
+            writer.write(String.format(
+                    "%d,%s,%s,%s\n",
+                    profile.getTeamNumber(),
+                    profile.getDescription(),
+                    profile.getRobotFunction(),
+                    profile.getNotes()));
         }
         writer.write("\n");
 

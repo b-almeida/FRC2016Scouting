@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v(LOG_TAG, "In getView(): layout.onClick()");
                     Log.v(LOG_TAG, "position = " + position + ", v = " + v);
 
-                    startProfileActivity(profiles.get(position).getId());
+                    startProfileActivity(profiles.get(position).getID());
                 }
             });
 

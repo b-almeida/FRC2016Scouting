@@ -18,7 +18,7 @@ public class NewProfileActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "NewProfileActivity";
 
-    private ArrayList<Profile> allProfiles;
+    private ArrayList<Profile> existingProfiles;
 
 
 
@@ -34,7 +34,7 @@ public class NewProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        allProfiles = ProfileDBHelper.readAllProfiles(this);
+        existingProfiles = ProfileDBHelper.readAllProfiles(this);
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +47,7 @@ public class NewProfileActivity extends AppCompatActivity {
     }
 
     private boolean doesProfileExist(Profile newProfile) {
-        for (Profile existingProfile : allProfiles) {
+        for (Profile existingProfile : existingProfiles) {
             if (newProfile.getTeamNumber() == existingProfile.getTeamNumber()) {
                 return true;
             }
@@ -59,7 +59,9 @@ public class NewProfileActivity extends AppCompatActivity {
     public void createProfileOnClick(View view) {
         boolean allDataValid = true;
 
-        // Get the team number from the interface
+        /* Get the data from the interface */
+
+        // Team number
         EditText teamNumberInput = (EditText) findViewById(R.id.team_number);
         String teamNumberString = teamNumberInput.getText().toString().trim();
 
@@ -74,13 +76,27 @@ public class NewProfileActivity extends AppCompatActivity {
 
         if (allDataValid) {
             int teamNumber = Integer.parseInt(teamNumberString);
-            String robotFunction = ((Spinner) findViewById(R.id.robot_function))
-                    .getSelectedItem().toString();
 
-            Profile profile = new Profile(teamNumber, robotFunction);
+
+            // Description
+            EditText descriptionInput = (EditText) findViewById(R.id.description);
+            String description = descriptionInput.getText().toString().trim();
+
+
+            // Robot function
+            Spinner robotFunctionInput = (Spinner) findViewById(R.id.robot_function);
+            String robotFunction = robotFunctionInput.getSelectedItem().toString();
+
+
+            // Notes
+            EditText notesInput = (EditText) findViewById(R.id.notes);
+            String notes = notesInput.getText().toString().trim().replace("\n", "; ");
+
+
+            // Create profile
+            Profile profile = new Profile(teamNumber, description, robotFunction, notes);
 
             if (doesProfileExist(profile)) {
-                allDataValid = false;
                 teamNumberInput.setError("Team " + teamNumber + " already exists.");
             } else {
                 long profileID = ProfileDBHelper.writeProfile(this, profile);
