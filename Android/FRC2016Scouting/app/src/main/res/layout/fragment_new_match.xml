@@ -15,11 +15,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/view_vertical_margin"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="@dimen/new_match_text_view_width"
             android:layout_height="wrap_content"
             android:text="Description" />
 
@@ -33,6 +32,29 @@
 
     </LinearLayout>
 
+    <!-- Notes -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_vertical_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/new_match_text_view_width"
+            android:layout_height="wrap_content"
+            android:text="Notes" />
+
+        <EditText
+            android:id="@+id/notes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="textMultiLine|textCapSentences" />
+
+    </LinearLayout>
+
+
+    <!-- Team -->
     <TextView
         android:id="@+id/ally_1_team_number"
         android:layout_width="match_parent"

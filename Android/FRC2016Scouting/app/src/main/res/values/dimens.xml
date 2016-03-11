@@ -9,6 +9,8 @@
 
     <dimen name="new_profile_text_view_width">110dp</dimen>
 
+    <dimen name="new_match_text_view_width">80dp</dimen>
+
     <dimen name="match_row_button_size">72dp</dimen>
     <dimen name="match_row_vertical_margin">8dp</dimen>
 </resources>

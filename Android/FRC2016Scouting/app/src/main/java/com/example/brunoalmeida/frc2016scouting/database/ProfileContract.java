@@ -50,6 +50,7 @@ public abstract class ProfileContract {
 
 
         public static final String COLUMN_DESCRIPTION = "Description";
+        public static final String COLUMN_NOTES = "Notes";
         public static final EnumMap<Team, String> COLUMNS_TEAM_NUMBERS =
                 new EnumMap<>(Team.class);
         public static final EnumMap<Statistic, ColumnPair> COLUMNS_STATISTICS =

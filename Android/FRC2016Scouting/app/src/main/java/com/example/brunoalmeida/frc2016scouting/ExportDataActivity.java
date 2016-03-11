@@ -281,17 +281,13 @@ public class ExportDataActivity
             // Write column headers
             String line = "";
 
-            line += "Description,";
+            line += "Description,Notes";
 
             for (Team team : Team.values()) {
-                line += team.getDisplayString() + ",";
+                line += "," + team.getDisplayString();
             }
             for (Statistic statistic : Statistic.values()) {
-                line += statistic.getDisplayString() + ",";
-            }
-
-            if (line.endsWith(",")) {
-                line = line.substring(0, line.length() - 1);
+                line += "," + statistic.getDisplayString();
             }
 
             writer.write(line + "\n");
@@ -301,17 +297,14 @@ public class ExportDataActivity
             for (Match match : matches) {
                 line = "";
 
-                line += match.getDescription() + ",";
+                line += match.getDescription();
+                line += "," + match.getNotes();
 
                 for (Team team : Team.values()) {
-                    line += match.getTeamNumber(team) + ",";
+                    line += "," + match.getTeamNumber(team);
                 }
                 for (Statistic statistic : Statistic.values()) {
-                    line += match.getStatistic(statistic).toAlternateString() + ",";
-                }
-
-                if (line.endsWith(",")) {
-                    line = line.substring(0, line.length() - 1);
+                    line += "," + match.getStatistic(statistic).toAlternateString();
                 }
 
                 writer.write(line + "\n");

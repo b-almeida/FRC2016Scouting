@@ -61,6 +61,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         str += MatchEntry.COLUMN_DESCRIPTION + " TEXT,";
 
+        str += MatchEntry.COLUMN_NOTES + " TEXT,";
+
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.COLUMNS_TEAM_NUMBERS.entrySet()) {
             str += teamNumberColumn.getValue() + " INTEGER,";
         }
@@ -277,6 +279,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         projectionArrayList.add(MatchEntry.COLUMN_DESCRIPTION);
 
+        projectionArrayList.add(MatchEntry.COLUMN_NOTES);
+
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.COLUMNS_TEAM_NUMBERS.entrySet()) {
             projectionArrayList.add(teamNumberColumn.getValue());
         }
@@ -317,6 +321,9 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DESCRIPTION);
         String description = cursor.getString(columnIndex);
 
+        columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_NOTES);
+        String notes = cursor.getString(columnIndex);
+
         columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMNS_TEAM_NUMBERS.get(Team.ALLY_1));
         int ally1TeamNumber = cursor.getInt(columnIndex);
         columnIndex = cursor.getColumnIndexOrThrow(MatchEntry.COLUMNS_TEAM_NUMBERS.get(Team.ALLY_2));
@@ -333,6 +340,7 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         Match match = new Match(
                 id,
                 description,
+                notes,
                 ally1TeamNumber,
                 ally2TeamNumber,
                 ally3TeamNumber,
@@ -372,6 +380,8 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
 
         values.put(MatchEntry.COLUMN_DESCRIPTION, match.getDescription());
 
+        values.put(MatchEntry.COLUMN_NOTES, match.getNotes());
+
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.COLUMNS_TEAM_NUMBERS.entrySet()) {
             values.put(teamNumberColumn.getValue(), match.getTeamNumber(teamNumberColumn.getKey()));
         }
@@ -403,10 +413,13 @@ public class ProfileDBHelper extends SQLiteOpenHelper {
         // Gets the data repository in write mode
         SQLiteDatabase database = profileDBHelper.getWritableDatabase();
 
+
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
 
         values.put(MatchEntry.COLUMN_DESCRIPTION, match.getDescription());
+
+        values.put(MatchEntry.COLUMN_NOTES, match.getNotes());
 
         for (EnumMap.Entry<Team, String> teamNumberColumn : MatchEntry.COLUMNS_TEAM_NUMBERS.entrySet()) {
             values.put(teamNumberColumn.getValue(), match.getTeamNumber(teamNumberColumn.getKey()));

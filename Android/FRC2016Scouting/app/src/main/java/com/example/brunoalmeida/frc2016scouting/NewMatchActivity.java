@@ -92,6 +92,11 @@ public class NewMatchActivity extends AppCompatActivity {
             String description = descriptionInput.getText().toString().trim();
 
 
+            // Notes
+            EditText notesInput = (EditText) findViewById(R.id.notes);
+            String notes = notesInput.getText().toString().trim().replace("\n", "; ");
+
+
             // Ally and opponent teams
             int ally1TeamNumber = teamNumber;
             int ally2TeamNumber = getTeamNumberFromEditText(R.id.ally_2_team_number);
@@ -102,6 +107,7 @@ public class NewMatchActivity extends AppCompatActivity {
 
             Match match = new Match(
                     description,
+                    notes,
                     ally1TeamNumber,
                     ally2TeamNumber,
                     ally3TeamNumber,
