@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -18,8 +19,37 @@ import java.util.ArrayList;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    private static String[] dataRobotFunctions = {
+            "Unknown",
+            "Defensive",
+            "Breacher",
+            "Bellhop",
+            "Low Shooter",
+            "High Shooter",
+            "General Shooter",
+            "Hybrid Offensive",
+            "Pure Hybrid"
+    };
+
+    private static ArrayList<String> robotFunctions = new ArrayList<>();
+
+    static {
+        for (String function : dataRobotFunctions) {
+            robotFunctions.add(function);
+        }
+    }
+
+
+
+
     private static final String LOG_TAG = "NewProfileActivity";
 
+    public static final String INTENT_PROFILE_ID = "ProfileID";
+
+
+    private static long profileID = -1;
+
+    private Profile profile;
     private ArrayList<Profile> existingProfiles;
 
     @Override
@@ -33,7 +63,21 @@ public class EditProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        // Get the team number from the intent
+        long id = getIntent().getLongExtra(INTENT_PROFILE_ID, -1);
+        if (id != -1) {
+            profileID = id;
+        }
+
+        Log.v(LOG_TAG, "profileID received from intent: " + profileID);
+
+        // Read the robot type from the database
+        profile = ProfileDBHelper.readProfile(this, profileID);
+        Log.v(LOG_TAG, "profile received from intent: " + profile);
+
         existingProfiles = ProfileDBHelper.readAllProfiles(this);
+
+        setupInterface();
 
 
 
@@ -46,6 +90,21 @@ public class EditProfileActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+    }
+
+    private void setupInterface() {
+        EditText teamNumberInput = (EditText) findViewById(R.id.team_number);
+        EditText descriptionInput = (EditText) findViewById(R.id.description);
+        Spinner robotFunctionInput = (Spinner) findViewById(R.id.robot_function);
+        EditText notesInput = (EditText) findViewById(R.id.notes);
+
+        teamNumberInput.setText(profile.getTeamNumber());
+        descriptionInput.setText(profile.getDescription());
+        robotFunctionInput.setSelection(robotFunctions.indexOf(profile.getRobotFunction()));
+        notesInput.setText(profile.getNotes());
+
+        Button createButton = (Button) findViewById(R.id.create_profile);
+        createButton.setText("Save");
     }
 
     private boolean doesProfileExist(Profile newProfile) {
@@ -95,13 +154,13 @@ public class EditProfileActivity extends AppCompatActivity {
             String notes = notesInput.getText().toString().trim().replace("\n", "; ");
 
 
-            // Create profile
+            // Update profile
             Profile profile = new Profile(teamNumber, description, robotFunction, notes);
 
-            if (doesProfileExist(profile)) {
+            if (profile.getTeamNumber() != this.profile.getTeamNumber() && doesProfileExist(profile)) {
                 teamNumberInput.setError("Team " + teamNumber + " already exists.");
             } else {
-                long profileID = ProfileDBHelper.writeProfile(this, profile);
+                ProfileDBHelper.updateProfile(this, profile);
                 startProfileActivity(profileID);
             }
         }

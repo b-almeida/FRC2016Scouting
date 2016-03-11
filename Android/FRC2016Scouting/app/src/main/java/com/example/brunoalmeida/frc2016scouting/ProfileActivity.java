@@ -27,8 +27,11 @@ import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public static final String INTENT_PROFILE_ID = "profileID";
     private static final String LOG_TAG = "ProfileActivity";
+
+    public static final String INTENT_PROFILE_ID = "profileID";
+
+
     private static long profileID = -1;
 
     private Profile profile;
@@ -54,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Read the robot type from the database
         profile = ProfileDBHelper.readProfile(this, profileID);
-        Log.v(LOG_TAG, "profile received from intent:" + "\n" + profile);
+        Log.v(LOG_TAG, "profile received from intent: " + profile);
 
 
         // Set the title bar to the team number
