@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Profile> profiles = new ArrayList<>();
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setTitle("Teams");
         actionBar.setDisplayShowTitleEnabled(true);
         Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
-
 
         updateProfiles();
 
@@ -172,15 +169,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     private class MainBaseAdapter extends BaseAdapter {
 
         private static final String LOG_TAG = "MainBaseAdapter";
 
         private ArrayList<Profile> profiles;
-
-
 
 
         public MainBaseAdapter(ArrayList<Profile> profiles) {
@@ -189,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            Log.v(LOG_TAG, "In getCount()");
+            //Log.v(LOG_TAG, "In getCount()");
             return profiles.size();
         }
 

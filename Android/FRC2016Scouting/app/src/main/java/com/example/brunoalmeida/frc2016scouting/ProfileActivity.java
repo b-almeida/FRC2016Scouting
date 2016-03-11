@@ -27,15 +27,12 @@ import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "ProfileActivity";
-
     public static final String INTENT_PROFILE_ID = "profileID";
+    private static final String LOG_TAG = "ProfileActivity";
     private static long profileID = -1;
 
     private Profile profile;
     private ArrayList<Match> matches;
-
-
 
 
     @Override
@@ -128,15 +125,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
-
     private class ProfileBaseAdapter extends BaseAdapter {
 
         private static final String LOG_TAG = "ProfileBaseAdapter";
 
         private ArrayList<Match> matches;
-
-
 
 
         public ProfileBaseAdapter(ArrayList<Match> matches) {
@@ -145,7 +138,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            Log.v(LOG_TAG, "In getCount()");
             return matches.size();
         }
 

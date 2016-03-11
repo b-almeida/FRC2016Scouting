@@ -13,9 +13,9 @@ import java.util.EnumMap;
 public class Match {
 
     public enum Team {
-        ALLY_1 ("Ally 1"),
-        ALLY_2 ("Ally 2"),
-        ALLY_3 ("Ally 3"),
+        ALLY_1("Ally 1"),
+        ALLY_2("Ally 2"),
+        ALLY_3("Ally 3"),
         OPPONENT_1("Opponent 1"),
         OPPONENT_2("Opponent 2"),
         OPPONENT_3("Opponent 3");
@@ -31,32 +31,28 @@ public class Match {
         }
     }
 
-    public enum Shooting {
-        LOW_GOAL("Low Goal"),
-        HIGH_GOAL("High Goal");
+    public enum Statistic {
+        LOW_GOAL_SHOOTING   ("LowGoalShooting", "Low Shot"),
+        HIGH_GOAL_SHOOTING  ("HighGoalShooting", "High Shot"),
 
+        LOW_BAR_DEFENSE_BREACH      ("LowBarDefenseBreach", "Low Bar"),
+        CATEGORY_A_DEFENSE_BREACH   ("CategoryADefenseBreach", "Category A"),
+        CATEGORY_B_DEFENSE_BREACH   ("CategoryBDefenseBreach", "Category B"),
+        CATEGORY_C_DEFENSE_BREACH   ("CategoryCDefenseBreach", "Category C"),
+        CATEGORY_D_DEFENSE_BREACH   ("CategoryDDefenseBreach", "Category D");
+
+
+        private String databaseColumnString;
         private String displayString;
 
-        Shooting(final String displayString) {
+
+        Statistic(final String databaseColumnString, final String displayString) {
+            this.databaseColumnString = databaseColumnString;
             this.displayString = displayString;
         }
 
-        public String getDisplayString() {
-            return displayString;
-        }
-    }
-
-    public enum DefenseBreach {
-        LOW_BAR("Low Bar"),
-        CATEGORY_A("Category A"),
-        CATEGORY_B("Category B"),
-        CATEGORY_C("Category C"),
-        CATEGORY_D("Category D");
-
-        private String displayString;
-
-        DefenseBreach(final String displayString) {
-            this.displayString = displayString;
+        public String getDatabaseColumnString() {
+            return databaseColumnString;
         }
 
         public String getDisplayString() {
@@ -70,8 +66,7 @@ public class Match {
     private long id;
     private String description;
     private EnumMap<Team, Integer> teamNumbers = new EnumMap<>(Team.class);
-    private EnumMap<Shooting, SuccessRate> shootingRates = new EnumMap<>(Shooting.class);
-    private EnumMap<DefenseBreach, SuccessRate> defenseBreachRates = new EnumMap<>(DefenseBreach.class);
+    private EnumMap<Statistic, SuccessRate> statistics = new EnumMap<>(Statistic.class);
 
 
 
@@ -95,12 +90,8 @@ public class Match {
         this.teamNumbers.put(Team.OPPONENT_2, opponent2TeamNumber);
         this.teamNumbers.put(Team.OPPONENT_3, opponent3TeamNumber);
 
-        for (Shooting shooting : Shooting.values()) {
-            this.shootingRates.put(shooting, new SuccessRate());
-        }
-
-        for (DefenseBreach defenseBreach : DefenseBreach.values()) {
-            this.defenseBreachRates.put(defenseBreach, new SuccessRate());
+        for (Statistic statistic : Statistic.values()) {
+            this.statistics.put(statistic, new SuccessRate());
         }
     }
 
@@ -130,6 +121,7 @@ public class Match {
         return id;
     }
 
+
     public String getDescription() {
         return description;
     }
@@ -140,49 +132,35 @@ public class Match {
     }
 
 
-    public EnumMap<Shooting, SuccessRate> getShootingRates() {
-        return shootingRates;
+    public EnumMap<Statistic, SuccessRate> getStatistics() {
+        return statistics;
     }
 
-    public SuccessRate getShootingRate(Shooting shooting) {
-        return shootingRates.get(shooting);
+    public SuccessRate getStatistic(Statistic statistic) {
+        return statistics.get(statistic);
     }
 
-    public SuccessRate getShootingRate(int index) {
-        return getShootingRate(Shooting.values()[index]);
-    }
-
-
-    public EnumMap<DefenseBreach, SuccessRate> getDefenseBreachRates() {
-        return defenseBreachRates;
-    }
-
-    public SuccessRate getDefenseBreachRate(DefenseBreach defenseBreach) {
-        return defenseBreachRates.get(defenseBreach);
-    }
-
-    public SuccessRate getDefenseBreachRate(int index) {
-        return getDefenseBreachRate(DefenseBreach.values()[index]);
+    public SuccessRate getStatistic(int index) {
+        return getStatistic(Statistic.values()[index]);
     }
 
 
 
 
-    public void setShootingRate(Shooting shooting, int successes, int attempts) {
-        shootingRates.put(shooting, new SuccessRate(successes, attempts));
+    public void setStatistic(Statistic statistic, SuccessRate successRate) {
+        statistics.put(statistic, successRate);
     }
 
-    public void setShootingRate(int index, int successes, int attempts) {
-        setShootingRate(Shooting.values()[index], successes, attempts);
+    public void setStatistic(Statistic statistic, int successes, int attempts) {
+        setStatistic(statistic, new SuccessRate(successes, attempts));
     }
 
-
-    public void setDefenseBreachRate(DefenseBreach defenseBreach, int successes, int attempts) {
-        defenseBreachRates.put(defenseBreach, new SuccessRate(successes, attempts));
+    public void setStatistic(int index, SuccessRate successRate) {
+        setStatistic(Statistic.values()[index], successRate);
     }
 
-    public void setDefenseBreachRate(int index, int successes, int attempts) {
-        setDefenseBreachRate(DefenseBreach.values()[index], successes, attempts);
+    public void setStatistic(int index, int successes, int attempts) {
+        setStatistic(index, new SuccessRate(successes, attempts));
     }
 
 
@@ -194,21 +172,14 @@ public class Match {
 
         str += "id = " + getID();
 
-        str += "\n" + "description = " + getDescription();
+        str += ", description = " + getDescription();
 
         for (Team team : Team.values()) {
-            str += "\n" + team.toString() + " teamNumber = " +
-                    getTeamNumber(team);
+            str += ", teamNumber: " + team.toString() + " = " + getTeamNumber(team);
         }
 
-        for (Shooting shooting : Shooting.values()) {
-            str += "\n" + shooting.toString() + " shootingRate = " +
-                    getShootingRate(shooting);
-        }
-
-        for (DefenseBreach defenseBreach : DefenseBreach.values()) {
-            str += "\n" + defenseBreach.toString() + " defenseBreachRate = " +
-                    getDefenseBreachRate(defenseBreach);
+        for (Statistic statistic : Statistic.values()) {
+            str += ", statistic: " + statistic.toString() + " = " + getStatistic(statistic);
         }
 
         return str;

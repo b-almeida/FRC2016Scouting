@@ -33,6 +33,7 @@ public class NewProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         allProfiles = ProfileDBHelper.readAllProfiles(this);
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

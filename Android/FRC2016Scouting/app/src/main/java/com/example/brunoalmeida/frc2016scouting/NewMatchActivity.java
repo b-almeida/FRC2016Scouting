@@ -34,6 +34,7 @@ public class NewMatchActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         // Get the team number from the intent
         int teamNumber = getIntent().getIntExtra(INTENT_TEAM_NUMBER, -1);
         if (teamNumber != -1) {
@@ -41,6 +42,7 @@ public class NewMatchActivity extends AppCompatActivity {
         }
 
         Log.v(LOG_TAG, "teamNumber received from intent: " + this.teamNumber);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("New Match - Team " + this.teamNumber);
