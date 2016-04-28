@@ -7,6 +7,8 @@
     <dimen name="view_horizontal_margin">16dp</dimen>
     <dimen name="view_vertical_margin">16dp</dimen>
 
+    <dimen name="main_row_vertical_margin">16dp</dimen>
+
     <dimen name="new_profile_text_view_width">110dp</dimen>
 
     <dimen name="new_match_text_view_width">80dp</dimen>

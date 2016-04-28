@@ -64,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Set the title bar to the team number
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Team " + profile.getTeamNumber() + " - Matches");
+        actionBar.setTitle("Team " + profile.getTeamNumber() + " Matches");
         actionBar.setDisplayShowTitleEnabled(true);
         Log.v(LOG_TAG, "Toolbar title: " + toolbar.getTitle().toString());
 
