@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- Update in EditProfileActivity -->
+    <string-array name="data_robot_functions">
+        <item>Unknown</item>
+        <item>Defensive</item>
+        <item>Breacher</item>
+        <item>Bellhop</item>
+        <item>Low Shooter</item>
+        <item>High Shooter</item>
+        <item>General Shooter</item>
+        <item>Hybrid Offensive</item>
+        <item>Pure Hybrid</item>
+    </string-array>
+</resources>
